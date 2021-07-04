@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>瞬殺！安全仕事人</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0">
+    <meta name="description" content="NITMC-Procon Project">
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.54.0/dist/phaser.min.js"></script>
+    <!-- type="moduleを行うことでimportが使えるようになる" -->
+    <script type="module" src="./index.js"></script>
+    <link rel="stylesheet" href="./index.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/5.1.0/screenfull.min.js"
+        integrity="sha512-SGPHIoS+NsP1NUL5RohNpDs44JlF36tXLN6H3Cw+EUyenEc5zPXWqfw9D+xmvR00QYUYewQIJQ6P5yH82Vw6Fg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        window.addEventListener('keydown', switchFullScreen);
+        function switchFullScreen(event) {
+            if (event.key === "f") {
+                if (!isFullScreen()) {
+                    if (screenfull.isEnabled) {
+                        const element = document.querySelector("#game");
+                        screenfull.request(element);
+                    } else {
+                        alert("フルスクリーン未対応です");
+                    }
+                } else {
+                    screenfull.exit();
+                }
+            }
+        }
+        function isFullScreen() {
+            var fullscreen_flag = false;
+            if (document.fullscreenElement || document.mozFullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
+                fullscreen_flag = true;
+            }
+            return fullscreen_flag;
+        }
+    </script>
+</head>
+
+<body>
+    <div id="game"></div>
+</body>
+
+</html>
