@@ -11,7 +11,7 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
 
     preload() {//preloadに画像とか読み込ませる create()よりも優先して実行される
         this.load.svg('logo', 'images/logo.svg');
-        this.load.svg('background', 'images/background.svg');
+        this.load.svg('background', 'images/background.svg',{ scale:1.5});
         this.load.image('mailicon','images/mailicon.png')//メール用ロゴ
     }
 
