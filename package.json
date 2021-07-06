@@ -1,5 +1,13 @@
 {
     "scripts": {
         "start": "node app.js"
+    },
+    "name": "anzenworker",
+    "version": "1.0.0",
+    "main": "app.js",
+    "devDependencies": {
+        "express": "^4.17.1",
+        "http": "0.0.1-security",
+        "ws": "^7.5.2"
     }
 }
