@@ -3,6 +3,5 @@
     "sec_score //セキュリティスコア":100,
     "connected_wifi //接続されてるWi-Fi":"NITMC-Free-WiFi",
     "installed_software //アプリストアから入れたソフト":["trojan","noton"],
-    "flag //現在立ってるフラグ":["trojan-inside","secured"],
-    "broadcast_queue //キュー、送信時にリセット":["trojan-goes-around",""]
+    "flag //現在立ってるフラグ":["trojan-inside","secured"]
 }
