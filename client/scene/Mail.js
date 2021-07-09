@@ -20,16 +20,16 @@ export class Mail extends Window {//メールウィンドウ
         
 舞鶴工業高等専門学校 機械制御情弱科 4年 舞鶴 太郎
 Email: taro@maizuru.kosen.ac.jp`
-    ], ["メール2", "本文2"]]
+        ], ["メール2", "本文2"]]
         return mails
     }
     show_mail(mail) {
         this.mail_title.setText(mail[0])
         this.mail_text.setText(mail[1])
     }
-    fix_mail(text){
-        text = text.replaceAll("\n"," ")
-        text = text.substr(0,15)
+    fix_mail(text) {
+        text = text.replaceAll("\n", " ")
+        text = text.substr(0, 15)
         return text
     }
     create_after() {//create関数はすでにWindowクラスで使われてるので、そこからcreate_afterを呼び出してる
@@ -42,13 +42,21 @@ Email: taro@maizuru.kosen.ac.jp`
             //上20pxと下&左右5pxくらいウィンドウが専有してるので基準を少しずらしてる
             mailblock.on('pointerdown', () => {
                 this.show_mail(mail)
-                this.desktop.Reportfunc("success")//結果送信テスト
-            },this);//最後にthis入れないとthisの参照先が変わってしまう
-        },this);
+                this.desktop.Reportfunc({
+                    type: "task",
+                    status: "success",
+                    task: {
+                        id: 1,
+                        "point": 150,
+                        "broadcast": [{ type: "attack", attack: {type: "trojan"} }]
+                    }
+                })//結果送信テスト
+            }, this);//最後にthis入れないとthisの参照先が変わってしまう
+        }, this);
     }
     update() {
-        if (this.width-300 > 50){
-            this.mail_width=this.width-300
+        if (this.width - 300 > 50) {
+            this.mail_width = this.width - 300
         }
         this.mail_text.setStyle({ color: "0x000", font: "15px Yu Gothic", wordWrap: { width: this.mail_width, useAdvancedWrap: true } })
     }
