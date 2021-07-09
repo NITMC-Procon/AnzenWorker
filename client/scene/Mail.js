@@ -39,18 +39,11 @@ Email: taro@maizuru.kosen.ac.jp`
             let mailblock = this.add.rectangle(5, this.menu_height + 2 + i * 50, 280, 48, 0xf0f0f0).setOrigin(0).setInteractive().setDepth(-1000)
             this.add.text(5, this.menu_height + 2 + i * 50, this.fix_mail(mail[0]), { color: "0x000", font: "15px Yu Gothic" }).setOrigin(0)
             this.add.text(5, this.menu_height + 15 + i * 50, this.fix_mail(mail[1]), { color: "0xaaa", font: "15px Yu Gothic" }).setOrigin(0)
+
             //上20pxと下&左右5pxくらいウィンドウが専有してるので基準を少しずらしてる
             mailblock.on('pointerdown', () => {
                 this.show_mail(mail)
-                this.desktop.Reportfunc({
-                    type: "task",
-                    status: "success",
-                    task: {
-                        id: 1,
-                        "point": 150,
-                        "broadcast": [{ type: "attack", attack: {type: "trojan"} }]
-                    }
-                })//結果送信テスト
+                this.desktop.Reportfunc("success")//結果送信テスト
             }, this);//最後にthis入れないとthisの参照先が変わってしまう
         }, this);
     }
