@@ -1,13 +1,28 @@
 {
-    "scripts": {
-        "start": "node app.js"
-    },
-    "name": "anzenworker",
-    "version": "1.0.0",
-    "main": "app.js",
-    "devDependencies": {
-        "express": "^4.17.1",
-        "http": "0.0.1-security",
-        "ws": "^7.5.2"
-    }
+  "scripts": {
+    "start": "node app.js"
+  },
+  "name": "AnzenWorker",
+  "description": "/typings/phaser に [https://github.com/photonstorm/phaser/tree/master/types](https://github.com/photonstorm/phaser/tree/master/types) を入れておくとIntelliSenseが効いて開発しやすいと思います。",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NITMC-Procon/AnzenWorker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NITMC-Procon/AnzenWorker/issues"
+  },
+  "homepage": "https://github.com/NITMC-Procon/AnzenWorker#readme",
+  "dependencies": {
+    "express-generator": "^4.13.1"
+  },
+  "devDependencies": {
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "ws": "^7.5.2"
+  }
 }

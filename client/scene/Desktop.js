@@ -1,5 +1,6 @@
 'use strict';
 import { Mail } from './mail.js';
+import { Wifi } from './wifi.js';
 
 export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デスクトップ画面
     constructor() {
@@ -13,6 +14,9 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.load.svg('logo', 'images/logo.svg');
         this.load.svg('background', 'images/background.svg', { scale: 1.5 });
         this.load.image('mailicon', 'images/mailicon.png')//メール用ロゴ
+        this.load.image('wifiicon', 'images/wifiicon.png')//Wi-Fi用ロゴ
+        this.load.image("padlock", "images/padlock.png")//南京錠ロックロゴ
+        this.load.image("padunlock", "images/padunlock.png")//南京錠アンロックロゴ
     }
 
 
@@ -26,32 +30,18 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         let mailicon = this.add.sprite(80, 60, 'mailicon').setScale(0.5).setTint(0x00ffff).setInteractive();//setInteractiveしないとクリックできない!
         this.add.text(80, 120, "メール").setOrigin(0.5);//OriginのX座標を中心にしてテキストを中央合わせ
 
+        // Wi-Fi用アイコン登録
+        let wifiicon = this.add.sprite(1300, 738, 'wifiicon').setScale(0.05).setInteractive();//setInteractiveしないとクリックできない!
+
         mailicon.on('pointerdown', () => {//メールアイコンをクリックで
             this.CreateWindow(Mail);//mailクラスのウィンドウを作成
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
         this.scale.on('resize', this.resize, this);//画面リサイズ時にresize関数を呼ぶ
-        this.Connect_to_server('ws://127.0.0.1:8000')
-    }
-    Connect_to_server(server){
-        this.sock = new WebSocket(server)
-        // websocket イベント
-        // 接続した
-        this.sock.onopen = (e) => {
-            console.log('Socket接続に成功しました');
-        }
-        // エラーが発生した
-        this.sock.onerror = (err) => {
-            console.log(`Socketエラーが発生しました：${err}`);
-        }
-        // ソケットが閉じた
-        this.sock.onclose = (e) => {
-            console.log(`Socketが閉じられました`);
-        }
-        // サーバーからデータを受け取った
-        this.sock.onmessage = (e) => {
-            var json = JSON.parse(e.data)
-            console.log(json)
-        }
+
+        wifiicon.on('pointerdown', () => {//Wi-Fiアイコンをクリックで
+            this.CreateWindow(Wifi);//wi-fiクラスのウィンドウを作成
+        }, this);//最後にthis入れないとthisの参照先が変わってしまう
+        this.scale.on('resize', this.resize, this);//画面リサイズ時にresize関数を呼ぶ
     }
     CreateWindow(func)//新しい窓を作る関数
     {
