@@ -6,7 +6,7 @@ export class Wifi extends Window {//wi-fiウィンドウ
         this.load.image('wifiicon', 'images/wifiicon.png')
         this.load.image('padlock', 'images/padlock.png')
         this.load.image('padunlock', 'images/padunlock.png')
-        this.title_text = "  Wi-Fi設定"
+        this.title_text = "  Wi-Fiの設定"
         this.width = 300
         this.wifis = this.get_wifis()
         this.wifi_width = 150
