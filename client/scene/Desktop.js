@@ -2,6 +2,8 @@
 import { Mail } from './mail.js';
 import { Wifi } from './wifi.js';
 
+var ServerAddress = 'ws://127.0.0.1:8000'
+
 export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デスクトップ画面
     constructor() {
         super({ key: 'Desktop' });
@@ -18,7 +20,6 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.load.image("padlock", "images/padlock.png")//南京錠ロックロゴ
         this.load.image("padunlock", "images/padunlock.png")//南京錠アンロックロゴ
     }
-
 
     create() {
         this.cameras.main.setBackgroundColor(0x0080d0)//背景色(今は背景画像あるのでいらない フォールバック用?)
@@ -42,6 +43,7 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
             this.CreateWindow(Wifi);//wi-fiクラスのウィンドウを作成
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
         this.scale.on('resize', this.resize, this);//画面リサイズ時にresize関数を呼ぶ
+        this.Connect_to_server(ServerAddress)//サーバーに接続
     }
     CreateWindow(func)//新しい窓を作る関数
     {
@@ -67,6 +69,27 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.windows[window.title_text] = undefined//登録済みウィンドウから削除
         window.scene.remove(window.handle)//自分削除
         window.parent.destroy()//親(クリック用Zone)削除
+    }
+    Connect_to_server(server) {
+        this.sock = new WebSocket(server)
+        // websocket イベント
+        // 接続した
+        this.sock.onopen = (e) => {
+            console.log('Socket接続に成功しました');
+        }
+        // エラーが発生した
+        this.sock.onerror = (err) => {
+            console.log(`Socketエラーが発生しました：${err}`);
+        }
+        // ソケットが閉じた
+        this.sock.onclose = (e) => {
+            console.log(`Socketが閉じられました`);
+        }
+        // サーバーからデータを受け取った
+        this.sock.onmessage = (e) => {
+            var json = JSON.parse(e.data)
+            this.event_handler(json)
+        }
     }
     update() {
     }
@@ -96,7 +119,15 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.background.updateDisplayOrigin()
     }
     Reportfunc(data) {//結果送信用関数
-        console.log(data)
         this.sock.send(JSON.stringify(data))
+    }
+    event_handler(json){//イベントハンドラ
+        switch (json.type) {
+            case "attack":{
+                console.log("Someone is attacking!!!")
+                //Call some function
+                break;
+            }
+        }
     }
 }

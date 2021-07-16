@@ -10,19 +10,22 @@ wss.on('connection', (socket,req) => {
     // socket["unique"] = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
     // socket["id"] = `${socket["ipAddress"]}:${socket["port"]}:${socket["unique"]}`
     socket["id"] = generateUuid()
-    
     socket.on('message', message => {
-        var json = JSON.parse(message.toString())
-        if (json.task.broadcast != null) {
-            json.task.broadcast.forEach(event => {
-                wss.clients.forEach(client => {
-                    if (socket["id"] != client["id"])//送信元以外に送信
-                        client.send(JSON.stringify(event));//テスト
+        try {//エラーハンドリング
+            var json = JSON.parse(message.toString());
+            if (json.task.broadcast != null) {
+                json.task.broadcast.forEach(event => {
+                    wss.clients.forEach(client => {
+                        if (socket["id"] != client["id"])//送信元以外に送信
+                            client.send(JSON.stringify(event));//テスト
+                    });
                 });
-            });
+            }
+        } catch (e) {
+            console.log("invalid json: " + message)
+            return;
         }
     });
-
     socket.on('close', () => {
         console.log('good bye.');
     });
