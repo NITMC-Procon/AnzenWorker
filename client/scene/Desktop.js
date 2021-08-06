@@ -1,6 +1,6 @@
 'use strict';
-import { Mail } from './mail.js';
-import { Wifi } from './wifi.js';
+import { Mail } from './Mail.js';
+import { Wifi } from './Wifi.js';
 
 var ServerAddress = 'ws://127.0.0.1:8000'
 
