@@ -32,14 +32,14 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.add.text(80, 120, "メール").setOrigin(0.5);//OriginのX座標を中心にしてテキストを中央合わせ
 
         // Wi-Fi用アイコン登録
-        let wifiicon = this.add.sprite(1300, 738, 'wifiicon').setScale(0.05).setInteractive();//setInteractiveしないとクリックできない!
+        this.wifiicon = this.add.sprite(this.scale.width-25, this.scale.height -15, 'wifiicon').setScale(0.05).setInteractive();//setInteractiveしないとクリックできない!
 
         mailicon.on('pointerdown', () => {//メールアイコンをクリックで
             this.CreateWindow(Mail);//mailクラスのウィンドウを作成
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
         this.scale.on('resize', this.resize, this);//画面リサイズ時にresize関数を呼ぶ
 
-        wifiicon.on('pointerdown', () => {//Wi-Fiアイコンをクリックで
+        this.wifiicon.on('pointerdown', () => {//Wi-Fiアイコンをクリックで
             this.CreateWindow(Wifi);//wi-fiクラスのウィンドウを作成
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
         this.scale.on('resize', this.resize, this);//画面リサイズ時にresize関数を呼ぶ
@@ -102,6 +102,7 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.cameras.resize(width, height);//カメラ(描画領域)のサイズ合わせ
 
         this.taskbar.setPosition(0, height - 30);//タスクバーの位置合わせ
+        this.wifiicon.setPosition(this.scale.width-25, this.scale.height -15);
         this.taskbar.setSize(width, 30);//タスクバーのサイズ合わせ
     }
     resizebg(width, height) {//背景リサイズ用(要らんかも)

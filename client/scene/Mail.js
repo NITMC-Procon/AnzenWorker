@@ -33,12 +33,12 @@ Email: taro@maizuru.kosen.ac.jp`
         return text
     }
     create_after() {//create関数はすでにWindowクラスで使われてるので、そこからcreate_afterを呼び出してる
-        this.mail_title = this.add.text(300, this.menu_height + 5, "", { color: "0x000", font: "30px Yu Gothic" }).setOrigin(0)
-        this.mail_text = this.add.text(300, this.menu_height + 40, "", { color: "0x000", font: "15px Yu Gothic", wordWrap: { width: this.mail_width, useAdvancedWrap: true } }).setOrigin(0)
+        this.mail_title = this.add.text(300, this.menu_height + 5, "", { color: "#000", font: "30px Yu Gothic" }).setOrigin(0)
+        this.mail_text = this.add.text(300, this.menu_height + 40, "", { color: "#000", font: "15px Yu Gothic", wordWrap: { width: this.mail_width, useAdvancedWrap: true } }).setOrigin(0)
         this.mails.forEach((mail, i) => {
             let mailblock = this.add.rectangle(5, this.menu_height + 2 + i * 50, 280, 48, 0xf0f0f0).setOrigin(0).setInteractive().setDepth(-1000)
-            this.add.text(5, this.menu_height + 2 + i * 50, this.fix_mail(mail[0]), { color: "0x000", font: "15px Yu Gothic" }).setOrigin(0)
-            this.add.text(5, this.menu_height + 15 + i * 50, this.fix_mail(mail[1]), { color: "0xaaa", font: "15px Yu Gothic" }).setOrigin(0)
+            this.add.text(5, this.menu_height + 2 + i * 50, this.fix_mail(mail[0]), { color: "#000", font: "15px Yu Gothic" }).setOrigin(0)
+            this.add.text(5, this.menu_height + 15 + i * 50, this.fix_mail(mail[1]), { color: "#555", font: "15px Yu Gothic" }).setOrigin(0)
 
             //上20pxと下&左右5pxくらいウィンドウが専有してるので基準を少しずらしてる
             mailblock.on('pointerdown', () => {
@@ -59,6 +59,6 @@ Email: taro@maizuru.kosen.ac.jp`
         if (this.width - 300 > 50) {
             this.mail_width = this.width - 300
         }
-        this.mail_text.setStyle({ color: "0x000", font: "15px Yu Gothic", wordWrap: { width: this.mail_width, useAdvancedWrap: true } })
+        this.mail_text.setStyle({ color: "#000", font: "15px Yu Gothic", wordWrap: { width: this.mail_width, useAdvancedWrap: true } })
     }
 }

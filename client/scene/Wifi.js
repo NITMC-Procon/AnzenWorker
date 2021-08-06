@@ -35,14 +35,14 @@ export class Wifi extends Window {//wi-fiウィンドウ
     }
     create_after() {//create関数はすでにWindowクラスで使われてるので、そこからcreate_afterを呼び出してる
         // 選んだ時に出てくるWi-Fi
-        this.wifi_title = this.add.text(10, this.menu_height + 300, "", { color: "0x000", font: "30px Yu Gothic" }).setOrigin(0)
-        this.wifi_title1 = this.add.text(10, this.menu_height + 350, "", { color: "0x000", font: "30px Yu Gothic" }).setOrigin(0)
+        this.wifi_title = this.add.text(10, this.menu_height + 300, "", { color: "#000", font: "30px Yu Gothic" }).setOrigin(0)
+        this.wifi_title1 = this.add.text(10, this.menu_height + 350, "", { color: "#000", font: "30px Yu Gothic" }).setOrigin(0)
         // 灰色の背景
         this.add.rectangle(5, this.menu_height + 290, 290, 48, 0xf0f0f0).setOrigin(0).setInteractive().setDepth(-1000)
         // 接続ボタン
         let connect = this.add.rectangle(180, this.menu_height + 294, 110, 40, 0xc0c0c0).setOrigin(0).setInteractive().setDepth(-1000)
         // 接続テキスト
-        this.connect_text = this.add.text(205, this.menu_height + 296, "接続", { color: "0x000", font: "30px Yu Gothic" }).setOrigin(0)
+        this.connect_text = this.add.text(205, this.menu_height + 296, "接続", { color: "#000", font: "30px Yu Gothic" }).setOrigin(0)
 
         this.wifis.forEach((wifi, i) => {
             // 灰色のボタン
@@ -75,8 +75,8 @@ export class Wifi extends Window {//wi-fiウィンドウ
                 graphics.fillStyle(0x4169e1, 1).fillRect(38, this.menu_height + 10 + i * 50, 8, 30);
             }
 
-            this.add.text(60, this.menu_height + 12 + i * 50, this.fix_wifi(wifi[0]), { color: "0x000", font: "20px Yu Gothic" }).setOrigin(0)
-            this.add.text(210, this.menu_height + 15 + i * 50, this.fix_wifi(wifi[1]), { color: "0xaaa", font: "15px Yu Gothic" }).setOrigin(0)
+            this.add.text(60, this.menu_height + 12 + i * 50, this.fix_wifi(wifi[0]), { color: "#000", font: "20px Yu Gothic" }).setOrigin(0)
+            this.add.text(210, this.menu_height + 15 + i * 50, this.fix_wifi(wifi[1]), { color: "#555", font: "15px Yu Gothic" }).setOrigin(0)
 
             //上20pxと下&左右5pxくらいウィンドウが専有してるので基準を少しずらしてる
             wifiblock.on('pointerdown', () => {
