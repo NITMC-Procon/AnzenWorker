@@ -1,5 +1,6 @@
 'use strict';
 import { Window } from './Window.js';
+import { VirusEvent } from './VirusEvent.js';
 
 export class Mail extends Window {//メールウィンドウ
     preload() {
@@ -19,7 +20,7 @@ export class Mail extends Window {//メールウィンドウ
 ご確認の方よろしくお願いします。
         
 舞鶴工業高等専門学校 機械制御情弱科 4年 舞鶴 太郎
-Email: taro@maizuru.kosen.ac.jp`
+Email: taro@maizuru.kosen.ac.jp`,{filename:"file.exe",func:() => {this.desktop.CreateWindow(VirusEvent,0,0)}}
         ], ["メール2", "本文2"]]
         return mails
     }
@@ -43,6 +44,21 @@ Email: taro@maizuru.kosen.ac.jp`
             //上20pxと下&左右5pxくらいウィンドウが専有してるので基準を少しずらしてる
             mailblock.on('pointerdown', () => {
                 this.show_mail(mail)
+                // this.desktop.CreateWindow(VirusEvent,0,0)
+                console.log(typeof mail[2])
+                if(typeof mail[2] == 'object') {
+                    this.btngroup = this.add.group();
+                    let btn = this.add.rectangle(0, 0, 100, 60, 0xaaaaaa).setOrigin(0).setInteractive()
+                    let txt = this.add.text(0, 0, mail[2]["filename"], { color: "#000", font: "30px Yu Gothic" }).setOrigin(0.5)
+                    this.btngroup.add(btn)
+                    this.btngroup.add(txt)
+                    btn.on('pointerdown', () => {
+                        mail[2]["func"]()
+                    }, this);
+                    this.btngroup.setXY(this.width * 0.9, this.height * 0.9).setOrigin(0.5)
+                }else{
+                    this.btngroup.clear(true,true)
+                }
                 this.desktop.Reportfunc({
                     type: "task",
                     status: "success",
@@ -55,10 +71,10 @@ Email: taro@maizuru.kosen.ac.jp`
             }, this);//最後にthis入れないとthisの参照先が変わってしまう
         }, this);
     }
-    update() {
-        if (this.width - 300 > 50) {
-            this.mail_width = this.width - 300
-        }
-        this.mail_text.setStyle({ color: "#000", font: "15px Yu Gothic", wordWrap: { width: this.mail_width, useAdvancedWrap: true } })
-    }
+    // update() {
+    //     if (this.width - 300 > 50) {
+    //         this.mail_width = this.width - 300
+    //     }
+    //     this.mail_text.setStyle({ color: "#000", font: "15px Yu Gothic", wordWrap: { width: this.mail_width, useAdvancedWrap: true } })
+    // }
 }
