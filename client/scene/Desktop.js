@@ -96,8 +96,6 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
             this.event_handler(json)
         }
     }
-    update() {
-    }
     resize(gameSize, baseSize, displaySize, resolution) {//画面リサイズ時
         let width = displaySize.width;
         let height = displaySize.height;

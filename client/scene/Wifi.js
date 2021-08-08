@@ -98,7 +98,4 @@ export class Wifi extends Window {//wi-fiウィンドウ
             }, this);//最後にthis入れないとthisの参照先が変わってしまう
         }, this);
     }
-    update() {
-
-    }
 }
