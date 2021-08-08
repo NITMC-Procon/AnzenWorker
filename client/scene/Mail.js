@@ -45,7 +45,6 @@ Email: taro@maizuru.kosen.ac.jp`,{filename:"file.exe",func:() => {this.desktop.C
             mailblock.on('pointerdown', () => {
                 this.show_mail(mail)
                 // this.desktop.CreateWindow(VirusEvent,0,0)
-                console.log(typeof mail[2])
                 if(typeof mail[2] == 'object') {
                     this.btngroup = this.add.group();
                     let btn = this.add.rectangle(0, 0, 100, 60, 0xaaaaaa).setOrigin(0).setInteractive()
@@ -54,6 +53,15 @@ Email: taro@maizuru.kosen.ac.jp`,{filename:"file.exe",func:() => {this.desktop.C
                     this.btngroup.add(txt)
                     btn.on('pointerdown', () => {
                         mail[2]["func"]()
+                        this.desktop.Reportfunc({
+                            type: "task",
+                            status: "failed",
+                            task: {
+                                id: 1,
+                                "point": 150,
+                                "broadcast": [{ type: "attack", attack: {type: "trojan"} }]
+                            }
+                        })
                     }, this);
                     this.btngroup.setXY(this.width * 0.9, this.height * 0.9).setOrigin(0.5)
                 }else{
@@ -65,7 +73,6 @@ Email: taro@maizuru.kosen.ac.jp`,{filename:"file.exe",func:() => {this.desktop.C
                     task: {
                         id: 1,
                         "point": 150,
-                        "broadcast": [{ type: "attack", attack: {type: "trojan"} }]
                     }
                 })//結果送信テスト
             }, this);//最後にthis入れないとthisの参照先が変わってしまう

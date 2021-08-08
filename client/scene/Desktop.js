@@ -70,7 +70,6 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         }
     }
     DestroyWindow(window) {//ウィンドウ削除用関数
-        console.log(window.title_text)
         delete this.windows[window.title_text]//登録済みウィンドウから削除
         window.scene.remove(window.handle)//自分削除
         window.parent.destroy()//親(クリック用Zone)削除
