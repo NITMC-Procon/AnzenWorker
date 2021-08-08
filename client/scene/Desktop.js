@@ -59,14 +59,19 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         if (this.windows[window.title_text] != undefined) {//すでに同じ名前のウィンドウがあれば
             window.scene.remove(window.handle)//自分削除
             window.parent.destroy()//親(クリック用Zone)削除
-            this.windows[window.title_text].refresh()
+            typeof this.windows[window.title_text].refresh == 'function' ? this.windows[window.title_text].refresh():null;
         } else {
             this.windows[window.title_text] = window//自分のウィンドウを登録
+            Object.values(this.windows).forEach(e => {
+                e.input.enabled = false
+            });
+            window.input.enabled = true
+            window.parent.setDepth(1)
         }
     }
     DestroyWindow(window) {//ウィンドウ削除用関数
         console.log(window.title_text)
-        this.windows[window.title_text] = undefined//登録済みウィンドウから削除
+        delete this.windows[window.title_text]//登録済みウィンドウから削除
         window.scene.remove(window.handle)//自分削除
         window.parent.destroy()//親(クリック用Zone)削除
     }
