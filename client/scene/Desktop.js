@@ -2,7 +2,8 @@
 import { Mail } from './Mail.js';
 import { Wifi } from './Wifi.js';
 
-var ServerAddress = 'ws://127.0.0.1:8000'
+var host = window.document.location.host.replace(/:.*/, '');
+var ServerAddress = 'ws://'+host+':8000'
 
 export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デスクトップ画面
     constructor() {
