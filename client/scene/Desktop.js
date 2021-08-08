@@ -45,10 +45,10 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.scale.on('resize', this.resize, this);//画面リサイズ時にresize関数を呼ぶ
         this.Connect_to_server(ServerAddress)//サーバーに接続
     }
-    CreateWindow(func)//新しい窓を作る関数
+    CreateWindow(func,x=null,y=null)//新しい窓を作る関数
     {
-        let x = Phaser.Math.Between(0, 300);//ランダムな値を返す
-        let y = Phaser.Math.Between(0, 300);
+        x = x==null?Phaser.Math.Between(0, 300):x;//ランダムな値を返す
+        y = y==null?Phaser.Math.Between(0, 300):y;
         let handle = 'window' + this.count++;//ウィンドウの識別IDを作る
 
         let winzone = this.add.zone(x, y, 10, 10).setInteractive().setOrigin(0);//クリック用ゾーン作成 実際のクリックの設定はWindowクラスの中で行う
