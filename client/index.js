@@ -2,7 +2,7 @@ import { Desktop } from './scene/Desktop.js';
 
 //ゲームの基本設定
 var config = {
-    type: Phaser.AUTO,
+    type: Phaser.CANVAS,
     scale: {
         mode: Phaser.Scale.RESIZE,//リサイズされても最大まで描画
         parent: 'game',
