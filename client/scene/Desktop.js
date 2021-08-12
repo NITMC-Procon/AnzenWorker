@@ -45,7 +45,6 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         mailicon.on('pointerdown', () => {//メールアイコンをクリックで
             this.CreateWindow(Mail);//mailクラスのウィンドウを作成
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
-        this.scale.on('resize', this.resize, this);//画面リサイズ時にresize関数を呼ぶ
 
         this.wifiicon.on('pointerdown', () => {//Wi-Fiアイコンをクリックで
             this.CreateWindow(Wifi);//wi-fiクラスのウィンドウを作成

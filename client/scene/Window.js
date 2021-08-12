@@ -60,9 +60,8 @@ export class Window extends Phaser.Scene {//Phaser.Sceneを継承してウィン
             this.parent.setDepth(1)//深さを手前側に
         }, this);
         this.parent.setSize(this.width, this.height)
-        this.create_after()
+        typeof this["create_after"] == 'function' ? this["create_after"]():null;
     }
-    create_after() { }
     refresh() {
         this.cameras.main.setPosition(this.parent.x, this.parent.y);
         this.cameras.main.setViewport(this.parent.x, this.parent.y, this.width, this.height);
