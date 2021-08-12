@@ -20,7 +20,7 @@ export class Mail extends Window {//メールウィンドウ
 ご確認の方よろしくお願いします。
         
 舞鶴工業高等専門学校 機械制御情弱科 4年 舞鶴 太郎
-Email: taro@maizuru.kosen.ac.jp`,{filename:"file.exe",func:() => {this.desktop.CreateWindow(VirusEvent,0,0)}}
+Email: taro@maizuru.kosen.ac.jp`, { filename: "file.exe", func: () => { this.desktop.CreateWindow(VirusEvent, 0, 0) } }
         ], ["メール2", "本文2"]]
         return mails
     }
@@ -45,7 +45,7 @@ Email: taro@maizuru.kosen.ac.jp`,{filename:"file.exe",func:() => {this.desktop.C
             mailblock.on('pointerdown', () => {
                 this.show_mail(mail)
                 // this.desktop.CreateWindow(VirusEvent,0,0)
-                if(typeof mail[2] == 'object') {
+                if (typeof mail[2] == 'object') {
                     this.btngroup = this.add.group();
                     let btn = this.add.rectangle(0, 0, 100, 60, 0xaaaaaa).setOrigin(0).setInteractive()
                     let txt = this.add.text(0, 0, mail[2]["filename"], { color: "#000", font: "30px Yu Gothic" }).setOrigin(0.5)
@@ -59,7 +59,7 @@ Email: taro@maizuru.kosen.ac.jp`,{filename:"file.exe",func:() => {this.desktop.C
                             task: {
                                 id: 1,
                                 "point": 150,
-                                "broadcast": [{ type: "attack", attack: {type: "trojan"} }]
+                                "broadcast": [{ type: "attack", attack: { type: "trojan" } }]
                             }
                         })
                     }, this);

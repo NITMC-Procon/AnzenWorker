@@ -1,14 +1,16 @@
 'use strict';
 import { Mail } from './Mail.js';
 import { Wifi } from './Wifi.js';
+import { JobManager } from './JobManager.js';
 
 var host = window.document.location.host.replace(/:.*/, '');
-var ServerAddress = 'ws://'+host+':8000'
+var ServerAddress = 'ws://' + host + ':8000'
 
 export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デスクトップ画面
     constructor() {
         super({ key: 'Desktop' });
         this.count = 0;
+        this.jobnum = -1;//ジョブ管理から起動するウィンドウの番号
         this.windows = {}//ここに{mail: ~,~}みたいな感じでウィンドウのリストが入る
         this.configs = {}//ここに接続先Wi-Fiとか侵入したウイルスとかの情報を入れていく予定
     }
@@ -20,6 +22,7 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.load.image('wifiicon', 'images/wifiicon.png')//Wi-Fi用ロゴ
         this.load.image("padlock", "images/padlock.png")//南京錠ロックロゴ
         this.load.image("padunlock", "images/padunlock.png")//南京錠アンロックロゴ
+        this.load.image("jobManagericon", "images/jobManagericon.png")//ジョブ管理ロゴ
     }
 
     create() {
@@ -33,7 +36,11 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.add.text(80, 120, "メール").setOrigin(0.5);//OriginのX座標を中心にしてテキストを中央合わせ
 
         // Wi-Fi用アイコン登録
-        this.wifiicon = this.add.sprite(this.scale.width-25, this.scale.height -15, 'wifiicon').setScale(0.05).setInteractive();//setInteractiveしないとクリックできない!
+        this.wifiicon = this.add.sprite(this.scale.width - 25, this.scale.height - 15, 'wifiicon').setScale(0.05).setInteractive();//setInteractiveしないとクリックできない!
+
+        // ジョブ管理アイコン登録
+        let jobManagericon = this.add.sprite(80, 200, 'jobManagericon').setScale(0.2).setTint(0x00ffff).setInteractive();
+        this.add.text(80, 270, "ジョブ管理").setOrigin(0.5);//OriginのX座標を中心にしてテキストを中央合わせ
 
         mailicon.on('pointerdown', () => {//メールアイコンをクリックで
             this.CreateWindow(Mail);//mailクラスのウィンドウを作成
@@ -42,13 +49,18 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.wifiicon.on('pointerdown', () => {//Wi-Fiアイコンをクリックで
             this.CreateWindow(Wifi);//wi-fiクラスのウィンドウを作成
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
+
+        jobManagericon.on('pointerdown', () => {//スタートアイコンをクリックで
+            this.CreateWindow(JobManager);//JobManagerクラスのウィンドウを作成
+        }, this);//最後にthis入れないとthisの参照先が変わってしまう
+
         this.scale.on('resize', this.resize, this);//画面リサイズ時にresize関数を呼ぶ
         this.Connect_to_server(ServerAddress)//サーバーに接続
     }
-    CreateWindow(func,x=null,y=null)//新しい窓を作る関数
+    CreateWindow(func, x = null, y = null)//新しい窓を作る関数
     {
-        x = x==null?Phaser.Math.Between(0, 300):x;//ランダムな値を返す
-        y = y==null?Phaser.Math.Between(0, 300):y;
+        x = x == null ? Phaser.Math.Between(0, 300) : x;//ランダムな値を返す
+        y = y == null ? Phaser.Math.Between(0, 300) : y;
         let handle = 'window' + this.count++;//ウィンドウの識別IDを作る
 
         let winzone = this.add.zone(x, y, 10, 10).setInteractive().setOrigin(0);//クリック用ゾーン作成 実際のクリックの設定はWindowクラスの中で行う
@@ -59,7 +71,7 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         if (this.windows[window.title_text] != undefined) {//すでに同じ名前のウィンドウがあれば
             window.scene.remove(window.handle)//自分削除
             window.parent.destroy()//親(クリック用Zone)削除
-            typeof this.windows[window.title_text].refresh == 'function' ? this.windows[window.title_text].refresh():null;
+            typeof this.windows[window.title_text].refresh == 'function' ? this.windows[window.title_text].refresh() : null;
         } else {
             this.windows[window.title_text] = window//自分のウィンドウを登録
             Object.values(this.windows).forEach(e => {
@@ -104,7 +116,7 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.cameras.resize(width, height);//カメラ(描画領域)のサイズ合わせ
 
         this.taskbar.setPosition(0, height - 30);//タスクバーの位置合わせ
-        this.wifiicon.setPosition(this.scale.width-25, this.scale.height -15);
+        this.wifiicon.setPosition(this.scale.width - 25, this.scale.height - 15);
         this.taskbar.setSize(width, 30);//タスクバーのサイズ合わせ
     }
     resizebg(width, height) {//背景リサイズ用(要らんかも)
@@ -124,9 +136,9 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
     Reportfunc(data) {//結果送信用関数
         this.sock.send(JSON.stringify(data))
     }
-    event_handler(json){//イベントハンドラ
+    event_handler(json) {//イベントハンドラ
         switch (json.type) {
-            case "attack":{
+            case "attack": {
                 console.log("Someone is attacking!!!")
                 //Call some function
                 break;
