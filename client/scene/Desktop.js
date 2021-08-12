@@ -12,7 +12,7 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.count = 0;
         this.jobnum = -1;//ジョブ管理から起動するウィンドウの番号
         this.windows = {}//ここに{mail: ~,~}みたいな感じでウィンドウのリストが入る
-        this.configs = {}//ここに接続先Wi-Fiとか侵入したウイルスとかの情報を入れていく予定
+        this.Configs = {}//ここに接続先Wi-Fiとか侵入したウイルスとかの情報を入れていく予定
     }
 
     preload() {//preloadに画像とか読み込ませる create()よりも優先して実行される
