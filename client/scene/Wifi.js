@@ -81,13 +81,13 @@ export class Wifi extends Window {//wi-fiウィンドウ
             //上20pxと下&左右5pxくらいウィンドウが専有してるので基準を少しずらしてる
             wifiblock.on('pointerdown', () => {
                 this.show_wifi(wifi)
-                // this.desktop.Reportfunc("success")//結果送信テスト
+                // this.desktop.emitResult("success")//結果送信テスト
             }, this);//最後にthis入れないとthisの参照先が変わってしまう
 
             //接続ボタンが押された時
             connect.on('pointerdown', () => {
                 this.connect_wifi(wifi)
-                this.desktop.Reportfunc({
+                this.desktop.emitResult({
                     type: "task",
                     status: "success",
                     task: {

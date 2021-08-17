@@ -1,15 +1,20 @@
 'use strict';
-var express = require('express')//サーバー
-var http = require('http')
+const express = require('express');//サーバー
+const http = require('http');
+const wsServer = require('./server/ws_server.js');
 
-require('./server/ws_server.js')//Websocketのサーバーを呼び出してる
+const app = express();
+app.use("/", express.static('client'));//clientを返す
 
-var app = express()
-app.use("/", express.static('client'))//clientを返す
+const httpServer = http.createServer(app);
+wsServer.startSocketServer(httpServer);
 
-var httpServer = http.createServer(app)
-
-// サーバーの起動
-httpServer.listen(80, () => {
+/*
+ * サーバを起動
+ * ポート
+ *  80   : Default 
+ *  8080 : Test (sudo npm startを回避するため) 
+ */
+httpServer.listen(8080, () => {
     console.log('listening on 80')
 })

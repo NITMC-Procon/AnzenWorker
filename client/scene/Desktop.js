@@ -3,10 +3,12 @@ import { Mail } from './Mail.js';
 import { Wifi } from './Wifi.js';
 import { JobManager } from './JobManager.js';
 
+//TODO: scocket.ioのio methodに合わせる
 var host = window.document.location.host.replace(/:.*/, '');
 var ServerAddress = 'ws://' + host + ':8000'
 
-export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デスクトップ画面
+//ゲームマネージャー兼デスクトップ画面
+export class Desktop extends Phaser.Scene {
     constructor() {
         super({ key: 'Desktop' });
         this.count = 0;
@@ -57,8 +59,9 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.scale.on('resize', this.resize, this);//画面リサイズ時にresize関数を呼ぶ
         this.Connect_to_server(ServerAddress)//サーバーに接続
     }
-    CreateWindow(func, x = null, y = null)//新しい窓を作る関数
-    {
+
+    //新しい窓を作る関数
+    CreateWindow(func, x = null, y = null) {
         x = x == null ? Phaser.Math.Between(0, 300) : x;//ランダムな値を返す
         y = y == null ? Phaser.Math.Between(0, 300) : y;
         let handle = 'window' + this.count++;//ウィンドウの識別IDを作る
@@ -81,33 +84,49 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
             window.parent.setDepth(1)
         }
     }
-    DestroyWindow(window) {//ウィンドウ削除用関数
+
+    //ウィンドウ削除用関数
+    DestroyWindow(window) {
         delete this.windows[window.title_text]//登録済みウィンドウから削除
         window.scene.remove(window.handle)//自分削除
         window.parent.destroy()//親(クリック用Zone)削除
     }
+
     Connect_to_server(server) {
-        this.sock = new WebSocket(server)
-        // websocket イベント
-        // 接続した
-        this.sock.onopen = (e) => {
+
+        /**
+         * 同じホストなので引数なし
+         * 他のホストは,
+         * io('http://example.com');
+         * io(server);
+         */
+        this.socket = io();
+
+        this.socket.on("connect", () => {
             console.log('Socket接続に成功しました');
-        }
-        // エラーが発生した
-        this.sock.onerror = (err) => {
-            console.log(`Socketエラーが発生しました：${err}`);
-        }
-        // ソケットが閉じた
-        this.sock.onclose = (e) => {
+            this.socket.emit("a", "hogehogenanodesu-nipa-");
+        });
+
+        this.socket.on("error", (err) => {
+            console.log(`Socketエラーが発生しました：${err}`)  ;
+        });
+
+        this.socket.on("disconnect", () => {
             console.log(`Socketが閉じられました`);
-        }
-        // サーバーからデータを受け取った
-        this.sock.onmessage = (e) => {
-            var json = JSON.parse(e.data)
-            this.event_handler(json)
-        }
+        });
+
+        this.socket.onAny((event, arg) => {
+            // HP参照し、うつしました。
+            // TODO: 処理書きなおす
+            console.log('got ${event}');
+            var json = JSON.parse(arg.data);
+            this.eventHandler(json);
+        });
+
     }
-    resize(gameSize, baseSize, displaySize, resolution) {//画面リサイズ時
+
+    //画面リサイズ時
+    resize(gameSize, baseSize, displaySize, resolution) {
         let width = displaySize.width;
         let height = displaySize.height;
 
@@ -119,7 +138,9 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.wifiicon.setPosition(this.scale.width - 25, this.scale.height - 15);
         this.taskbar.setSize(width, 30);//タスクバーのサイズ合わせ
     }
-    resizebg(width, height) {//背景リサイズ用(要らんかも)
+
+    //背景リサイズ用(要らんかも)
+    resizebg(width, height) {
         let img_width = this.background.width
         let img_height = this.background.height
 
@@ -133,10 +154,12 @@ export class Desktop extends Phaser.Scene {//ゲームマネージャー兼デ�
         this.background.setPosition(width / 2, height / 2)
         this.background.updateDisplayOrigin()
     }
-    Reportfunc(data) {//結果送信用関数
-        this.sock.send(JSON.stringify(data))
+
+    emitResult(data) {
+        this.socket.emit('message', JSON.stringify(data))
     }
-    event_handler(json) {//イベントハンドラ
+
+    eventHandler(json) {
         switch (json.type) {
             case "attack": {
                 console.log("Someone is attacking!!!")

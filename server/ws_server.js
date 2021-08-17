@@ -1,35 +1,42 @@
 'use strict';
 
-var webSocket = require('ws')   //websocket
+/*この定義方法気持ち悪い（個人的に）*/
+exports.startSocketServer = function(httpServer){
+    const io = require('socket.io')(httpServer);
 
-var wss = new webSocket.Server({ port: 8000 })  //オプションを{ server: httpServer }等にすると同じポートを共有できる。
+    /* Serverはconnectじゃなくてconnectionらしい*/
+    io.on("connection", socket => {
+        doConnect();
+    io.on("a", (message) => {
+        doMessage(message);
+    });
+    });
 
-wss.on('connection', (socket,req) => {
-    // socket["ipAddress"] = req.socket.remoteAddress.replace(/^.*:/g, '')
-    // socket["port"] = req.socket.remotePort
-    // socket["unique"] = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
-    // socket["id"] = `${socket["ipAddress"]}:${socket["port"]}:${socket["unique"]}`
-    socket["id"] = generateUuid()
-    socket.on('message', message => {
-        try {//エラーハンドリング
+
+}
+
+//TODO: 関数名変える(doはないぞー)
+function doConnect(socket){
+    //socket["id"] = generateUuid();
+    console.log("Client connect")
+}
+
+function doMessage(message){
+        console.log(message);
+        console.log('you have message');
+/*        try{
             var json = JSON.parse(message.toString());
-            if (json.task.broadcast != null) {
+            if(json.task.broadcast != null){
                 json.task.broadcast.forEach(event => {
-                    wss.clients.forEach(client => {
-                        if (socket["id"] != client["id"])//送信元以外に送信
-                            client.send(JSON.stringify(event));//テスト
+                    io.client.forEach(event => {
+                        
                     });
                 });
             }
-        } catch (e) {
-            console.log("invalid json: " + message)
-            return;
-        }
-    });
-    socket.on('close', () => {
-        console.log('good bye.');
-    });
-});
+        }catch (e) {
+            console.log('デス');
+        }*/
+}
 
 function generateUuid() {
     // https://github.com/GoogleChrome/chrome-platform-analytics/blob/master/src/internal/identifier.js
