@@ -2,40 +2,44 @@
 
 /*この定義方法気持ち悪い（個人的に）*/
 exports.startSocketServer = function(httpServer){
-    const io = require('socket.io')(httpServer);
+    const io = require('socket.io')(httpServer, {serverClient: true});
 
     /* Serverはconnectじゃなくてconnectionらしい*/
     io.on("connection", socket => {
-        doConnect();
-    io.on("a", (message) => {
-        doMessage(message);
-    });
-    });
+        console.log("socketid: "+socket.id);
+       
+        doConnect(socket);
+        console.log("GenUUID: " + socket.id);
 
-
+        socket.on("message", arg => {
+            doMessage(socket, arg);
+        });
+    });
 }
 
 //TODO: 関数名変える(doはないぞー)
-function doConnect(socket){
-    //socket["id"] = generateUuid();
+function doConnect(socket) {
     console.log("Client connect")
+
+    socket.id = generateUuid();
+    socket.emit('updateUUID', {id: socket.id});
 }
 
-function doMessage(message){
-        console.log(message);
-        console.log('you have message');
-/*        try{
+function doMessage(socket, message){
+        try{
             var json = JSON.parse(message.toString());
-            if(json.task.broadcast != null){
-                json.task.broadcast.forEach(event => {
-                    io.client.forEach(event => {
-                        
-                    });
-                });
-            }
+
+            if(json.task.broadcast == null)
+                return;
+
+            json.task.broadcast.forEach(event => {
+                socket.broadcast.emit('broadcast', JSON.stringify(event));
+            });
+
         }catch (e) {
-            console.log('デス');
-        }*/
+            console.log('invalid json: ' + message);
+            return;
+        }
 }
 
 function generateUuid() {

@@ -3,9 +3,9 @@ import { Mail } from './Mail.js';
 import { Wifi } from './Wifi.js';
 import { JobManager } from './JobManager.js';
 
-//TODO: scocket.ioのio methodに合わせる
+//TODO: ポートをhttp鯖と合わせる
 var host = window.document.location.host.replace(/:.*/, '');
-var ServerAddress = 'ws://' + host + ':8000'
+var ServerAddress = 'ws://' + host + ':8080';
 
 //ゲームマネージャー兼デスクトップ画面
 export class Desktop extends Phaser.Scene {
@@ -93,18 +93,15 @@ export class Desktop extends Phaser.Scene {
     }
 
     Connect_to_server(server) {
-
-        /**
-         * 同じホストなので引数なし
-         * 他のホストは,
-         * io('http://example.com');
-         * io(server);
-         */
-        this.socket = io();
+        this.socket = io(server);
 
         this.socket.on("connect", () => {
             console.log('Socket接続に成功しました');
-            this.socket.emit("a", "hogehogenanodesu-nipa-");
+        });
+
+        this.socket.on("updateUUID", (uuid) => {
+            this.socket.id = uuid['id'];
+            console.log('socketuuid: '+this.socket.id);
         });
 
         this.socket.on("error", (err) => {
@@ -115,12 +112,17 @@ export class Desktop extends Phaser.Scene {
             console.log(`Socketが閉じられました`);
         });
 
+        this.socket.on("broadcast", (arg)=> {
+            console.log('GET BROADCAST: '+ arg);
+        });
+
+        /*emit,sendがあれば何でも反応*/
+        // HP参照し、うつしました。
+        // TODO: 処理書きなおす
         this.socket.onAny((event, arg) => {
-            // HP参照し、うつしました。
-            // TODO: 処理書きなおす
-            console.log('got ${event}');
-            var json = JSON.parse(arg.data);
-            this.eventHandler(json);
+            console.log(`got '${event}'`);
+            //var json = JSON.parse(arg['arg']);
+            //this.eventHandler(json);
         });
 
     }
