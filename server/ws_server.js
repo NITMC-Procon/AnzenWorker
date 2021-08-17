@@ -1,35 +1,46 @@
 'use strict';
 
-var webSocket = require('ws')   //websocket
+/*この定義方法気持ち悪い（個人的に）*/
+exports.startSocketServer = function(httpServer){
+    const io = require('socket.io')(httpServer, {serverClient: true});
 
-var wss = new webSocket.Server({ port: 8000 })  //オプションを{ server: httpServer }等にすると同じポートを共有できる。
+    /* Serverはconnectじゃなくてconnectionらしい*/
+    io.on("connection", socket => {
+        console.log("socketid: "+socket.id);
+       
+        doConnect(socket);
+        console.log("GenUUID: " + socket.id);
 
-wss.on('connection', (socket,req) => {
-    // socket["ipAddress"] = req.socket.remoteAddress.replace(/^.*:/g, '')
-    // socket["port"] = req.socket.remotePort
-    // socket["unique"] = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
-    // socket["id"] = `${socket["ipAddress"]}:${socket["port"]}:${socket["unique"]}`
-    socket["id"] = generateUuid()
-    socket.on('message', message => {
-        try {//エラーハンドリング
+        socket.on("message", arg => {
+            doMessage(socket, arg);
+        });
+    });
+}
+
+//TODO: 関数名変える(doはないぞー)
+function doConnect(socket) {
+    console.log("Client connect")
+
+    socket.id = generateUuid();
+    socket.emit('updateUUID', {id: socket.id});
+}
+
+function doMessage(socket, message){
+        try{
             var json = JSON.parse(message.toString());
-            if (json.task.broadcast != null) {
-                json.task.broadcast.forEach(event => {
-                    wss.clients.forEach(client => {
-                        if (socket["id"] != client["id"])//送信元以外に送信
-                            client.send(JSON.stringify(event));//テスト
-                    });
-                });
-            }
-        } catch (e) {
-            console.log("invalid json: " + message)
+
+            if(json.task.broadcast == null)
+                return;
+
+            json.task.broadcast.forEach(event => {
+                socket.broadcast.emit('broadcast', JSON.stringify(event));
+            });
+
+        }catch (e) {
+            console.log('invalid json: ' + message);
             return;
         }
-    });
-    socket.on('close', () => {
-        console.log('good bye.');
-    });
-});
+}
 
 function generateUuid() {
     // https://github.com/GoogleChrome/chrome-platform-analytics/blob/master/src/internal/identifier.js
