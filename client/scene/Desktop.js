@@ -157,7 +157,7 @@ export class Desktop extends Phaser.Scene {
         this.background.updateDisplayOrigin()
     }
 
-    emitResult(data) {
+    EmitResult(data) {
         this.socket.emit('message', JSON.stringify(data))
     }
 
