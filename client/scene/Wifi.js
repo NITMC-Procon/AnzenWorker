@@ -121,7 +121,7 @@ export class Wifi extends Window {//wi-fiウィンドウ
                         // 接続済みであったら（５秒以内に、接続を切った場合は判定は行わない）
                         if (this.condition) {
                             //　結果を送信
-                            this.desktop.Reportfunc({
+                            this.desktop.EmitResult({
                                 type: "task",
                                 status: "success",
                                 task: {
