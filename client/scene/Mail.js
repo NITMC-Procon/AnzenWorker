@@ -53,7 +53,7 @@ Email: taro@maizuru.kosen.ac.jp`, { filename: "file.exe", func: () => { this.des
                     this.btngroup.add(txt)
                     btn.on('pointerdown', () => {
                         mail[2]["func"]()
-                        this.desktop.Reportfunc({
+                        this.desktop.EmitResult({
                             type: "task",
                             status: "failed",
                             task: {
@@ -67,7 +67,7 @@ Email: taro@maizuru.kosen.ac.jp`, { filename: "file.exe", func: () => { this.des
                 }else if(typeof this.btngroup == 'object'){
                     this.btngroup.clear(true,true)
                 }
-                this.desktop.Reportfunc({
+                this.desktop.EmitResult({
                     type: "task",
                     status: "success",
                     task: {
