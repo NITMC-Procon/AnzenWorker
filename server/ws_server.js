@@ -1,13 +1,11 @@
 'use strict';
-
+//TODO: room
 /*この定義方法気持ち悪い（個人的に）*/
 exports.startSocketServer = function(httpServer){
     const io = require('socket.io')(httpServer, {serverClient: true});
 
     /* Serverはconnectじゃなくてconnectionらしい*/
     io.on("connection", socket => {
-        console.log("socketid: "+socket.id);
-       
         doConnect(socket);
         console.log("GenUUID: " + socket.id);
 
@@ -20,7 +18,6 @@ exports.startSocketServer = function(httpServer){
 //TODO: 関数名変える(doはないぞー)
 function doConnect(socket) {
     console.log("Client connect")
-
     socket.id = generateUuid();
     socket.emit('updateUUID', {id: socket.id});
 }
@@ -35,7 +32,6 @@ function doMessage(socket, message){
             json.task.broadcast.forEach(event => {
                 socket.broadcast.emit('broadcast', JSON.stringify(event));
             });
-
         }catch (e) {
             console.log('invalid json: ' + message);
             return;
