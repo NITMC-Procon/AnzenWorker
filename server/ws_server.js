@@ -2,40 +2,59 @@
 // TODO: DB desu
 //const db = require('./db.js');
 var io;
-
 exports.startSocketServer = function(httpServer){
     io = require('socket.io')(httpServer, {serverClient: true});
+
+    io.use((socket, next) => {
+        //var id = generateUUID();
+        var id = "This-is-test-UUID-123450";
+        console.log('Generate UUID: ' + id);
+        socket.id = id;
+        next();
+    });
 
     /* Serverはconnectじゃなくてconnectionらしい*/
     io.on("connection", socket => {
         doConnect(socket);
+        console.log(socket.rooms);
+        io.to(socket.id).emit('broadcast', "HELL, This is ABC");
 
         socket.on("changeUUID", uuid => {
             changeUUID(socket, uuid);
+            console.log(socket.rooms);
+            console.log(socket.id);
+            console.log(io.sockets.adapter.rooms);
         });
 
         socket.on("createRoom", arg => {
-            socket.join("Droom");
+            socket.join("HELL");
             createRoom(socket, arg);
         });
         
         socket.on("joinRoom", arg => {
             joinRoom(socket, arg);
+            console.log(socket.rooms);
             console.log(io.sockets.adapter.rooms);
         });
-
+        
         socket.on("message", arg => {
             doMessage(socket, arg);
         });
 
     });
+
+ /*   io.of("/").adapter.on("create-room", room => {
+        console.log("Create Room: " + room);
+    });
+    io.of("/").adapter.on("join-room", room => {
+        console.log("join Room: " + room);
+    });*/
 }
 
 
 //TODO: 関数名変える(doはないぞー)
 function doConnect(socket) {
     console.log("Client connect: " + socket.id)
-  //  socket.emit('updateUUID', {id: socket.id});
 }
 
 function changeUUID(socket, uuid) {
@@ -48,7 +67,7 @@ function createRoom(socket, arg) {
     
     if(isThereRoom(name)) {
         // TODO: Upload DB? ,,
-        console.log("Create room: " + name);
+        console.log("in function:Create room: " + name);
         joinRoom(socket, name);
     }
     else {
@@ -59,7 +78,7 @@ function createRoom(socket, arg) {
 }
 
 function joinRoom(socket, arg) {
-    console.log('Join Room: ' + arg);
+    console.log('in function: Join Room: ' + arg);
     socket.join(arg);
 }
 
