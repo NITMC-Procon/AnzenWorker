@@ -98,7 +98,7 @@ export class Desktop extends Phaser.Scene {
         this.socket.on("connect", () => {
             console.log('Socket接続に成功しました');
             this.socket.emit("createRoom", "Hroom");
-            this.socket.emit("joinRoom", "cS");
+            this.socket.emit("joinRoom", "Hroom");
         });
 
         this.socket.on("updateUUID", (uuid) => {
@@ -114,6 +114,11 @@ export class Desktop extends Phaser.Scene {
             console.log(`Socketが閉じられました`);
         });
 
+        this.socket.on("room-msg", (msg) => {
+            console.log("Room msg");
+            console.log(msg);
+        });
+
         this.socket.on("broadcast", (arg)=> {
             console.log('GET BROADCAST: '+ arg);
         });
@@ -122,7 +127,8 @@ export class Desktop extends Phaser.Scene {
         // HP参照し、うつしました。
         // TODO: 処理書きなおす
         this.socket.onAny((event, arg) => {
-            console.log(`got '${event}'`);
+            console.log(`got ${event}`);
+            console.log(arg);
             //var json = JSON.parse(arg['arg']);
             //this.eventHandler(json);
         });
