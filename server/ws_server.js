@@ -1,8 +1,10 @@
 'use strict';
+// TODO: DB desu
+//const db = require('./db.js');
+var io;
 
-/*この定義方法気持ち悪い（個人的に）*/
 exports.startSocketServer = function(httpServer){
-    const io = require('socket.io')(httpServer, {serverClient: true});
+    io = require('socket.io')(httpServer, {serverClient: true});
 
     /* Serverはconnectじゃなくてconnectionらしい*/
     io.on("connection", socket => {
@@ -13,14 +15,14 @@ exports.startSocketServer = function(httpServer){
         });
 
         socket.on("createRoom", arg => {
+            socket.join("Droom");
             createRoom(socket, arg);
         });
         
         socket.on("joinRoom", arg => {
             joinRoom(socket, arg);
+            console.log(io.sockets.adapter.rooms);
         });
-
-
 
         socket.on("message", arg => {
             doMessage(socket, arg);
@@ -33,16 +35,56 @@ exports.startSocketServer = function(httpServer){
 //TODO: 関数名変える(doはないぞー)
 function doConnect(socket) {
     console.log("Client connect: " + socket.id)
- //   socket.emit('updateUUID', {id: socket.id});
+  //  socket.emit('updateUUID', {id: socket.id});
 }
 
-function changeUUID(socket, uuidd) {
+function changeUUID(socket, uuid) {
     console.log("UPDATE UUID: " + uuid);
     socket.id = uuid;
 }
 
-function createRoom(socket, arg) {}
-function joinRoom(socket, arg) {}
+function createRoom(socket, arg) {
+    var name = arg;
+    
+    if(isThereRoom(name)) {
+        // TODO: Upload DB? ,,
+        console.log("Create room: " + name);
+        joinRoom(socket, name);
+    }
+    else {
+        console.log("Room name already exists or invalid: " + name);        
+        return;
+    }
+
+}
+
+function joinRoom(socket, arg) {
+    console.log('Join Room: ' + arg);
+    socket.join(arg);
+}
+
+function leaveRoom(socket, arg) {
+    console.log('Leave Room: ' + arg);
+    // TODO: Remove room data?
+    socket.leave(arg);
+}
+
+function isThereRoom(arg) {
+    /** 
+     * io.sockets.adapter.rooms is Map object.
+     * It has room name and socket ID.
+     * TODO: Get only room name
+     */
+//    return io.sockets.adapter.rooms.has(arg);
+     getRoomName(io);
+     return true;
+}
+
+function getRoomName(io) {
+    console.log(io.sockets.adapter.rooms.keys());
+}
+
+function getUUIDs() {}
 
 function doMessage(socket, message){
     console.log("Catch message: " + message);
