@@ -2,6 +2,7 @@
 import { Mail } from './Mail.js';
 import { Wifi } from './Wifi.js';
 import { JobManager } from './JobManager.js';
+import { VirusEvent } from './VirusEvent.js';
 
 //TODO: ポートをhttp鯖と合わせる
 var host = window.document.location.host.replace(/:.*/, '');
@@ -97,8 +98,6 @@ export class Desktop extends Phaser.Scene {
 
         this.socket.on("connect", () => {
             console.log('Socket接続に成功しました');
-            this.socket.emit("createRoom", "Hroom");
-            this.socket.emit("joinRoom", "Hroom");
         });
 
         this.socket.on("updateUUID", (uuid) => {
@@ -121,6 +120,8 @@ export class Desktop extends Phaser.Scene {
 
         this.socket.on("broadcast", (arg)=> {
             console.log('GET BROADCAST: '+ arg);
+            var json = JSON.parse(arg);
+            this.eventHandler(json);
         });
 
         /*emit,sendがあれば何でも反応*/
@@ -173,7 +174,12 @@ export class Desktop extends Phaser.Scene {
         switch (json.type) {
             case "attack": {
                 console.log("Someone is attacking!!!")
-                //Call some function
+                switch (json.attack.type) {
+                    case "trojan": {
+                        this.CreateWindow(VirusEvent, 0, 0)
+                        break;
+                    }
+                }
                 break;
             }
         }
