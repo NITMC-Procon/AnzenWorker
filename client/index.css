@@ -133,3 +133,7 @@ p.login-window-title-text{
   position: absolute;
   margin: 10px;
 }
+
+.message{
+  height: 1em;
+}
