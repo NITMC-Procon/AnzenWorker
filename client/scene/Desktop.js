@@ -98,8 +98,6 @@ export class Desktop extends Phaser.Scene {
 
         this.socket.on("connect", () => {
             console.log('Socket接続に成功しました');
-            this.socket.emit("createRoom", "Hroom");
-            this.socket.emit("joinRoom", "Hroom");
         });
 
         this.socket.on("updateUUID", (uuid) => {
