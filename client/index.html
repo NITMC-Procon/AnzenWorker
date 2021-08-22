@@ -17,17 +17,34 @@
     <div id="game"></div>
     <div class="overlay">
         <div class="login">
-            <div class="login-icon">
-                <img class="login-icon" src="/images/logo.svg">
+            <div class="login-window-title">
+                <div class="login-window-corner" style="left: 0px;">
+                    <img src="./images/login/left.svg" width="35px" height="35px">
+                </div>
+                <div class="login-window-bar"></div>
+                <div class="login-window-corner" style="right: 0px;">
+                    <img src="./images/login/right.svg" width="35px" height="35px">
+                </div>
+                <p class="login-window-title-text">AnzenWorkerにログオン</p>
             </div>
-            <div class="container">
-                <p id="desc">Loading...</p>
-                <p style="display: inline;">🔒</p>
-                <input class="roomid" type="text" id="room_id" placeholder="パスワード">
-                <p id="room_message" class="separate" style="color: red;"></p>
-                <button class="push" id="join_room">Join Room</button>
-                <button class="push" id="create_room">Create Room</button>
-                <div class="separate"></div>
+            <div class="login-window-frame">
+                <div class="container-logo">
+                    <img class="login-icon" src="./images/login/logo.svg">
+                </div>
+                <div class="container-login">
+                    <div class="login-inputs">
+                        <p class="login-text">ユーザー名:</p>
+                        <input class="login-input" type="text">
+                        <div style="height: 2rem"></div>
+                        <p class="login-text">ルームID:</p>
+                        <input class="login-input" type="text" id="room_id">
+                    </div>
+                    <br><br>
+                    <div class="login-buttons">
+                        <button class="push">ルームに参加</button>
+                        <button class="push">ルームを作成</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
