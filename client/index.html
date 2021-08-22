@@ -52,38 +52,13 @@
                 <p id="desc">Loading...</p>
                 <p style="display: inline;">🔒</p>
                 <input class="roomid" type="text" id="room_id" placeholder="パスワード">
-                <div class="separate"></div>
-                <button class="push" id="join_room" onclick='room_button("join")'>Join Room</button>
-                <button class="push" id="create_room" onclick='room_button("create")'>Create Room</button>
+                <p id="room_message" class="separate" style="color: red;"></p>
+                <button class="push" id="join_room">Join Room</button>
+                <button class="push" id="create_room">Create Room</button>
                 <div class="separate"></div>
             </div>
         </div>
     </div>
-    <script>
-        function room_button(str) {
-            let success_flag = false
-            let roomid = document.getElementById("room_id").value
-            if(str == "join"){
-                //join process
-            }else if(str == "create"){
-                //create process
-            }
-            /*ログイン先が未完成のため一時的に全てtrueとする*/
-            success_flag = true
-            if(success_flag == true){//ログイン成功時
-                let overlays = Array.from( document.getElementsByClassName('overlay') ) ;
-                overlays.forEach(e =>{
-                    e.classList.add('disabled')
-                })
-            }
-        }
-        let overlays = Array.from( document.getElementsByClassName('overlay') ) ;
-        overlays.forEach(element => {
-            for (const eventName of ['mouseup','mousedown', 'touchstart', 'touchmove', 'touchend', 'touchcancel']){
-                element.addEventListener(eventName, e => e.stopPropagation(),{passive: true});
-            }
-        });
-    </script>
 </body>
 
 </html>

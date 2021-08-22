@@ -25,18 +25,20 @@ exports.startSocketServer = function(httpServer){
             console.log(socket.id);
         });*/
 
-        socket.on("createRoom", arg => {
+        socket.on("createRoom", (arg, ack) => {
             var res = createRoom(socket, arg);
-            socket.emit("room-msg", {createRoom: res});
+            socket.emit("room-msg", {roomres: res});
 
             console.log(io.sockets.adapter.rooms);
+            ack({roomres: res})
         });
         
-        socket.on("joinRoom", arg => {
+        socket.on("joinRoom", (arg, ack) => {
             var res = joinRoom(socket, arg);
-            socket.emit("room-msg", {joinRoom: res});
+            socket.emit("room-msg", {roomres: res});
             
             console.log(io.sockets.adapter.rooms);
+            ack({roomres: res})
         });
         
         socket.on("message", arg => {
@@ -97,7 +99,7 @@ function joinRoom(socket, arg) {
     }
     else {
         console.log("Room name not exists or invalid: " + name);
-        return -1;
+        return -2;
     }
 }
 

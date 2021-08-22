@@ -132,7 +132,7 @@ export class Desktop extends Phaser.Scene {
             //var json = JSON.parse(arg['arg']);
             //this.eventHandler(json);
         });
-
+        window["socket"] = this.socket//グローバル化
     }
 
     //画面リサイズ時
