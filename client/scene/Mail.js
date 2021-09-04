@@ -64,8 +64,8 @@ Email: taro@maizuru.kosen.ac.jp`, { filename: "file.exe", func: () => { this.des
                         })
                     }, this);
                     this.btngroup.setXY(this.width * 0.9, this.height * 0.9).setOrigin(0.5)
-                }else if(typeof this.btngroup == 'object'){
-                    this.btngroup.clear(true,true)
+                } else if (typeof this.btngroup == 'object') {
+                    this.btngroup.clear(true, true)
                 }
                 this.desktop.EmitResult({
                     type: "task",
