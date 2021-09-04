@@ -3,6 +3,7 @@ import { Mail } from './Mail.js';
 import { Wifi } from './Wifi.js';
 import { JobManager } from './JobManager.js';
 import { VirusEvent } from './VirusEvent.js';
+import { Store } from './Store.js';
 
 //TODO: ポートをhttp鯖と合わせる
 var host = window.document.location.host.replace(/:.*/, '');
@@ -45,6 +46,10 @@ export class Desktop extends Phaser.Scene {
         let jobManagericon = this.add.sprite(80, 200, 'jobManagericon').setScale(0.2).setTint(0x00ffff).setInteractive();
         this.add.text(80, 270, "ジョブ管理").setOrigin(0.5);//OriginのX座標を中心にしてテキストを中央合わせ
 
+        //ストア用アイコン登録
+        let storeicon = this.add.sprite(80, 340, 'mailicon').setScale(0.5).setTint(0x00ffff).setInteractive();//setInteractiveしないとクリックできない!
+        this.add.text(80, 420, "ストア").setOrigin(0.5);//OriginのX座標を中心にしてテキストを中央合わせ
+
         mailicon.on('pointerdown', () => {//メールアイコンをクリックで
             this.CreateWindow(Mail);//mailクラスのウィンドウを作成
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
@@ -56,6 +61,11 @@ export class Desktop extends Phaser.Scene {
         jobManagericon.on('pointerdown', () => {//スタートアイコンをクリックで
             this.CreateWindow(JobManager);//JobManagerクラスのウィンドウを作成
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
+
+        storeicon.on('pointerdown', () => {//スタートアイコンをクリックで
+            this.CreateWindow(Store);//JobManagerクラスのウィンドウを作成
+        }, this);//最後にthis入れないとthisの参照先が変わってしまう
+
 
         this.scale.on('resize', this.resize, this);//画面リサイズ時にresize関数を呼ぶ
         this.Connect_to_server(ServerAddress)//サーバーに接続
@@ -102,11 +112,11 @@ export class Desktop extends Phaser.Scene {
 
         this.socket.on("updateUUID", (uuid) => {
             this.socket.id = uuid['id'];
-            console.log('socketuuid: '+this.socket.id);
+            console.log('socketuuid: ' + this.socket.id);
         });
 
         this.socket.on("error", (err) => {
-            console.log(`Socketエラーが発生しました：${err}`)  ;
+            console.log(`Socketエラーが発生しました：${err}`);
         });
 
         this.socket.on("disconnect", () => {
@@ -118,8 +128,8 @@ export class Desktop extends Phaser.Scene {
             console.log(msg);
         });
 
-        this.socket.on("broadcast", (arg)=> {
-            console.log('GET BROADCAST: '+ arg);
+        this.socket.on("broadcast", (arg) => {
+            console.log('GET BROADCAST: ' + arg);
             var json = JSON.parse(arg);
             this.eventHandler(json);
         });
@@ -136,7 +146,7 @@ export class Desktop extends Phaser.Scene {
         window["socket"] = this.socket//グローバル化
 
         let uuid = getuuid()
-        this.socket.emit('regist-uuid', {uuid: uuid})
+        this.socket.emit('regist-uuid', { uuid: uuid })
     }
 
     //画面リサイズ時
@@ -209,19 +219,19 @@ function generateUuid() {
 function getuuid() {
     let cookie = getCookieArray()
     let uuid = typeof cookie["uuid"] == 'string' ? cookie["uuid"] : generateUuid();
-    if(typeof cookie["uuid"] == 'string'){
+    if (typeof cookie["uuid"] == 'string') {
         console.log("cookie uuid found!")
-    }else{
+    } else {
         console.log("generated new uuid!")
     }
-    document.cookie = "uuid="+uuid
+    document.cookie = "uuid=" + uuid
 }
 
-function getCookieArray(){
+function getCookieArray() {
     var arr = new Array();
-    if(document.cookie != ''){
+    if (document.cookie != '') {
         var tmp = document.cookie.split('; ');
-        for(var i=0;i<tmp.length;i++){
+        for (var i = 0; i < tmp.length; i++) {
             var data = tmp[i].split('=');
             arr[data[0]] = decodeURIComponent(data[1]);
         }
