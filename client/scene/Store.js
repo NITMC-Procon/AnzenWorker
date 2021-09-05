@@ -47,7 +47,6 @@ export class Store extends Window {//ストアウィンドウ
         // ＜アプリ一覧＞
         this.top_text = this.add.text(50, this.menu_height + 15, "おすすめアプリ", { color: "#000", font: "30px Yu Gothic" }).setOrigin(0)
         list.add(this.top_text);
-
         this.apps.forEach((app, i) => {
             var n = i
             var dist = 0

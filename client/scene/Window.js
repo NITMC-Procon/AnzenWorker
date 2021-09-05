@@ -28,7 +28,7 @@ export class Window extends Phaser.Scene {//Phaser.Sceneを継承してウィン
         this.menubar = this.add.rectangle(0, 0, this.width, this.menu_height, 0x0101ff).setOrigin(0)//メニューバー、上20
         this.Xbutton = this.add.rectangle(this.width - 30, 0, 30, this.menu_height, 0xff0000).setOrigin(0)//Xボタン
 
-        this.title = this.add.text(3, 30 / 2, this.title_text).setOrigin(0, 0.5)//タイトル文
+        this.title = this.add.text(3, 30 / 2, this.title_text,{fontFamily: "Arial"}).setOrigin(0, 0.5)//タイトル文
 
         this.parent.on('drag', (pointer, dragX, dragY) => {
             if (pointer.y - dragY < this.menu_height) {//バーをドラッグで移動
