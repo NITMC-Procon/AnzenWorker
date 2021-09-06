@@ -14,7 +14,6 @@ export class Desktop extends Phaser.Scene {
     constructor() {
         super({ key: 'Desktop' });
         this.count = 0;
-        this.jobnum = -1;//ジョブ管理から起動するウィンドウの番号
         this.windows = {}//ここに{mail: ~,~}みたいな感じでウィンドウのリストが入る
         this.Configs = {}//ここに接続先Wi-Fiとか侵入したウイルスとかの情報を入れていく予定
     }
@@ -27,6 +26,7 @@ export class Desktop extends Phaser.Scene {
         this.load.image("padlock", "images/padlock.png")//南京錠ロックロゴ
         this.load.image("padunlock", "images/padunlock.png")//南京錠アンロックロゴ
         this.load.image("jobManagericon", "images/jobManagericon.png")//ジョブ管理ロゴ
+        this.load.image("storeicon", "images/storeicon.png")//ストアロゴ
     }
 
     create() {
@@ -47,8 +47,8 @@ export class Desktop extends Phaser.Scene {
         this.add.text(80, 270, "ジョブ管理").setOrigin(0.5);//OriginのX座標を中心にしてテキストを中央合わせ
 
         //ストア用アイコン登録
-        let storeicon = this.add.sprite(80, 340, 'mailicon').setScale(0.5).setTint(0x00ffff).setInteractive();//setInteractiveしないとクリックできない!
-        this.add.text(80, 420, "ストア").setOrigin(0.5);//OriginのX座標を中心にしてテキストを中央合わせ
+        let storeicon = this.add.sprite(80, 360, 'storeicon').setScale(1.25).setTint(0x00ffff).setInteractive();//setInteractiveしないとクリックできない!
+        this.add.text(80, 440, "ストア").setOrigin(0.5);//OriginのX座標を中心にしてテキストを中央合わせ
 
         mailicon.on('pointerdown', () => {//メールアイコンをクリックで
             this.CreateWindow(Mail);//mailクラスのウィンドウを作成
