@@ -180,29 +180,31 @@ function getGameInfo(socket){
 //ゲームの情報をセットする(GameStart,GameEnd,...etc)
 function setGameInfo(socket,arg){
     let roomid = getRoomidFromSocket(socket)
+    let res = {}
     /*  arg
     {
         "StartGame":true,
-        "FinishGame":true,
+        "StopGame":true,
     }
     */
     if(arg.StartGame){
         if(!games[roomid]){
             //{}にゲーム情報ぶち込む
             games[roomid] = {}
-            return {"status":"success","message":"game started"}
+            res = {"status":"start","message":"game started"}
         }else{
-            return {"status":"failue","message":"game already started"}
+            res = {"status":"start","message":"game already started"}
         }
-    } else if(arg.FinishGame){        
+    } else if(arg.StopGame){        
         if(games[roomid]){
             delete games[roomid]
-            return {"status":"success","message":"game finished"}
+            res = {"status":"stop","message":"game finished"}
         }else{
-            return {"status":"success","message":"game already finished"}
+            res = {"status":"stop","message":"game already finished"}
         }
     }
-    return {}
+    socket.broadcast.to(roomid).emit("gameInfo", res);
+    return res
 }
 
 function getRoomidFromSocket(socket){

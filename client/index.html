@@ -15,7 +15,7 @@
 
 <body>
     <div id="game"></div>
-    <div class="overlay">
+    <div class="overlay" id="login-window">
         <div class="login">
             <div class="login-window-title">
                 <div class="login-window-corner" style="left: 0px;">
@@ -46,6 +46,19 @@
                         <button class="push" id="create_room">ルームを作成</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="overlay disabled" id="manage-window">
+        <div class="window" style="height:4em;width:20em" draggable="true" dropzone="move">
+            <div class="window-titlebar">
+                <span>Manager</span>
+                <span class="Xbutton"></span>
+            </div>
+            <br>
+            <div style="display: flex;align-items: center;justify-content: space-evenly;">
+                <input value="ゲーム開始" type="button" id="gamestart_button"></input>
+                <input value="ゲーム終了" type="button" id="gamestop_button"></input>
             </div>
         </div>
     </div>

@@ -49,6 +49,9 @@ export class Desktop extends Phaser.Scene {
         //ストア用アイコン登録
         let storeicon = this.add.sprite(80, 340, 'mailicon').setScale(0.5).setTint(0x00ffff).setInteractive();//setInteractiveしないとクリックできない!
         this.add.text(80, 420, "ストア").setOrigin(0.5);//OriginのX座標を中心にしてテキストを中央合わせ
+        
+        //マネージャーアイコン登録
+        let managericon = this.add.sprite(80, 500, 'mailicon').setScale(0.5).setTint(0x00ffff).setInteractive();//setInteractiveしないとクリックできない!
 
         mailicon.on('pointerdown', () => {//メールアイコンをクリックで
             this.CreateWindow(Mail);//mailクラスのウィンドウを作成
@@ -64,6 +67,10 @@ export class Desktop extends Phaser.Scene {
 
         storeicon.on('pointerdown', () => {//スタートアイコンをクリックで
             this.CreateWindow(Store);//JobManagerクラスのウィンドウを作成
+        }, this);//最後にthis入れないとthisの参照先が変わってしまう
+
+        managericon.on('pointerdown', () => {//スタートアイコンをクリックで
+            document.getElementById("manage-window").classList.remove('disabled')
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
 
 

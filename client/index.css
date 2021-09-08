@@ -9,13 +9,14 @@ body {
   top:0;left:0;
   z-index: 10;
   background-color: #0000007F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .login{
   border-radius: 15px;
   position: fixed;
-  left: 50%; top: 50%;
-  transform: translate(-50%,-50%);
   width: 40%;
   min-width: 500px;
   text-align: center;
@@ -136,4 +137,70 @@ p.login-window-title-text{
 
 .message{
   height: 1em;
+}
+
+.window {
+  position:relative;
+  border-color: rgb(0, 62, 196) ;
+  border-style: solid;
+  border-radius: 8px;
+  border-width: 2px;
+  background-color: white;
+  border-top-width: 2em;
+  box-sizing:content-box;
+}
+.window::before{
+  content: ' ';
+  position:absolute;
+  top: -2em;
+  height:2em;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  background-image: linear-gradient(to bottom,rgb(35, 147, 251),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(0,110, 249));
+}
+.window>.window-titlebar{
+  position:absolute;
+  top: -2em;
+  width: 100%;
+  height:2em;
+  line-height: 2em;
+  padding-left: 0.5em;
+  padding-right: 0.2em;
+  vertical-align: middle;
+  
+  color:white;
+  box-sizing: border-box;
+  display:flex;
+  align-items: center;
+  align-content: stretch;
+  justify-content: space-between;
+}
+.window-titlebar>.Xbutton{
+  background-color: red;
+  border: white 1px solid;
+  border-radius: 4px;
+  width: 1.4em;
+  height: 1.4em;
+  color: white;
+  vertical-align: middle;
+  position: relative;
+  display: inline-block;
+}
+.Xbutton::before, .Xbutton::after { /* 共通設定 */
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20%; /* 棒の幅（太さ） */
+  height: 100%; /* 棒の高さ */
+  background: #fff;
+  border-radius: 2.5px; /* 棒の四隅の丸み*/
+}
+.Xbutton::before {
+  transform: translate(-50%,-50%) rotate(45deg);
+}
+.Xbutton::after {
+  transform: translate(-50%,-50%) rotate(-45deg);
 }
