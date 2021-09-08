@@ -15,7 +15,11 @@ export class Desktop extends Phaser.Scene {
         super({ key: 'Desktop' });
         this.count = 0;
         this.windows = {}//ここに{mail: ~,~}みたいな感じでウィンドウのリストが入る
-        this.Configs = {}//ここに接続先Wi-Fiとか侵入したウイルスとかの情報を入れていく予定
+        //ここに接続先Wi-Fiとか侵入したウイルスとかの情報を入れていく予定
+        this.Configs =
+        {
+            "installed_software": [],      // アプリストアから入れたソフト
+        }
     }
 
     preload() {//preloadに画像とか読み込ませる create()よりも優先して実行される
