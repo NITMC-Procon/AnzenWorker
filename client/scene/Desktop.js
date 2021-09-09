@@ -18,6 +18,7 @@ export class Desktop extends Phaser.Scene {
         //ここに接続先Wi-Fiとか侵入したウイルスとかの情報を入れていく予定
         this.Configs =
         {
+            connected_wifi:[],
             "installed_software": [],      // アプリストアから入れたソフト
         }
     }
