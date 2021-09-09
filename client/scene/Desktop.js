@@ -148,8 +148,8 @@ export class Desktop extends Phaser.Scene {
             }
         });
 
-        this.socket.on("broadcast", (arg) => {
-            console.log('GET BROADCAST: ' + arg);
+        this.socket.on("event", (arg) => {
+            console.log('GET event: ' + arg);
             var json = JSON.parse(arg);
             this.eventHandler(json);
         });

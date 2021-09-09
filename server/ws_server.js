@@ -152,13 +152,13 @@ function handleResultMessage(socket, message){
         var json = JSON.parse(message.toString());
         console.log(json);
 
-        if(json.task.broadcast == null)
-            return;
-
-        json.task.broadcast.forEach(event => {
-            socket.broadcast.emit('broadcast', JSON.stringify(event));
-        });
-
+        if(json.task.broadcast == null){
+            return
+        } else {
+            json.task.broadcast.forEach(event => {
+                socket.to(getRoomidFromSocket(socket)).emit('event', JSON.stringify(event));
+            });
+        }
     }catch (e) {
         console.log('invalid json: ' + message);
         return;
