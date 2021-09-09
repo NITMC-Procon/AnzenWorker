@@ -143,7 +143,8 @@ p.login-window-title-text{
   position:relative;
   border-color: rgb(0, 62, 196) ;
   border-style: solid;
-  border-radius: 8px;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
   border-width: 2px;
   background-color: white;
   border-top-width: 2em;
@@ -154,11 +155,11 @@ p.login-window-title-text{
   position:absolute;
   top: -2em;
   height:2em;
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
   width: 100%;
   box-sizing: border-box;
-  background-image: linear-gradient(to bottom,rgb(35, 147, 251),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(0,110, 249));
+  background-image: linear-gradient(to bottom,rgb(35, 147, 251),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(0,110, 249),rgb(0, 62, 196));
 }
 .window>.window-titlebar{
   position:absolute;
