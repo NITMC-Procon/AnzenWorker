@@ -14,76 +14,12 @@ body {
   justify-content: center;
 }
 
-.login{
-  border-radius: 15px;
-  position: fixed;
-  width: 40%;
-  min-width: 500px;
-  text-align: center;
-  background-color: whitesmoke;
-}
-
-
 div.newgame{
   max-width: 600px;
 }
 
 .disabled{
   display: none;
-}
-
-div.container-logo{
-  width: 50%;
-  max-width: 300px;
-  display: inline-block;
-
-}
-
-div.container-login{
-  /* width: 50%; */
-  display: block;
-  /* text-align: center; */
-  /* margin: 0 auto; */
-}
-
-img.login-icon{
-  object-fit: cover;
-  width:100%;
-  height:100%;
-}
-
-div.login-window-title{
-  color: white;
-  background-color: blue;
-  height: 35px;
-  width: 100%;
-  display: block;
-  margin-left: 0px;
-  position: absolute;
-  text-align:left;
-}
-
-div.login-window-frame{
-  border: solid 2px blue;
-  margin-top: 35px;
-}
-
-div.login-window-corner{
-  width: 35px;
-  height: 35px;
-  display: inline-block;
-  margin: 0px;
-  position: absolute;
-}
-
-div.login-window-bar{
-  height: 35px;
-  width: 100%;
-  margin-left: 35px;
-  width: calc(100% - 70px);
-  background-image: url("./images/login/bar.svg");
-  display: inline-block;
-  position: absolute;
 }
 
 button.push{
@@ -106,37 +42,11 @@ div.login-buttons{
   margin: 10px;
 }
 
-div.login-inputs{
-  display: block;
-}
-
-input.login-input{
-  margin-left: 5px;
-  position: absolute;
-  left: 50%;
-  width: 10rem;
-  display: inline;
-  margin: 0.5rem;
-}
-
-p.login-text{
-  display: inline;
-  left: 0px;
-  margin: 0.5rem;
-  text-align: center;
-  position: absolute;
-  width: 40%;
-}
-
-p.login-window-title-text{
-  text-align: left;
-  color: white;
-  position: absolute;
-  margin: 10px;
-}
-
-.message{
-  height: 1em;
+#login-window .input-area{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 0.5em;
 }
 
 .window {
@@ -146,7 +56,7 @@ p.login-window-title-text{
   border-top-right-radius: 6px;
   border-top-left-radius: 6px;
   border-width: 2px;
-  background-color: white;
+  background-color: whitesmoke;
   border-top-width: 2em;
   box-sizing:content-box;
 }
