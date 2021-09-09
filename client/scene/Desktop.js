@@ -128,10 +128,11 @@ export class Desktop extends Phaser.Scene {
 
         this.socket.on("disconnect", () => {
             console.log(`Socketが閉じられました`);
-            let overlays = Array.from( document.getElementsByClassName('overlay') ) ;
-            overlays.forEach(e =>{
-                e.classList.remove('disabled')
-            })
+            // let overlays = Array.from( document.getElementsByClassName('overlay') ) ;
+            // overlays.forEach(e =>{
+            //     e.classList.remove('disabled')
+            // })
+            document.getElementById("login-window").classList.remove("disabled")
         });
 
         this.socket.on("room-msg", (msg) => {
