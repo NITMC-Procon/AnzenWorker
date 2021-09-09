@@ -35,6 +35,7 @@ window.addEventListener("load", () => {
             elem.parentElement.parentElement.parentElement.classList.add("disabled")
         })
     })
+    window["notify"] = notify
 });
 
 
@@ -79,4 +80,39 @@ function game_button(stat){
     }else if (stat=="stop"){
         window["socket"].emit("setGameInfo",{"StopGame":true},callbackfunc)
     }
+}
+
+// 構文
+// notify([text message],[callback func()],[callback func args])
+// 例
+// window["notify"]("message",(mes)=>{alert(mes)},"alert message")
+function notify(text,callback,...args){
+    const notifyarea = document.getElementById("notification_area")
+    let notifytext = createElementFromHTML(`<div class="notification"><p>${text}</p></div>`)
+    let notify = notifyarea.insertAdjacentElement('afterbegin',notifytext)
+    const clickfunc = () =>{
+        notify.classList.remove("show")
+        setTimeout(()=>{
+            notify.remove()
+        },600)
+        typeof callback == 'function' ? callback(...args):null;
+    }
+    setTimeout(()=>{
+        notify.classList.add("show")
+    },100)
+    setTimeout(clickfunc,8000)
+
+    notify.addEventListener('click',clickfunc)
+    
+    //クリック透過無効化
+    for (const eventName of ['mouseup','mousedown', 'touchstart', 'touchmove', 'touchend', 'touchcancel']){
+        notify.addEventListener(eventName, e => e.stopPropagation(),{passive: true});
+    }
+}
+
+function createElementFromHTML(html){
+    let template = document.createElement('template');
+    html = html.trim(); // Never return a text node of whitespace as the result
+    template.innerHTML = html;
+    return template.content.firstElementChild;
 }
