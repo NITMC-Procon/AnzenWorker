@@ -55,20 +55,21 @@ exports.startSocketServer = function(httpServer){
         });
         
         socket.on("getGameInfo", (ack) => {//ack:コールバック関数
-            var res = getGameInfo(socket)
+            let roomid=getRoomidFromSocket(socket)
+            var res = getGameInfo(roomid)
             if(typeof ack == 'function'){
                 ack(res)
-            }else{
-                socket.emit("gameInfo",res)
             }
+            socket.broadcast.to(roomid).emit("gameInfo",res)
         });
         
         socket.on("setGameInfo", (arg,ack) => {
-            var res = setGameInfo(socket,arg)
+            let roomid=getRoomidFromSocket(socket)
+            var res = setGameInfo(roomid,arg)
             if(typeof ack == 'function'){
                 ack(res)
             }
-            socket.broadcast.emit("gameInfo",res)
+            socket.broadcast.to(roomid).emit("gameInfo",res)
         });
     });
 }
@@ -166,8 +167,7 @@ function broadcastMessage(socket, message) {
 }
 
 //ゲームの情報を返す
-function getGameInfo(socket){
-    let roomid = getRoomidFromSocket(socket)
+function getGameInfo(roomid){
     /*
     ゲーム情報:
         roomid
@@ -185,8 +185,7 @@ function getGameInfo(socket){
 }
 
 //ゲームの情報をセットする(GameStart,GameEnd,...etc)
-function setGameInfo(socket,arg){
-    let roomid = getRoomidFromSocket(socket)
+function setGameInfo(roomid,arg){
     let res = {}
     /*  arg
     {
@@ -210,7 +209,6 @@ function setGameInfo(socket,arg){
             res = {"status":"stop","message":"game already finished"}
         }
     }
-    socket.broadcast.to(roomid).emit("gameInfo", res);
     return res
 }
 
