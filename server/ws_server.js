@@ -33,6 +33,7 @@ exports.startSocketServer = function(httpServer){
         socket.on("createRoom", (arg, ack) => {
             var res = createRoom(socket, arg);
             socket.emit("room-msg", {roomres: res});
+            if(res == 0) games[arg] = {started:false};
 
             console.log(io.sockets.adapter.rooms);
             ack({roomres: res})
@@ -192,17 +193,20 @@ function setGameInfo(roomid,arg){
         "StopGame":true,
     }
     */
+    if(!(roomid in games)){
+        return {"status":"fail","message":"no such game"}
+    }
     if(arg.StartGame){
-        if(!(roomid in games)){
+        if(!games[roomid].started){
             //{}にゲーム情報ぶち込む
-            games[roomid] = {}
+            games[roomid].started=true
             res = {"status":"start","message":"game started"}
         }else{
             res = {"status":"started","message":"game already started"}
         }
     } else if(arg.StopGame){        
-        if(roomid in games){
-            delete games[roomid]
+        if(games[roomid].started){
+            games[roomid].started=false
             res = {"status":"stop","message":"game finished"}
         }else{
             res = {"status":"stopped","message":"game already finished"}
