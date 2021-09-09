@@ -11,7 +11,7 @@ export class Wifi extends Window {//wi-fiウィンドウ
         this.wifis = this.get_wifis()
         this.wifi_width = 150
         this.wifi_block = {}
-        this.keep = ""        // 最後に押されたWifiのSSIDを記憶
+        this.keep = {}        // 最後に押されたWifiを記憶
     }
     get_wifis() {//Wi-Fi一覧取得(実際はネットから持ってくるか、自動生成でそれっぽいの用意する)
         // 接続先, 暗号化, 保護されているか(0:保護なし/1:保護あり), WiFiの強さ（0~3）
@@ -43,6 +43,7 @@ export class Wifi extends Window {//wi-fiウィンドウ
         // もしすでにつながってたら
         if(this.desktop.Configs.connected_wifi != {}){
             this.connect_text.setText("切断")
+            this.keep = this.desktop.Configs.connected_wifi
             this.show_wifi(this.desktop.Configs.connected_wifi)
         }
         this.wifis.forEach((wifi, i) => {
@@ -97,7 +98,7 @@ export class Wifi extends Window {//wi-fiウィンドウ
         //接続ボタンが押された時
         this.connect.on('pointerdown', () => {
             // WiFiに接続されている時（「切断」を押したとき）
-            if (this.desktop.Configs.connected_wifi ==this.keep) {
+            if (this.desktop.Configs.connected_wifi == this.keep) {
                 // ボタンの文字を「接続」にする
                 this.connect_text.setText("接続")
                 // 接続先をリセット
@@ -108,20 +109,34 @@ export class Wifi extends Window {//wi-fiウィンドウ
                 // 接続先のWifiを記憶する
                 this.desktop.Configs.connected_wifi = this.keep
 
-                let current_wifi = this.keep
-                this.time.delayedCall(5000, () => {
-                    if (this.desktop.Configs.connected_wifi == current_wifi) {
-                        //　結果を送信
-                        this.desktop.EmitResult({
-                            type: "task",
-                            status: "success",
-                            task: {
-                                id: 2,
-                                "point": 150
+                // まだクリアしてなかったら
+                if(!this.desktop.Task_IsCompleted("Wi-Fi")){
+                    let current_wifi = this.keep
+
+                    // this.time.delayedCallだとウィンドウ閉じたら消える
+                    setTimeout((self) => {
+                        // 5秒後に繋がりっぱなしだったら
+                        if (self.desktop.Configs.connected_wifi == current_wifi) {
+                            // 接続先の暗号強度によってスコアを変える
+                            let score=50
+                            switch(current_wifi[1]){
+                                case "802.1x":score=150;break;
+                                case "open":score=50;break;
+                                case "WPA2-PSK":score=100;break;
                             }
-                        })//結果送信テスト
-                    }
-                }, null, this);
+                            //　結果を送信
+                            self.desktop.EmitResult({
+                                type: "task",
+                                status: "success",
+                                task: {
+                                    id: 2,
+                                    "point": score
+                                }
+                            })
+                            self.desktop.Task_Complete("Wi-Fi")
+                        }
+                    }, 5000, this);
+                }
             }
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
     }
