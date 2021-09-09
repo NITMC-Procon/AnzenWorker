@@ -18,6 +18,8 @@ export class Desktop extends Phaser.Scene {
         //ここに接続先Wi-Fiとか侵入したウイルスとかの情報を入れていく予定
         this.Configs =
         {
+            connected_wifi:[],
+            completed_task:[],
             "installed_software": [],      // アプリストアから入れたソフト
         }
     }
@@ -220,6 +222,13 @@ export class Desktop extends Phaser.Scene {
                 break;
             }
         }
+    }
+    Task_Complete(task){
+        this.Configs.completed_task.push(task)
+    }
+    Task_IsCompleted(task){
+        let res = this.Configs.completed_task.findIndex(t => t === task)
+        return (res === -1)?false:true
     }
 }
 
