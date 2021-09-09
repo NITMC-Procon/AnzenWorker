@@ -69,7 +69,10 @@ exports.startSocketServer = function(httpServer){
             if(typeof ack == 'function'){
                 ack(res)
             }
-            socket.broadcast.to(roomid).emit("gameInfo",res)
+            if(res.status == "start" || res.status == "stop") {
+                socket.broadcast.to(roomid).emit("gameInfo",res)
+            }
+            console.log(res)
         });
     });
 }
@@ -176,9 +179,9 @@ function getGameInfo(roomid){
     */
     let stat
     if(roomid in games){
-        stat = "start"
+        stat = "started"
     }else{
-        stat = "stop"
+        stat = "stopped"
     }
     let res = {"status":stat,"roomid":roomid}
     return res
@@ -194,19 +197,19 @@ function setGameInfo(roomid,arg){
     }
     */
     if(arg.StartGame){
-        if(roomid in games){
+        if(!(roomid in games)){
             //{}にゲーム情報ぶち込む
             games[roomid] = {}
             res = {"status":"start","message":"game started"}
         }else{
-            res = {"status":"start","message":"game already started"}
+            res = {"status":"started","message":"game already started"}
         }
     } else if(arg.StopGame){        
-        if(!(roomid in games)){
+        if(roomid in games){
             delete games[roomid]
             res = {"status":"stop","message":"game finished"}
         }else{
-            res = {"status":"stop","message":"game already finished"}
+            res = {"status":"stopped","message":"game already finished"}
         }
     }
     return res

@@ -139,6 +139,14 @@ export class Desktop extends Phaser.Scene {
             console.log(msg);
         });
 
+        this.socket.on("gameInfo", (msg) => {
+            console.log("status changed: "+ JSON.stringify(msg));
+            switch(msg.status){
+                case "start":window["notify"]("ゲームが開始されました");break;
+                case "stop":window["notify"]("ゲームが終了しました");break;
+            }
+        });
+
         this.socket.on("broadcast", (arg) => {
             console.log('GET BROADCAST: ' + arg);
             var json = JSON.parse(arg);
