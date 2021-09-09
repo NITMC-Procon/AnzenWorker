@@ -200,7 +200,7 @@ export class Desktop extends Phaser.Scene {
     }
 
     EmitResult(data) {
-        this.socket.emit('message', JSON.stringify(data))
+        this.socket.emit("taskresult", JSON.stringify(data))
     }
 
     eventHandler(json) {

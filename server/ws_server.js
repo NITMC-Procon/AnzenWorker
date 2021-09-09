@@ -46,8 +46,8 @@ exports.startSocketServer = function(httpServer){
             ack({roomres: res})
         });
         
-        socket.on("message", arg => {
-            doMessage(socket, arg);
+        socket.on("taskresult", arg => {
+            handleResultMessage(socket, arg);
         });
         
         socket.on("regist-uuid", arg => {//socketにuuidを紐付け
@@ -146,12 +146,8 @@ function leaveRoom(socket, arg) {
     socket.leave(arg);
 }
 
-function doMessage(socket, message){
+function handleResultMessage(socket, message){
     console.log("Catch message: " + message);
-    broadcastMessage(socket, message);   
-}
-
-function broadcastMessage(socket, message) {
     try{
         var json = JSON.parse(message.toString());
         console.log(json);
