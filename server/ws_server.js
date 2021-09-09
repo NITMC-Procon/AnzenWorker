@@ -1,7 +1,12 @@
 'use strict';
+
+const e = require('cors');
+
 // TODO: DB desu
 //const db = require('./db.js');
-var io;
+var io = require('socket.io')(null, {serverClient: true});;
+
+var games = [];
 
 exports.startSocketServer = function(httpServer){
     io = require('socket.io')(httpServer, {serverClient: true});
@@ -28,6 +33,7 @@ exports.startSocketServer = function(httpServer){
         socket.on("createRoom", (arg, ack) => {
             var res = createRoom(socket, arg);
             socket.emit("room-msg", {roomres: res});
+            if(res == 0) games[arg] = {started:false};
 
             console.log(io.sockets.adapter.rooms);
             ack({roomres: res})
@@ -41,17 +47,36 @@ exports.startSocketServer = function(httpServer){
             ack({roomres: res})
         });
         
-        socket.on("message", arg => {
-            doMessage(socket, arg);
+        socket.on("taskresult", arg => {
+            handleResultMessage(socket, arg);
         });
         
         socket.on("regist-uuid", arg => {//socketにuuidを紐付け
             socket["uuid"] = arg.uuid
         });
+        
+        socket.on("getGameInfo", (ack) => {//ack:コールバック関数
+            let roomid=getRoomidFromSocket(socket)
+            var res = getGameInfo(roomid)
+            if(typeof ack == 'function'){
+                ack(res)
+            }
+            socket.broadcast.to(roomid).emit("gameInfo",res)
+        });
+        
+        socket.on("setGameInfo", (arg,ack) => {
+            let roomid=getRoomidFromSocket(socket)
+            var res = setGameInfo(roomid,arg)
+            if(typeof ack == 'function'){
+                ack(res)
+            }
+            if(res.status == "start" || res.status == "stop") {
+                socket.broadcast.to(roomid).emit("gameInfo",res)
+            }
+            console.log(res)
+        });
     });
-
 }
-
 
 //TODO: 関数名変える(doはないぞー)
 function doConnect(socket) {
@@ -62,7 +87,6 @@ function changeUUID(socket, uuid) {
     console.log("UPDATE UUID: " + uuid);
     socket.id = uuid;
 }
-
 
 /**
  *
@@ -123,25 +147,80 @@ function leaveRoom(socket, arg) {
     socket.leave(arg);
 }
 
-function doMessage(socket, message){
+function handleResultMessage(socket, message){
     console.log("Catch message: " + message);
-    broadcastMessage(socket, message);   
-}
-
-function broadcastMessage(socket, message) {
     try{
         var json = JSON.parse(message.toString());
         console.log(json);
 
-        if(json.task.broadcast == null)
-            return;
-
-        json.task.broadcast.forEach(event => {
-            socket.broadcast.emit('broadcast', JSON.stringify(event));
-        });
-
+        if(json.task.broadcast == null){
+            return
+        } else {
+            json.task.broadcast.forEach(event => {
+                socket.to(getRoomidFromSocket(socket)).emit('event', JSON.stringify(event));
+            });
+        }
     }catch (e) {
         console.log('invalid json: ' + message);
         return;
     }
+}
+
+//ゲームの情報を返す
+function getGameInfo(roomid){
+    /*
+    ゲーム情報:
+        roomid
+
+        ...etc
+    */
+    let stat
+    if(roomid in games){
+        stat = "started"
+    }else{
+        stat = "stopped"
+    }
+    let res = {"status":stat,"roomid":roomid}
+    return res
+}
+
+//ゲームの情報をセットする(GameStart,GameEnd,...etc)
+function setGameInfo(roomid,arg){
+    let res = {}
+    /*  arg
+    {
+        "StartGame":true,
+        "StopGame":true,
+    }
+    */
+    if(!(roomid in games)){
+        return {"status":"fail","message":"no such game"}
+    }
+    if(arg.StartGame){
+        if(!games[roomid].started){
+            //{}にゲーム情報ぶち込む
+            games[roomid].started=true
+            res = {"status":"start","message":"game started"}
+        }else{
+            res = {"status":"started","message":"game already started"}
+        }
+    } else if(arg.StopGame){        
+        if(games[roomid].started){
+            games[roomid].started=false
+            res = {"status":"stop","message":"game finished"}
+        }else{
+            res = {"status":"stopped","message":"game already finished"}
+        }
+    }
+    return res
+}
+
+function getRoomidFromSocket(socket){
+    let roomid = [...socket.rooms.values()][1]
+    //socket.rooms で Set(2){ 'joer8EhcmAayFaDGAAAH', 'test' } みたいなmapが返ってくる
+    //Set(n)からデータを得るために、...socket~で配列化 なんとなくGolangっぽい?
+    //1つ目のデータは自分のsocket.idなので、2つ目を取得
+
+    return roomid?roomid:socket.id
+    //もしルームに入ってなければ(roomid==undefined)、socket.idを返すようにした
 }

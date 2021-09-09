@@ -54,6 +54,9 @@ export class Desktop extends Phaser.Scene {
         let storeicon = this.add.sprite(80, 360, 'storeicon').setScale(1.25).setTint(0x00ffff).setInteractive();//setInteractiveしないとクリックできない!
         this.add.text(80, 440, "ストア").setOrigin(0.5);//OriginのX座標を中心にしてテキストを中央合わせ
 
+        //マネージャーアイコン登録
+        let managericon = this.add.sprite(80, 500, 'mailicon').setScale(0.5).setTint(0x00ffff).setInteractive();//setInteractiveしないとクリックできない!
+
         mailicon.on('pointerdown', () => {//メールアイコンをクリックで
             this.CreateWindow(Mail);//mailクラスのウィンドウを作成
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
@@ -68,6 +71,10 @@ export class Desktop extends Phaser.Scene {
 
         storeicon.on('pointerdown', () => {//スタートアイコンをクリックで
             this.CreateWindow(Store);//JobManagerクラスのウィンドウを作成
+        }, this);//最後にthis入れないとthisの参照先が変わってしまう
+
+        managericon.on('pointerdown', () => {//スタートアイコンをクリックで
+            document.getElementById("manage-window").classList.remove('disabled')
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
 
 
@@ -125,6 +132,11 @@ export class Desktop extends Phaser.Scene {
 
         this.socket.on("disconnect", () => {
             console.log(`Socketが閉じられました`);
+            // let overlays = Array.from( document.getElementsByClassName('overlay') ) ;
+            // overlays.forEach(e =>{
+            //     e.classList.remove('disabled')
+            // })
+            document.getElementById("login-window").classList.remove("disabled")
         });
 
         this.socket.on("room-msg", (msg) => {
@@ -132,8 +144,16 @@ export class Desktop extends Phaser.Scene {
             console.log(msg);
         });
 
-        this.socket.on("broadcast", (arg) => {
-            console.log('GET BROADCAST: ' + arg);
+        this.socket.on("gameInfo", (msg) => {
+            console.log("status changed: "+ JSON.stringify(msg));
+            switch(msg.status){
+                case "start":window["notify"]("ゲームが開始されました");break;
+                case "stop":window["notify"]("ゲームが終了しました");break;
+            }
+        });
+
+        this.socket.on("event", (arg) => {
+            console.log('GET event: ' + arg);
             var json = JSON.parse(arg);
             this.eventHandler(json);
         });
@@ -184,7 +204,7 @@ export class Desktop extends Phaser.Scene {
     }
 
     EmitResult(data) {
-        this.socket.emit('message', JSON.stringify(data))
+        this.socket.emit("taskresult", JSON.stringify(data))
     }
 
     eventHandler(json) {

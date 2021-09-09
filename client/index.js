@@ -20,26 +20,37 @@ window.addEventListener("load", () => {
     
     document.getElementById("join_room").onclick = () => {room_button("join")}
     document.getElementById("create_room").onclick = () => {room_button("create")}
+    document.getElementById("gamestart_button").onclick = () => {game_button("start")}
+    document.getElementById("gamestop_button").onclick = () => {game_button("stop")}
     let overlays = Array.from( document.getElementsByClassName('overlay') ) ;
     overlays.forEach(element => {
         for (const eventName of ['mouseup','mousedown', 'touchstart', 'touchmove', 'touchend', 'touchcancel']){
             element.addEventListener(eventName, e => e.stopPropagation(),{passive: true});
         }
     });
+
+    Array.from( document.getElementsByClassName('Xbutton') ).forEach(elem => {
+        
+        elem.addEventListener('click',()=>{
+            elem.parentElement.parentElement.parentElement.classList.add("disabled")
+        })
+    })
+    window["notify"] = notify
 });
 
 
 function room_button(str) {
     let success_flag = false
     let roomid = document.getElementById("room_id").value
-    let message = document.getElementById("room_message")
-    let callbackfunc = (resp) => {
+    const message = document.getElementById("room_message")
+    const callbackfunc = (resp) => {
         if(!resp.roomres) {//ログイン成功時
-            //オーバーレイ非表示
-            let overlays = Array.from( document.getElementsByClassName('overlay') ) ;
-            overlays.forEach(e =>{
-                e.classList.add('disabled')
-            })
+            // //オーバーレイ非表示
+            // let overlays = Array.from( document.getElementsByClassName('overlay') ) ;
+            // overlays.forEach(e =>{
+            //     e.classList.add('disabled')
+            // })
+            document.getElementById("login-window").classList.add('disabled')
 
             message.innerText = ""//警告メッセージ削除
         }else if(resp.roomres == -1){
@@ -58,4 +69,50 @@ function room_button(str) {
     }else if(str == "create"){
         window["socket"].emit("createRoom", roomid,callbackfunc);
     }
+}
+
+function game_button(stat){
+    const callbackfunc = (resp) => {
+        //resp: {"status":"success","message":"game started"}
+    }
+    if (stat == "start"){
+        window["socket"].emit("setGameInfo",{"StartGame":true},callbackfunc)
+    }else if (stat=="stop"){
+        window["socket"].emit("setGameInfo",{"StopGame":true},callbackfunc)
+    }
+}
+
+// 構文
+// notify([text message],[callback func()],[callback func args])
+// 例
+// window["notify"]("message",(mes)=>{alert(mes)},"alert message")
+function notify(text,callback,...args){
+    const notifyarea = document.getElementById("notification_area")
+    let notifytext = createElementFromHTML(`<div class="notification"><p>${text}</p></div>`)
+    let notify = notifyarea.insertAdjacentElement('afterbegin',notifytext)
+    const clickfunc = () =>{
+        notify.classList.remove("show")
+        setTimeout(()=>{
+            notify.remove()
+        },600)
+        typeof callback == 'function' ? callback(...args):null;
+    }
+    setTimeout(()=>{
+        notify.classList.add("show")
+    },100)
+    setTimeout(clickfunc,8000)
+
+    notify.addEventListener('click',clickfunc)
+    
+    //クリック透過無効化
+    for (const eventName of ['mouseup','mousedown', 'touchstart', 'touchmove', 'touchend', 'touchcancel']){
+        notify.addEventListener(eventName, e => e.stopPropagation(),{passive: true});
+    }
+}
+
+function createElementFromHTML(html){
+    let template = document.createElement('template');
+    html = html.trim(); // Never return a text node of whitespace as the result
+    template.innerHTML = html;
+    return template.content.firstElementChild;
 }

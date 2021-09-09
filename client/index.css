@@ -9,19 +9,10 @@ body {
   top:0;left:0;
   z-index: 10;
   background-color: #0000007F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-.login{
-  border-radius: 15px;
-  position: fixed;
-  left: 50%; top: 50%;
-  transform: translate(-50%,-50%);
-  width: 40%;
-  min-width: 500px;
-  text-align: center;
-  background-color: whitesmoke;
-}
-
 
 div.newgame{
   max-width: 600px;
@@ -29,60 +20,6 @@ div.newgame{
 
 .disabled{
   display: none;
-}
-
-div.container-logo{
-  width: 50%;
-  max-width: 300px;
-  display: inline-block;
-
-}
-
-div.container-login{
-  /* width: 50%; */
-  display: block;
-  /* text-align: center; */
-  /* margin: 0 auto; */
-}
-
-img.login-icon{
-  object-fit: cover;
-  width:100%;
-  height:100%;
-}
-
-div.login-window-title{
-  color: white;
-  background-color: blue;
-  height: 35px;
-  width: 100%;
-  display: block;
-  margin-left: 0px;
-  position: absolute;
-  text-align:left;
-}
-
-div.login-window-frame{
-  border: solid 2px blue;
-  margin-top: 35px;
-}
-
-div.login-window-corner{
-  width: 35px;
-  height: 35px;
-  display: inline-block;
-  margin: 0px;
-  position: absolute;
-}
-
-div.login-window-bar{
-  height: 35px;
-  width: 100%;
-  margin-left: 35px;
-  width: calc(100% - 70px);
-  background-image: url("./images/login/bar.svg");
-  display: inline-block;
-  position: absolute;
 }
 
 button.push{
@@ -105,35 +42,105 @@ div.login-buttons{
   margin: 10px;
 }
 
-div.login-inputs{
-  display: block;
+#login-window .input-area{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 0.5em;
 }
 
-input.login-input{
-  margin-left: 5px;
-  position: absolute;
-  left: 50%;
-  width: 10rem;
-  display: inline;
-  margin: 0.5rem;
+.window {
+  position:relative;
+  border-color: rgb(0, 62, 196) ;
+  border-style: solid;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
+  border-width: 2px;
+  background-color: whitesmoke;
+  border-top-width: 2em;
+  box-sizing:content-box;
 }
-
-p.login-text{
-  display: inline;
-  left: 0px;
-  margin: 0.5rem;
-  text-align: center;
-  position: absolute;
-  width: 40%;
+.window::before{
+  content: ' ';
+  position:absolute;
+  top: -2em;
+  height:2em;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  background-image: linear-gradient(to bottom,rgb(35, 147, 251),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(0,110, 249),rgb(0, 62, 196));
 }
-
-p.login-window-title-text{
-  text-align: left;
+.window>.window-titlebar{
+  position:absolute;
+  top: -2em;
+  width: 100%;
+  height:2em;
+  line-height: 2em;
+  padding-left: 0.5em;
+  padding-right: 0.2em;
+  vertical-align: middle;
+  
+  color:white;
+  box-sizing: border-box;
+  display:flex;
+  align-items: center;
+  align-content: stretch;
+  justify-content: space-between;
+}
+.window-titlebar>.Xbutton{
+  background-color: red;
+  border: white 1px solid;
+  border-radius: 4px;
+  width: 1.4em;
+  height: 1.4em;
   color: white;
+  vertical-align: middle;
+  position: relative;
+  display: inline-block;
+}
+.Xbutton::before, .Xbutton::after { /* 共通設定 */
+  content: " ";
   position: absolute;
-  margin: 10px;
+  top: 50%;
+  left: 50%;
+  width: 20%; /* 棒の幅（太さ） */
+  height: 100%; /* 棒の高さ */
+  background: #fff;
+  border-radius: 2.5px; /* 棒の四隅の丸み*/
+}
+.Xbutton::before {
+  transform: translate(-50%,-50%) rotate(45deg);
+}
+.Xbutton::after {
+  transform: translate(-50%,-50%) rotate(-45deg);
 }
 
-.message{
-  height: 1em;
+#notification_area{
+  position:absolute;
+  right:1em;bottom:2em;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.notification {
+  min-width: 15em;
+  max-width: 15em;
+  max-height: 5em;
+  background-color: rgba(0, 0, 0, 0.514);
+  color: white;
+  padding-left: 1em;
+  padding-right: 1em;
+  
+  transition: opacity 0.6s, visibility 0.6s,transform 0.6s;
+  opacity: 0;
+  transform: translateX(-2em);
+  visibility: hidden;
+}
+
+.notification.show {
+  opacity: 1;
+  transform: translateX(0);
+  visibility:visible;
 }
