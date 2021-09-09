@@ -83,19 +83,27 @@ function game_button(stat){
 }
 
 // 構文
-// notify([text message],[callback func()],[callback func args])
+// notify(text message,[option])
+
 // 例
-// window["notify"]("message",(mes)=>{alert(mes)},"alert message")
-function notify(text,callback,...args){
+// window["notify"]("message",{
+//     callback: (args)=>{alert(args)},
+//     args:["test"],
+//     style: "background-color: white; color: red;"
+//   })
+function notify(text,option){
     const notifyarea = document.getElementById("notification_area")
-    let notifytext = createElementFromHTML(`<div class="notification"><p>${text}</p></div>`)
+    let style=""
+    if(option && option.style) style=option.style
+    let notifytext = createElementFromHTML(`<div class="notification" style="${style}"><p>${text}</p></div>`)
+
     let notify = notifyarea.insertAdjacentElement('afterbegin',notifytext)
     const clickfunc = () =>{
         notify.classList.remove("show")
         setTimeout(()=>{
             notify.remove()
         },600)
-        typeof callback == 'function' ? callback(...args):null;
+        if(option && typeof option.callback == 'function') option.callback(...option.args);
     }
     setTimeout(()=>{
         notify.classList.add("show")
