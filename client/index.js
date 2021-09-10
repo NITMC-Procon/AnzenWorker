@@ -30,7 +30,6 @@ window.addEventListener("load", () => {
     });
 
     Array.from( document.getElementsByClassName('Xbutton') ).forEach(elem => {
-        
         elem.addEventListener('click',()=>{
             elem.parentElement.parentElement.parentElement.classList.add("disabled")
         })
