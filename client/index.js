@@ -33,6 +33,7 @@ window.addEventListener("load", () => {
         })
     })
     window["notify"] = notify
+    window["CreateDraggableWindowFromHTML"] = CreateDraggableWindowFromHTML
 });
 
 
@@ -65,17 +66,6 @@ function room_button(str) {
         window["socket"].emit("joinRoom", roomid,callbackfunc);
     }else if(str == "create"){
         window["socket"].emit("createRoom", roomid,callbackfunc);
-    }
-}
-
-function game_button(stat){
-    const callbackfunc = (resp) => {
-        //resp: {"status":"success","message":"game started"}
-    }
-    if (stat == "start"){
-        window["socket"].emit("setGameInfo",{"StartGame":true},callbackfunc)
-    }else if (stat=="stop"){
-        window["socket"].emit("setGameInfo",{"StopGame":true},callbackfunc)
     }
 }
 
@@ -148,21 +138,19 @@ function CreateDraggableWindowFromHTML(html,title,configs){
 
     drag.style.top = Math.random()*(document.documentElement.clientHeight/2 - drag.clientHeight) + "px"
     drag.style.left = Math.random()*(document.documentElement.clientWidth/2 - drag.clientWidth) + "px"
+    drag.style["z-index"] = ++windowindex;
     
     //イベントを吸収
     for (const eventName of ['mouseup','mousedown', 'touchstart', 'touchmove', 'touchend', 'touchcancel']){
         drag.addEventListener(eventName, e => e.stopPropagation(),{passive: true});
     }
 
+    //ウィンドウ内をクリックしたら発火
     for (const eventName of ['mousedown', 'touchstart']){
         const clickwindow = (e) => {
             drag.style["z-index"] = ++windowindex;
         }
         drag.addEventListener(eventName,clickwindow);
-    }
-    //ウィンドウ内をクリックしたら発火
-    const clickwindow = (e) => {
-        drag.style["z-index"] = ++windowindex;
     }
     const mdown = (e) => {
         drag.classList.add("dragging");
