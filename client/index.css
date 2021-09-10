@@ -50,7 +50,7 @@ div.login-buttons{
 }
 
 .window {
-  position:relative;
+  position:absolute;
   border-color: rgb(0, 62, 196) ;
   border-style: solid;
   border-top-right-radius: 6px;
@@ -87,6 +87,7 @@ div.login-buttons{
   align-items: center;
   align-content: stretch;
   justify-content: space-between;
+  user-select:none;
 }
 .window-titlebar>.Xbutton{
   background-color: red;
