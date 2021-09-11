@@ -121,6 +121,7 @@ export class Desktop extends Phaser.Scene {
 
         this.socket.on("connect", () => {
             console.log('Socket接続に成功しました');
+            window["notify"](`サーバーに接続しました`);
         });
 
         this.socket.on("updateUUID", (uuid) => {
@@ -130,10 +131,12 @@ export class Desktop extends Phaser.Scene {
 
         this.socket.on("error", (err) => {
             console.log(`Socketエラーが発生しました：${err}`);
+            window["notify"](`Socketエラーが発生しました：${err}`)
         });
 
         this.socket.on("disconnect", () => {
             console.log(`Socketが閉じられました`);
+            window["notify"](`サーバーから切断しました`)
             // let overlays = Array.from( document.getElementsByClassName('overlay') ) ;
             // overlays.forEach(e =>{
             //     e.classList.remove('disabled')

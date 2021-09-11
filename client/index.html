@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="./index.css">
 </head>
 
-<body>
+<body style="overflow: hidden;">
     <div id="game"></div>
-    <div class="overlay" id="login-window">
+    <div class="overlay" id="login-window" style="z-index: 10000;">
         <div class="window" style="width: 40%;">
             <div class="window-titlebar">
                 <span>AnzenWorkerにログオン</span>
@@ -27,27 +27,45 @@
                 <div class="input-area"><span style="width: 5em;">ユーザー名:</span><input type="text" id="user_name"></div>
                 <div class="input-area"><span style="width: 5em;">ルームID:</span><input type="text" id="room_id"></div>
             </div>
-            <p id="room_message" class="message" style="color: red;"></p>
+            <p id="room_message" class="message" style="color: red;text-align:center"></p>
             <div class="login-buttons">
                 <button class="push" id="join_room">ルームに参加</button>
                 <button class="push" id="create_room">ルームを作成</button>
             </div>
         </div>
     </div>
-    <div class="overlay disabled" id="manage-window">
-        <div class="window" style="height:4em;width:20em" >
-            <div class="window-titlebar">
-                <span>Manager</span>
-                <span class="Xbutton"></span>
-            </div>
-            <br>
-            <div style="display: flex;align-items: center;justify-content: space-evenly;">
-                <input value="ゲーム開始" type="button" id="gamestart_button"></input>
-                <input value="ゲーム終了" type="button" id="gamestop_button"></input>
-            </div>
-        </div>
-    </div>
     <div id="notification_area">
+    </div>
+    <div id="htmlwindows" style="position: absolute;top:0;left: 0;">
+    </div>
+    <div class="menubar">
+        <input type="checkbox" id="menu_btn_check" style="display: none;">
+        <label class="menu-btn" for="menu_btn_check"><span></span></label>
+        <div class="menu-content">
+            <script>
+                function game_button(stat){
+                    const callbackfunc = (resp) => {
+                        //resp: {"status":"success","message":"game started"}
+                    }
+                    if (stat == "start"){
+                        window["socket"].emit("setGameInfo",{"StartGame":true},callbackfunc)
+                    }else if (stat=="stop"){
+                        window["socket"].emit("setGameInfo",{"StopGame":true},callbackfunc)
+                    }
+                }
+            </script>
+            <ul>
+                <li><span class="show_login_button" onclick='document.getElementById("login-window").classList.remove("disabled")'>ログインウィンドウ</span></li>
+                <li><span class="show_login_button" onclick='
+                window["CreateDraggableWindowFromHTML"](`<br><div style="display: flex;align-items: center;justify-content: space-evenly;">
+                    <input value="ゲーム開始" type="button" id="gamestart_button"></input>
+                    <input value="ゲーム終了" type="button" id="gamestop_button"></input>
+                    </div>`,"マネージャー",{xbutton: true,style:"height:4em;width:20em"})
+                document.getElementById("gamestart_button").onclick = () => {game_button("start")}
+                document.getElementById("gamestop_button").onclick = () => {game_button("stop")}
+                '>マネージャー</span></li>
+            </ul>
+        </div>
     </div>
 </body>
 
