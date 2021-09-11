@@ -10,6 +10,7 @@ export class Mail extends Window {//メールウィンドウ
         this.mails = this.get_mails()
         this.mail_width = 300
         this.mail_block = {}
+        this.mailnum = this.mails.length    // メールボックスに入っているメールの数
     }
     get_mails() {//メール一覧取得(実際はネットから持ってくるか、自動生成でそれっぽいの用意する)
         let mails = [["テストメール", `先生へ
@@ -33,9 +34,27 @@ Email: taro@maizuru.kosen.ac.jp`, { filename: "file.exe", func: () => { this.des
         text = text.substr(0, 15)
         return text
     }
+    newmail(subject, text) {
+        this.mails.push(subject, text)
+        this.mailnum++;
+
+        this.create_mailblock(subject, text)
+    }
+    create_mailblock(subject, text) {
+        let mailblock = this.add.rectangle(5, this.menu_height + 2 + (this.mailnum - 1) * 50, 280, 48, 0xf0f0f0).setOrigin(0).setInteractive().setDepth(-1000)
+        this.add.text(5, this.menu_height + 2 + (this.mailnum - 1) * 50, this.fix_mail(subject), { color: "#000", font: "15px Yu Gothic" }).setOrigin(0)
+        this.add.text(5, this.menu_height + 15 + (this.mailnum - 1) * 50, this.fix_mail(text), { color: "#555", font: "15px Yu Gothic" }).setOrigin(0)
+
+        let addmail = [subject, text]
+
+        mailblock.on('pointerdown', () => {
+            this.show_mail(addmail)
+        }, this);//最後にthis入れないとthisの参照先が変わってしまう
+    }
     create_after() {//create関数はすでにWindowクラスで使われてるので、そこからcreate_afterを呼び出してる
         this.mail_title = this.add.text(300, this.menu_height + 5, "", { color: "#000", font: "30px Yu Gothic" }).setOrigin(0)
         this.mail_text = this.add.text(300, this.menu_height + 40, "", { color: "#000", font: "15px Yu Gothic", wordWrap: { width: this.mail_width, useAdvancedWrap: true } }).setOrigin(0)
+
         this.mails.forEach((mail, i) => {
             let mailblock = this.add.rectangle(5, this.menu_height + 2 + i * 50, 280, 48, 0xf0f0f0).setOrigin(0).setInteractive().setDepth(-1000)
             this.add.text(5, this.menu_height + 2 + i * 50, this.fix_mail(mail[0]), { color: "#000", font: "15px Yu Gothic" }).setOrigin(0)
@@ -77,6 +96,9 @@ Email: taro@maizuru.kosen.ac.jp`, { filename: "file.exe", func: () => { this.des
                 })//結果送信テスト
             }, this);//最後にthis入れないとthisの参照先が変わってしまう
         }, this);
+
+        this.newmail("おめでとうございます！", "あなたは最新型のPCのプレゼント企画に当選しました！")
+
     }
     // update() {
     //     if (this.width - 300 > 50) {
