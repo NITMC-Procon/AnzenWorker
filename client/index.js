@@ -154,17 +154,17 @@ function CreateDraggableWindowFromHTML(html,title,configs){
     }
     const mdown = (e) => {
         drag.classList.add("dragging");
-        let event = e;
+        var event = e;
         //タッチデイベントとマウスのイベントの差異を吸収
-        if(!(e.type === "mousedown")) {
+        if(e.type !== "mousedown") {
             event = e.changedTouches[0];
         }
         //要素内の相対座標
         x = event.pageX - drag.offsetLeft;
         y = event.pageY - drag.offsetTop;
         //ムーブイベントにコールバック
-        document.body.addEventListener("mousemove", mmove, false);
-        document.body.addEventListener("touchmove", mmove, false);
+        drag.firstElementChild.addEventListener("mousemove", mmove, false);
+        drag.firstElementChild.addEventListener("touchmove", mmove, false);
         
         //マウスボタンが離されたとき、またはカーソルが外れたとき発火
         drag.addEventListener("mouseup", mup, false);
@@ -174,8 +174,8 @@ function CreateDraggableWindowFromHTML(html,title,configs){
     }
     //マウスカーソルが動いたときに発火
     const mmove = (e) => {
-        let event = e;
-        if(!(e.type === "mousemove")) {
+        var event = e;
+        if(e.type !== "mousemove") {
             event = e.changedTouches[0];
         }
         //フリックしたときに画面を動かさないようにデフォルト動作を抑制
@@ -189,8 +189,8 @@ function CreateDraggableWindowFromHTML(html,title,configs){
         //ムーブベントハンドラの消去
         drag.removeEventListener("mouseup", mup, false);
         drag.removeEventListener("touchend", mup, false);
-        document.body.removeEventListener("mousemove", mmove, false);
-        document.body.removeEventListener("touchmove", mmove, false);
+        drag.firstElementChild.removeEventListener("mousemove", mmove, false);
+        drag.firstElementChild.removeEventListener("touchmove", mmove, false);
         //クラス名 .drag も消す
         drag.classList.remove("dragging");
     }
@@ -198,4 +198,5 @@ function CreateDraggableWindowFromHTML(html,title,configs){
     //ウィンドウバークリックで発火
     drag.firstElementChild.addEventListener("mousedown", mdown, false);
     drag.firstElementChild.addEventListener("touchstart", mdown, false);
+    return drag
 }

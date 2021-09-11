@@ -43,27 +43,29 @@
         <label class="menu-btn" for="menu_btn_check"><span></span></label>
         <div class="menu-content">
             <script>
-                function game_button(stat){
-                    const callbackfunc = (resp) => {
-                        //resp: {"status":"success","message":"game started"}
+                const add_manager = () =>{
+                    const manager = window["CreateDraggableWindowFromHTML"](`<br><div style="display: flex;align-items: center;justify-content: space-evenly;">
+                        <input value="ゲーム開始" type="button" id="gamestart_button"></input>
+                        <input value="ゲーム終了" type="button" id="gamestop_button"></input>
+                        </div><p style="text-align: center"></p>`,"マネージャー",{xbutton: true,style:"width:20em"});
+                    const game_button = (stat) => {
+                        const callbackfunc = (resp) => {
+                            //resp: {"status":"success","message":"game started"}
+                            manager.lastElementChild.innerText = `ステータス:${resp.status}\nメッセージ: ${resp.message}`
+                        }
+                        if (stat == "start"){
+                            window["socket"].emit("setGameInfo",{"StartGame":true},callbackfunc)
+                        }else if (stat=="stop"){
+                            window["socket"].emit("setGameInfo",{"StopGame":true},callbackfunc)
+                        }
                     }
-                    if (stat == "start"){
-                        window["socket"].emit("setGameInfo",{"StartGame":true},callbackfunc)
-                    }else if (stat=="stop"){
-                        window["socket"].emit("setGameInfo",{"StopGame":true},callbackfunc)
-                    }
+                    document.getElementById("gamestart_button").onclick = () => {game_button("start")};
+                    document.getElementById("gamestop_button").onclick = () => {game_button("stop")};
                 }
             </script>
             <ul>
                 <li><span class="show_login_button" onclick='document.getElementById("login-window").classList.remove("disabled")'>ログインウィンドウ</span></li>
-                <li><span class="show_login_button" onclick='
-                window["CreateDraggableWindowFromHTML"](`<br><div style="display: flex;align-items: center;justify-content: space-evenly;">
-                    <input value="ゲーム開始" type="button" id="gamestart_button"></input>
-                    <input value="ゲーム終了" type="button" id="gamestop_button"></input>
-                    </div>`,"マネージャー",{xbutton: true,style:"height:4em;width:20em"})
-                document.getElementById("gamestart_button").onclick = () => {game_button("start")}
-                document.getElementById("gamestop_button").onclick = () => {game_button("stop")}
-                '>マネージャー</span></li>
+                <li><span class="show_login_button" onclick='add_manager()'>マネージャー</span></li>
             </ul>
         </div>
     </div>
