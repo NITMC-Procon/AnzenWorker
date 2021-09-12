@@ -119,7 +119,7 @@ function createElementFromHTML(html){
 //              <input value="ゲーム終了" type="button" id="gamestop_button"></input>
 //              </div>`,
 //     "title",{
-//     xbutton: true
+//     no_xbutton: true
 //   })
 var windowindex = 0;//ウィンドウをドラッグするたびに増やす
 function CreateDraggableWindowFromHTML(html,title,configs){
@@ -127,7 +127,7 @@ function CreateDraggableWindowFromHTML(html,title,configs){
     <div class="window" style="${(configs != null && configs.style)?configs.style:""}">
         <div class="window-titlebar">
             <span>${title}</span>
-            ${(configs != null && configs.xbutton)?'<span class="Xbutton" onclick="this.parentElement.parentElement.remove()"></span>':''}
+            ${(configs != null && !configs.no_xbutton)?'<span class="Xbutton" onclick="this.parentElement.parentElement.remove()"></span>':''}
         </div>
         ${html}
     </div>`)

@@ -47,7 +47,7 @@
                     const manager = window["CreateDraggableWindowFromHTML"](`<br><div style="display: flex;align-items: center;justify-content: space-evenly;">
                         <input value="ゲーム開始" type="button" id="gamestart_button"></input>
                         <input value="ゲーム終了" type="button" id="gamestop_button"></input>
-                        </div><p style="text-align: center"></p>`,"マネージャー",{xbutton: true,style:"width:20em"});
+                        </div><p style="text-align: center"></p>`,"マネージャー",{style:"width:20em"});
                     const game_button = (stat) => {
                         const callbackfunc = (resp) => {
                             //resp: {"status":"success","message":"game started"}
