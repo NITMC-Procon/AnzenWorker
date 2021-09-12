@@ -6,8 +6,8 @@ import { VirusEvent } from './VirusEvent.js';
 import { Store } from './Store.js';
 
 //TODO: ポートをhttp鯖と合わせる
-var host = window.document.location.host.replace(/:.*/, '');
-var ServerAddress = 'ws://' + host + ':8080';
+var host = window.document.location.host;   // .replace(/:.*/, '');
+var ServerAddress = 'ws://' + host;         //  + ':8080';
 
 //ゲームマネージャー兼デスクトップ画面
 export class Desktop extends Phaser.Scene {
