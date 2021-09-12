@@ -32,8 +32,6 @@ window.addEventListener("load", () => {
             elem.parentElement.parentElement.parentElement.classList.add("disabled")
         })
     })
-    window["notify"] = notify
-    window["CreateDraggableWindowFromHTML"] = CreateDraggableWindowFromHTML
 });
 
 
@@ -78,7 +76,7 @@ function room_button(str) {
 //     args:["test"],
 //     style: "background-color: white; color: red;"
 //   })
-function notify(text,option){
+window["notify"] = (text,option) =>{
     const notifyarea = document.getElementById("notification_area")
     let style=""
     if(option && option.style) style=option.style
@@ -123,7 +121,7 @@ function createElementFromHTML(html){
 //     no_xbutton: true
 //   })
 var windowindex = 0;//ウィンドウをドラッグするたびに増やす
-function CreateDraggableWindowFromHTML(html,title,configs){
+window["CreateDraggableWindowFromHTML"] = (html,title,configs) => {
     let windowhtml = createElementFromHTML(`
     <div class="window" style="${(configs != null && configs.style)?configs.style:""}">
         <div class="window-titlebar">
