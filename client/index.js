@@ -32,8 +32,6 @@ window.addEventListener("load", () => {
             elem.parentElement.parentElement.parentElement.classList.add("disabled")
         })
     })
-    window["notify"] = notify
-    window["CreateDraggableWindowFromHTML"] = CreateDraggableWindowFromHTML
 });
 
 
@@ -73,36 +71,37 @@ function room_button(str) {
 // notify(text message,[option])
 
 // 例
-// window["notify"]("message",{
+// notify("message",{
 //     callback: (args)=>{alert(args)},
 //     args:["test"],
 //     style: "background-color: white; color: red;"
 //   })
-function notify(text,option){
+window["notify"] = (text,option) =>{
     const notifyarea = document.getElementById("notification_area")
     let style=""
     if(option && option.style) style=option.style
     let notifytext = createElementFromHTML(`<div class="notification" style="${style}"><p>${text}</p></div>`)
 
-    let notify = notifyarea.insertAdjacentElement('afterbegin',notifytext)
+    let notifyelem = notifyarea.insertAdjacentElement('afterbegin',notifytext)
     const clickfunc = () =>{
-        notify.classList.remove("show")
+        notifyelem.classList.remove("show")
         setTimeout(()=>{
-            notify.remove()
+            notifyelem.remove()
         },600)
         if(option && typeof option.callback == 'function') option.callback(...option.args);
     }
     setTimeout(()=>{
-        notify.classList.add("show")
+        notifyelem.classList.add("show")
     },100)
     setTimeout(clickfunc,8000)
 
-    notify.addEventListener('click',clickfunc)
+    notifyelem.addEventListener('click',clickfunc)
     
     //クリック透過無効化
     for (const eventName of ['mouseup','mousedown', 'touchstart', 'touchmove', 'touchend', 'touchcancel']){
-        notify.addEventListener(eventName, e => e.stopPropagation(),{passive: true});
+        notifyelem.addEventListener(eventName, e => e.stopPropagation(),{passive: true});
     }
+    return notifyelem
 }
 
 function createElementFromHTML(html){
@@ -114,20 +113,20 @@ function createElementFromHTML(html){
 
 
 // 例
-// window["CreateDraggableWindowFromHTML"](`<div style="display: flex;align-items: center;justify-content: space-evenly;">
+// CreateDraggableWindowFromHTML(`<div style="display: flex;align-items: center;justify-content: space-evenly;">
 //              <input value="ゲーム開始" type="button" id="gamestart_button"></input>
 //              <input value="ゲーム終了" type="button" id="gamestop_button"></input>
 //              </div>`,
 //     "title",{
-//     xbutton: true
+//     no_xbutton: true
 //   })
 var windowindex = 0;//ウィンドウをドラッグするたびに増やす
-function CreateDraggableWindowFromHTML(html,title,configs){
+window["CreateDraggableWindowFromHTML"] = (html,title,configs) => {
     let windowhtml = createElementFromHTML(`
     <div class="window" style="${(configs != null && configs.style)?configs.style:""}">
         <div class="window-titlebar">
             <span>${title}</span>
-            ${(configs != null && configs.xbutton)?'<span class="Xbutton" onclick="this.parentElement.parentElement.remove()"></span>':''}
+            ${(configs != null && !configs.no_xbutton)?'<span class="Xbutton" onclick="this.parentElement.parentElement.remove()"></span>':''}
         </div>
         ${html}
     </div>`)
@@ -150,32 +149,32 @@ function CreateDraggableWindowFromHTML(html,title,configs){
         const clickwindow = (e) => {
             drag.style["z-index"] = ++windowindex;
         }
-        drag.addEventListener(eventName,clickwindow);
+        drag.addEventListener(eventName,clickwindow,{passive: true});
     }
     const mdown = (e) => {
         drag.classList.add("dragging");
-        let event = e;
+        var event = e;
         //タッチデイベントとマウスのイベントの差異を吸収
-        if(!(e.type === "mousedown")) {
+        if(e.type !== "mousedown") {
             event = e.changedTouches[0];
         }
         //要素内の相対座標
         x = event.pageX - drag.offsetLeft;
         y = event.pageY - drag.offsetTop;
         //ムーブイベントにコールバック
-        document.body.addEventListener("mousemove", mmove, false);
-        document.body.addEventListener("touchmove", mmove, false);
+        drag.firstElementChild.addEventListener("mousemove", mmove, false);
+        drag.firstElementChild.addEventListener("touchmove", mmove, false);
         
         //マウスボタンが離されたとき、またはカーソルが外れたとき発火
-        drag.addEventListener("mouseup", mup, false);
-        drag.addEventListener("touchend", mup, false);
-        document.body.addEventListener("mouseleave", mup, false);
-        document.body.addEventListener("touchleave", mup, false);
+        drag.addEventListener("mouseup", mup, {passive: true});
+        drag.addEventListener("touchend", mup, {passive: true});
+        document.body.addEventListener("mouseleave", mup, {passive: true});
+        document.body.addEventListener("touchleave", mup, {passive: true});
     }
     //マウスカーソルが動いたときに発火
     const mmove = (e) => {
-        let event = e;
-        if(!(e.type === "mousemove")) {
+        var event = e;
+        if(e.type !== "mousemove") {
             event = e.changedTouches[0];
         }
         //フリックしたときに画面を動かさないようにデフォルト動作を抑制
@@ -189,13 +188,14 @@ function CreateDraggableWindowFromHTML(html,title,configs){
         //ムーブベントハンドラの消去
         drag.removeEventListener("mouseup", mup, false);
         drag.removeEventListener("touchend", mup, false);
-        document.body.removeEventListener("mousemove", mmove, false);
-        document.body.removeEventListener("touchmove", mmove, false);
+        drag.firstElementChild.removeEventListener("mousemove", mmove, false);
+        drag.firstElementChild.removeEventListener("touchmove", mmove, false);
         //クラス名 .drag も消す
         drag.classList.remove("dragging");
     }
     
     //ウィンドウバークリックで発火
-    drag.firstElementChild.addEventListener("mousedown", mdown, false);
-    drag.firstElementChild.addEventListener("touchstart", mdown, false);
+    drag.firstElementChild.addEventListener("mousedown", mdown, {passive: true});
+    drag.firstElementChild.addEventListener("touchstart", mdown, {passive: true});
+    return drag
 }
