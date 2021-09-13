@@ -1,6 +1,7 @@
 'use strict'
 import { Dialog } from "../Dialog.js"
-import { configs } from "../Desktop.js"
+import { SystemConfigs } from "../Desktop.js"
+import { Socket } from '../../Functions/socket.js'
 
 const html = `
 <div style="display: flex;justify-content: center;width: 100%;">
@@ -27,7 +28,7 @@ export class LoginWindow extends Dialog {
 
         /** @type {any} */ //Element型にはinnerTextがなくてIntellisenseがエラー吐いてめんどい
         this.roomid_input = document.getElementById("room_id")
-        this.roomid_input.value = configs.room.roomid
+        this.roomid_input.value = SystemConfigs.room.roomid
     }
     room_button(str) {
         let success_flag = false
@@ -53,10 +54,10 @@ export class LoginWindow extends Dialog {
             return
         }
         if (str == "join") {
-            window["socket"].emit("joinRoom", roomid, callbackfunc);
+            Socket.emit("joinRoom", roomid, callbackfunc);
         } else if (str == "create") {
-            window["socket"].emit("createRoom", roomid, callbackfunc);
+            Socket.emit("createRoom", roomid, callbackfunc);
         }
-        configs.room.roomid = roomid
+        SystemConfigs.room.roomid = roomid
     }
 }

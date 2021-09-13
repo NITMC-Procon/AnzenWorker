@@ -1,6 +1,7 @@
 'use strict'
 import { Window } from "../Window.js"
-import { configs } from "../Desktop.js"
+import { SystemConfigs } from "../Desktop.js"
+import { Socket } from '../../Functions/socket.js'
 
 const html = `<br>
 <div style="display: flex;align-items: center;justify-content: space-evenly;">
@@ -24,11 +25,11 @@ export class GameManager extends Window{
 
             textarea.innerText = `ステータス:${resp.status}\nメッセージ: ${resp.message}`
         }
-        if (!configs.room.roomid){return}
+        if (!SystemConfigs.room.roomid){return}
         if (stat == "start"){
-            window["socket"].emit("setGameInfo",{"StartGame":true},callbackfunc)
+            Socket.emit("setGameInfo",{"StartGame":true},callbackfunc)
         }else if (stat=="stop"){
-            window["socket"].emit("setGameInfo",{"StopGame":true},callbackfunc)
+            Socket.emit("setGameInfo",{"StopGame":true},callbackfunc)
         }
     }
 }
