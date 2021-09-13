@@ -116,7 +116,9 @@ div.login-buttons{
 .Xbutton::after {
   transform: translate(-50%,-50%) rotate(-45deg);
 }
-
+.window-body{
+  height: 100%;
+}
 #notification_area{
   position:absolute;
   right:1em;bottom:2em;
