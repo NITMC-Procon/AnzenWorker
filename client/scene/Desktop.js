@@ -1,14 +1,10 @@
 'use strict';
 import { Mail } from './Mail.js';
-import { Wifi } from './Wifi.js';
 import { JobManager } from './JobManager.js';
 import { VirusEvent } from './VirusEvent.js';
 import { Store } from './Store.js';
 import { CallWindow } from '../Desktop/Desktop.js'
-
-//TODO: ポートをhttp鯖と合わせる
-var host = window.document.location.host;   // .replace(/:.*/, '');
-var ServerAddress = 'ws://' + host;         //  + ':8080';
+import { Socket } from '../Functions/socket.js'
 
 //ゲームマネージャー兼デスクトップ画面
 export class Desktop extends Phaser.Scene {
@@ -83,7 +79,6 @@ export class Desktop extends Phaser.Scene {
 
 
         this.scale.on('resize', this.resize, this);//画面リサイズ時にresize関数を呼ぶ
-        this.Connect_to_server(ServerAddress)//サーバーに接続
     }
 
     //新しい窓を作る関数
@@ -118,68 +113,6 @@ export class Desktop extends Phaser.Scene {
         window.parent.destroy()//親(クリック用Zone)削除
     }
 
-    Connect_to_server(server) {
-        this.socket = io(server);
-
-        this.socket.on("connect", () => {
-            console.log('Socket接続に成功しました');
-            window["notify"](`サーバーに接続しました`);
-        });
-
-        this.socket.on("updateUUID", (uuid) => {
-            this.socket.id = uuid['id'];
-            console.log('socketuuid: ' + this.socket.id);
-        });
-
-        this.socket.on("error", (err) => {
-            console.log(`Socketエラーが発生しました：${err}`);
-            window["notify"](`Socketエラーが発生しました：${err}`)
-        });
-
-        this.socket.on("disconnect", () => {
-            console.log(`Socketが閉じられました`);
-            window["notify"](`サーバーから切断しました`)
-            // let overlays = Array.from( document.getElementsByClassName('overlay') ) ;
-            // overlays.forEach(e =>{
-            //     e.classList.remove('disabled')
-            // })
-            document.getElementById("login-window").classList.remove("disabled")
-        });
-
-        this.socket.on("room-msg", (msg) => {
-            console.log("Room msg");
-            console.log(msg);
-        });
-
-        this.socket.on("gameInfo", (msg) => {
-            console.log("status changed: " + JSON.stringify(msg));
-            switch (msg.status) {
-                case "start": window["notify"]("ゲームが開始されました"); break;
-                case "stop": window["notify"]("ゲームが終了しました"); break;
-            }
-        });
-
-        this.socket.on("event", (arg) => {
-            console.log('GET event: ' + arg);
-            var json = JSON.parse(arg);
-            this.eventHandler(json);
-        });
-
-        /*emit,sendがあれば何でも反応*/
-        // HP参照し、うつしました。
-        // TODO: 処理書きなおす
-        this.socket.onAny((event, arg) => {
-            console.log(`got ${event}`);
-            console.log(arg);
-            //var json = JSON.parse(arg['arg']);
-            //this.eventHandler(json);
-        });
-        window["socket"] = this.socket//グローバル化
-
-        let uuid = getuuid()
-        this.socket.emit('regist-uuid', { uuid: uuid })
-    }
-
     //画面リサイズ時
     resize(gameSize, baseSize, displaySize, resolution) {
         let width = displaySize.width;
@@ -211,7 +144,7 @@ export class Desktop extends Phaser.Scene {
     }
 
     EmitResult(data) {
-        this.socket.emit("taskresult", JSON.stringify(data))
+        Socket.emit("taskresult", JSON.stringify(data))
     }
 
     eventHandler(json) {
@@ -235,44 +168,4 @@ export class Desktop extends Phaser.Scene {
         let res = this.Configs.completed_task.findIndex(t => t === task)
         return (res === -1) ? false : true
     }
-}
-
-function generateUuid() {
-    // https://github.com/GoogleChrome/chrome-platform-analytics/blob/master/src/internal/identifier.js
-    // const FORMAT: string = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
-    let chars = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".split("");
-    for (let i = 0, len = chars.length; i < len; i++) {
-        switch (chars[i]) {
-            case "x":
-                chars[i] = Math.floor(Math.random() * 16).toString(16);
-                break;
-            case "y":
-                chars[i] = (Math.floor(Math.random() * 4) + 8).toString(16);
-                break;
-        }
-    }
-    return chars.join("");
-}
-
-function getuuid() {
-    let cookie = getCookieArray()
-    let uuid = typeof cookie["uuid"] == 'string' ? cookie["uuid"] : generateUuid();
-    if (typeof cookie["uuid"] == 'string') {
-        console.log("cookie uuid found!")
-    } else {
-        console.log("generated new uuid!")
-    }
-    document.cookie = "uuid=" + uuid
-}
-
-function getCookieArray() {
-    var arr = new Array();
-    if (document.cookie != '') {
-        var tmp = document.cookie.split('; ');
-        for (var i = 0; i < tmp.length; i++) {
-            var data = tmp[i].split('=');
-            arr[data[0]] = decodeURIComponent(data[1]);
-        }
-    }
-    return arr;
 }

@@ -1,6 +1,7 @@
 import { GameManager } from './Windows/GameManager.js'
 import { LoginWindow }from './Windows/LoginWindow.js'
 import { WiFi }from './Windows/WiFI.js'
+import { Socket } from '../Functions/socket.js'
 
 //ココにウィンドウのリストを追加していく
 const windowlist = {
@@ -29,7 +30,7 @@ export function CallWindow(classname,window_id){
     }
 }
 
-export let configs = {
+export let SystemConfigs = {
     "installed_software": [],      // アプリストアから入れたソフト
     room:{
         roomid:""
@@ -57,14 +58,14 @@ function DestroyWindow(window_id){
 }
 
 function Task_Complete(task) {
-    configs.completed_task.push(task)
+    SystemConfigs.completed_task.push(task)
 }
 
 function Task_IsCompleted(task) {
-    let res = configs.completed_task.findIndex(t => t === task)
+    let res = SystemConfigs.completed_task.findIndex(t => t === task)
     return (res === -1) ? false : true
 }
 
 function EmitResult(data) {
-    window["socket"].emit("taskresult", JSON.stringify(data))
+    Socket.emit("taskresult", JSON.stringify(data))
 }

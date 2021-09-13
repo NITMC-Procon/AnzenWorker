@@ -1,6 +1,6 @@
 'use strict'
 import { Window } from "../Window.js"
-import { configs } from "../Desktop.js"
+import { SystemConfigs } from "../Desktop.js"
 
 const html = `
 <div style="display: flex;flex-direction: column;justify-content: space-between;height: 100%;">
@@ -122,7 +122,7 @@ export class WiFi extends Window{
     select(wifi){
         this.show_wifi(wifi)
         this.keep = wifi
-        if (wifi == configs.connected_wifi) {
+        if (wifi == SystemConfigs.connected_wifi) {
             this.connectbtn.value = "切断"
         }
         else {
@@ -131,25 +131,25 @@ export class WiFi extends Window{
     }
     connect(){
         if(!this.keep) return;
-        if (configs.connected_wifi == this.keep) {
+        if (SystemConfigs.connected_wifi == this.keep) {
             // ボタンの文字を「接続」にする
             this.connectbtn.value = "接続"
             // 接続先をリセット
-            configs.connected_wifi = []
+            SystemConfigs.connected_wifi = []
         }else {  // Wifiに接続されていない時（「接続」を押したとき）
             // ボタンの文字を「切断」にする
             this.connectbtn.value = "切断"
             // 接続先のWifiを記憶する
-            configs.connected_wifi = this.keep
+            SystemConfigs.connected_wifi = this.keep
 
             // まだクリアしてなかったら
-            if(!configs.Task_IsCompleted("Wi-Fi")){
+            if(!SystemConfigs.Task_IsCompleted("Wi-Fi")){
                 let current_wifi = this.keep
 
                 // this.time.delayedCallだとウィンドウ閉じたら消える
                 setTimeout(() => {
                     // 5秒後に繋がりっぱなしだったら
-                    if (configs.connected_wifi == current_wifi) {
+                    if (SystemConfigs.connected_wifi == current_wifi) {
                         // 接続先の暗号強度によってスコアを変える
                         let score=50
                         switch(current_wifi[1]){
@@ -158,7 +158,7 @@ export class WiFi extends Window{
                             case "WPA2-PSK":score=100;break;
                         }
                         //　結果を送信
-                        configs.EmitResult({
+                        SystemConfigs.EmitResult({
                             type: "task",
                             status: "success",
                             task: {
@@ -166,7 +166,7 @@ export class WiFi extends Window{
                                 "point": score
                             }
                         })
-                        configs.Task_Complete("Wi-Fi")
+                        SystemConfigs.Task_Complete("Wi-Fi")
                     }
                 }, 5000);
             }
