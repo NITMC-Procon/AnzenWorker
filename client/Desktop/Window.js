@@ -65,8 +65,8 @@ export class Window{
             this.localx = event.pageX - this.drag.offsetLeft;
             this.localy = event.pageY - this.drag.offsetTop;
             //ムーブイベントにコールバック
-            this.drag.firstElementChild.addEventListener("mousemove", mmove, false);
-            this.drag.firstElementChild.addEventListener("touchmove", mmove, false);
+            document.body.addEventListener("mousemove", mmove, false);
+            document.body.addEventListener("touchmove", mmove, false);
     
             //マウスボタンが離されたとき、またはカーソルが外れたとき発火
             this.drag.addEventListener("mouseup", mup, { passive: true });
@@ -89,10 +89,12 @@ export class Window{
         //マウスボタンが上がったら発火
         const mup = (e) => {
             //ムーブベントハンドラの消去
+            document.body.removeEventListener("mousemove", mmove, false);
+            document.body.removeEventListener("touchmove", mmove, false);
             this.drag.removeEventListener("mouseup", mup, false);
             this.drag.removeEventListener("touchend", mup, false);
-            this.drag.firstElementChild.removeEventListener("mousemove", mmove, false);
-            this.drag.firstElementChild.removeEventListener("touchmove", mmove, false);
+            document.body.removeEventListener("mouseleave", mup, false);
+            document.body.removeEventListener("touchleave", mup, false);
             //クラス名 .drag も消す
             this.drag.classList.remove("dragging");
         }
@@ -113,7 +115,7 @@ export class Window{
             for (const eventName of ['mousedown', 'touchstart']) {
                 this.Xbutton.addEventListener(eventName, (e) => {//アロー関数にするとthisがインスタンスを示すようになる
                     e.stopPropagation()
-                });
+                },{passive:true});
             }
         }
     }
