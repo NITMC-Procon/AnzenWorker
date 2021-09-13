@@ -4,6 +4,7 @@ import { Wifi } from './Wifi.js';
 import { JobManager } from './JobManager.js';
 import { VirusEvent } from './VirusEvent.js';
 import { Store } from './Store.js';
+import { CallWindow } from '../Desktop/Desktop.js'
 
 //TODO: ポートをhttp鯖と合わせる
 var host = window.document.location.host;   // .replace(/:.*/, '');
@@ -64,7 +65,8 @@ export class Desktop extends Phaser.Scene {
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
 
         this.wifiicon.on('pointerdown', () => {//Wi-Fiアイコンをクリックで
-            this.CreateWindow(Wifi);//wi-fiクラスのウィンドウを作成
+            // this.CreateWindow(Wifi);//wi-fiクラスのウィンドウを作成
+            CallWindow("WiFi","Window_WiFi")
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
 
         jobManagericon.on('pointerdown', () => {//スタートアイコンをクリックで
@@ -76,7 +78,7 @@ export class Desktop extends Phaser.Scene {
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
 
         managericon.on('pointerdown', () => {//スタートアイコンをクリックで
-            document.getElementById("manage-window").classList.remove('disabled')
+            CallWindow("GameManager","Window_GameManager")
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
 
 

@@ -13,27 +13,8 @@
     <link rel="stylesheet" href="./index.css">
 </head>
 
-<body style="overflow: hidden;">
+<body style="overflow: hidden;height:100%;">
     <div id="game"></div>
-    <div class="overlay" id="login-window" style="z-index: 10000;">
-        <div class="window" style="width: 40%;">
-            <div class="window-titlebar">
-                <span>AnzenWorkerにログオン</span>
-            </div>
-            <div style="display: flex;justify-content: center;width: 100%;">
-                <img class="login-icon" style="max-width: 300px;" src="./images/login/logo.svg">
-            </div>
-            <div>
-                <div class="input-area"><span style="width: 5em;">ユーザー名:</span><input type="text" id="user_name"></div>
-                <div class="input-area"><span style="width: 5em;">ルームID:</span><input type="text" id="room_id"></div>
-            </div>
-            <p id="room_message" class="message" style="color: red;text-align:center"></p>
-            <div class="login-buttons">
-                <button class="push" id="join_room">ルームに参加</button>
-                <button class="push" id="create_room">ルームを作成</button>
-            </div>
-        </div>
-    </div>
     <div id="notification_area">
     </div>
     <div id="htmlwindows" style="position: absolute;top:0;left: 0;">
@@ -42,30 +23,15 @@
         <input type="checkbox" id="menu_btn_check" style="display: none;">
         <label class="menu-btn" for="menu_btn_check"><span></span></label>
         <div class="menu-content">
-            <script>
-                const add_manager = () =>{
-                    const manager = CreateDraggableWindowFromHTML(`<br><div style="display: flex;align-items: center;justify-content: space-evenly;">
-                        <input value="ゲーム開始" type="button" id="gamestart_button"></input>
-                        <input value="ゲーム終了" type="button" id="gamestop_button"></input>
-                        </div><p style="text-align: center"></p>`,"マネージャー",{style:"width:20em"});
-                    const game_button = (stat) => {
-                        const callbackfunc = (resp) => {
-                            //resp: {"status":"success","message":"game started"}
-                            manager.lastElementChild.innerText = `ステータス:${resp.status}\nメッセージ: ${resp.message}`
-                        }
-                        if (stat == "start"){
-                            window["socket"].emit("setGameInfo",{"StartGame":true},callbackfunc)
-                        }else if (stat=="stop"){
-                            window["socket"].emit("setGameInfo",{"StopGame":true},callbackfunc)
-                        }
-                    }
-                    document.getElementById("gamestart_button").onclick = () => {game_button("start")};
-                    document.getElementById("gamestop_button").onclick = () => {game_button("stop")};
-                }
+            <script type="module">
+                import { CallWindow } from './Desktop/Desktop.js'
+                CallWindow("LoginWindow","Window_LoginWindow")//最初に呼ぶ
+                document.getElementById("callmanager_button").onclick = () => CallWindow("GameManager","Window_GameManager")
+                document.getElementById("callloginwindow_button").onclick = () => CallWindow("LoginWindow","Window_LoginWindow")
             </script>
             <ul>
-                <li><span class="show_login_button" onclick='document.getElementById("login-window").classList.remove("disabled")'>ログインウィンドウ</span></li>
-                <li><span class="show_login_button" onclick='add_manager()'>マネージャー</span></li>
+                <li><span id="callloginwindow_button">ログインウィンドウ</span></li>
+                <li><span id="callmanager_button">マネージャー</span></li>
             </ul>
         </div>
     </div>
