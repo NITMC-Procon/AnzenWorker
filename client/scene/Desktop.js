@@ -65,7 +65,8 @@ export class Desktop extends Phaser.Scene {
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
 
         this.wifiicon.on('pointerdown', () => {//Wi-Fiアイコンをクリックで
-            this.CreateWindow(Wifi);//wi-fiクラスのウィンドウを作成
+            // this.CreateWindow(Wifi);//wi-fiクラスのウィンドウを作成
+            CallWindow("WiFi","Window_WiFi")
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
 
         jobManagericon.on('pointerdown', () => {//スタートアイコンをクリックで
