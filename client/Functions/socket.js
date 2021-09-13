@@ -1,6 +1,6 @@
 import 'https://cdn.socket.io/4.1.3/socket.io.js'
 import { Notify } from './notify.js'
-/** @type {SocketIOClient.Socket} */
+/** @type {import("socket.io").Socket} */
 export let Socket
 
 /** @type {Object} */
