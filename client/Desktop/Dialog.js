@@ -21,13 +21,34 @@
 //     no_xbutton: true
 //   })
 
+/** 
+ * @typedef  {Object} Config - ウィンドウ用コンフィグ
+ * @property {!String=} style - ウィンドウエレメントに適用されるスタイル
+ * @property {!Boolean=} no_xbutton - ウィンドウの閉じるボタンの非表示
+ */
+
+/**
+ * @typedef  {Object} Parent - 親要素指定用コンフィグ
+ * @property {HTMLElement} windowarea - 親要素のHTMLElement
+ * @property {Number} windowindex - ウィンドウのインデックス
+ * @property {Array<Window>} windows - ウィンドウのリスト
+ */
+
 export class Dialog{
+    /**
+     * @param {String} html - HTML文字列
+     * @param {String} title - タイトル文字列
+     * @param {Parent} parent - 親要素指定用コンフィグ
+     * @param {Config} configs - ウィンドウ用コンフィグ
+     */
     constructor(html, title, parent, configs){
         /** @type {string} */
         this.html = html;
         /** @type {string} */
         this.title = title;
+        /** @type {Parent} */
         this.parent = parent;
+        /** @type {Config} */
         this.configs = configs;
         this.window_id = "";
 
@@ -43,9 +64,8 @@ export class Dialog{
                 </div>
             </div>
         </div>`)
-        /** @type {any} */ //Element型にはinnerTextがなくてIntellisenseがエラー吐いてめんどい
         this.dialog = this.parent.windowarea.insertAdjacentElement('afterbegin', windowhtml)
-        /** @type {HTMLElement} */
+        /** @type {HTMLElement} *///@ts-ignore
         this.drag = this.dialog.firstElementChild
         this.drag.style.position = "relative";
         for (const eventName of ['mouseup', 'mousedown', 'touchstart', 'touchmove', 'touchend', 'touchcancel']) {

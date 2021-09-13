@@ -21,13 +21,34 @@
 //     no_xbutton: true
 //   })
 
+/** 
+ * @typedef  {Object} Config - ウィンドウ用コンフィグ
+ * @property {!String=} style - ウィンドウエレメントに適用されるスタイル
+ * @property {!Boolean=} no_xbutton - ウィンドウの閉じるボタンの非表示
+ */
+
+/**
+ * @typedef  {Object} Parent - 親要素指定用コンフィグ
+ * @property {HTMLElement} windowarea - 親要素のHTMLElement
+ * @property {Number} windowindex - ウィンドウのインデックス
+ * @property {Array<Window>} windows - ウィンドウのリスト
+ */
+
 export class Window{
+    /**
+     * @param {String} html - HTML文字列
+     * @param {String} title - タイトル文字列
+     * @param {Parent} parent - 親要素指定用コンフィグ
+     * @param {Config} configs - ウィンドウ用コンフィグ
+     */
     constructor(html, title, parent, configs){
         /** @type {string} */
         this.html = html;
         /** @type {string} */
         this.title = title;
+        /** @type {Parent} */
         this.parent = parent;
+        /** @type {Config} */
         this.configs = configs;
         this.window_id = "";
 
@@ -41,12 +62,12 @@ export class Window{
                     ${this.html}
                 </div>
             </div>`)
-        /** @type {HTMLElement} */
+        /** @type {HTMLElement} *///@ts-ignore
         this.drag = this.parent.windowarea.insertAdjacentElement('afterbegin', windowhtml)
         this.drag.style.top = Math.random() * (document.documentElement.clientHeight / 2) + "px"
         this.drag.style.left = Math.random() * (document.documentElement.clientWidth / 2) + "px"
         this.drag.style["z-index"] = ++this.parent.windowindex;
-        for (const eventName of ['mouseup', 'mousedown', 'touchstart', 'touchmove', 'touchend', 'touchcancel']) {
+        for (const eventName of ['mouseup', 'mousedown', 'touchstart', 'touchend']) {
             this.drag.addEventListener(eventName, e => e.stopPropagation(), { passive: true });
         }
         for (const eventName of ['mousedown', 'touchstart']) {
@@ -65,8 +86,8 @@ export class Window{
             this.localx = event.pageX - this.drag.offsetLeft;
             this.localy = event.pageY - this.drag.offsetTop;
             //ムーブイベントにコールバック
-            document.body.addEventListener("mousemove", mmove, false);
-            document.body.addEventListener("touchmove", mmove, false);
+            document.body.addEventListener("mousemove", mmove, { passive: false });
+            document.body.addEventListener("touchmove", mmove, { passive: false });
     
             //マウスボタンが離されたとき、またはカーソルが外れたとき発火
             this.drag.addEventListener("mouseup", mup, { passive: true });
