@@ -1,7 +1,7 @@
 import { Desktop } from './scene/Desktop.js';
 import { CallWindow } from './Desktop/Desktop.js'
 import { Notify } from './Functions/notify.js';
-import { Handlers, Connect_to_server } from './Functions/socket.js';
+import { Handlers, Connect_to_server, Socket } from './Functions/socket.js';
 
 //ゲームの基本設定
 var config = {
@@ -25,16 +25,8 @@ window.addEventListener("load", () => {
 
     CallWindow("LoginWindow","Window_LoginWindow")//最初に呼ぶ
 
-    Handlers["connect"] = () => {
-        console.log('Socket接続に成功しました');
-        window["notify"](`サーバーに接続しました`);
-    };
+    Connect_to_server(ServerAddress)
     
-    Handlers["disconnect"] = () => {
-        console.log(`Socketが閉じられました`);
-        window["notify"](`サーバーから切断しました`)
-        CallWindow("LoginWindow","Window_LoginWindow")
-    };
     Handlers["gameInfo"] = (msg) => {
         console.log("status changed: " + JSON.stringify(msg));
         switch (msg.status) {
@@ -42,5 +34,4 @@ window.addEventListener("load", () => {
             case "stop":Notify("ゲームが終了しました"); break;
         }
     };
-    Connect_to_server(ServerAddress)
 });

@@ -11,6 +11,21 @@ export let Handlers = {
 export function Connect_to_server(server) {
     Socket = io(server);
 
+    Socket.on("connect",() => {
+        console.log('Socket接続に成功しました');
+        Notify(`サーバーに接続しました`);
+    });
+    
+    Socket.on("disconnect",() => {
+        console.log(`Socketが閉じられました`);
+        Notify(`サーバーから切断しました`);
+    });
+
+    Socket.on("error", (err) => {
+        console.log(`Socketエラーが発生しました：${err}`);
+        Notify(`Socketエラーが発生しました：${err}`)
+    });
+
     Socket.onAny((event, ...args) => {
         if(typeof Handlers[event] == 'function'){
             Handlers[event](...args)
@@ -23,14 +38,9 @@ export function Connect_to_server(server) {
     let uuid = getuuid()
     Socket.emit('regist-uuid', { uuid: uuid })
     
-    Handlers["updateUUID"] = () => {
+    Handlers["updateUUID"] = (uuid) => {
         Socket.id = uuid['id'];
         console.log('socketuuid: ' + Socket.id);
-    };
-
-    Handlers["error"] = (err) => {
-        console.log(`Socketエラーが発生しました：${err}`);
-        Notify(`Socketエラーが発生しました：${err}`)
     };
 }
 
