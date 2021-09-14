@@ -84,6 +84,7 @@ export let DesktopIconList = [
     { Name: "Internet Browser", Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("InternetBrowser", "Window_InternetBrowser") } },
     { Name: "Game Manager", Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("GameManager", "Window_GameManager") } },
     { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { CallWindow("Mail", "Window_Mail") } },
+    { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { CallWindow("Store", "Window_Store") } },
     { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { CallWindow("LoginWindow", "Window_LoginWindow") } },
 ]
 
