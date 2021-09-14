@@ -1,65 +1,67 @@
 import { GameManager } from './Windows/GameManager.js'
-import { LoginWindow }from './Windows/LoginWindow.js'
-import { WiFi }from './Windows/WiFI.js'
+import { LoginWindow } from './Windows/LoginWindow.js'
+import { WiFi } from './Windows/WiFI.js'
 import { Socket } from '../Functions/socket.js'
 import { Crusher } from './Windows/Crusher.js'
 import { Mail } from './Windows/Mail.js'
 import { InternetBrowser } from './Windows/InternetBrowser.js'
+import { Store } from './Windows/Store.js'
 
 //ココにウィンドウのリストを追加していく
 const windowlist = {
-    "GameManager":GameManager,
-    "LoginWindow":LoginWindow,
-    "WiFi":WiFi,
-    "Crusher":Crusher,
-    "Mail":Mail,
-    "InternetBrowser":InternetBrowser
+    "GameManager": GameManager,
+    "LoginWindow": LoginWindow,
+    "WiFi": WiFi,
+    "Crusher": Crusher,
+    "Mail": Mail,
+    "InternetBrowser": InternetBrowser,
+    "Store": Store
 }
 
 let parent = {
     /** @type {HTMLElement} */
-    windowarea:null,
-    windowindex:0,
-    windows:[],
-    CreateWindow:CreateWindow,
-    DestroyWindow:DestroyWindow
+    windowarea: null,
+    windowindex: 0,
+    windows: [],
+    CreateWindow: CreateWindow,
+    DestroyWindow: DestroyWindow
 }
 
 parent.windowarea = document.getElementById("htmlwindows")
 
-export function CallWindow(classname,window_id){
-    if(!window_id){
+export function CallWindow(classname, window_id) {
+    if (!window_id) {
         window_id = classname
     }
-    if(windowlist[classname]){
-        parent.CreateWindow(windowlist[classname],window_id)
+    if (windowlist[classname]) {
+        parent.CreateWindow(windowlist[classname], window_id)
     }
 }
 
 export let SystemConfigs = {
     "installed_software": [],      // アプリストアから入れたソフト
-    room:{
-        roomid:"",
-        username:"名無しの社員さん",
+    room: {
+        roomid: "",
+        username: "名無しの社員さん",
     },
     connected_wifi: [],
     completed_task: [],
-    Task_Complete:Task_Complete,
-    Task_IsCompleted:Task_IsCompleted,
-    EmitResult:EmitResult
+    Task_Complete: Task_Complete,
+    Task_IsCompleted: Task_IsCompleted,
+    EmitResult: EmitResult
 }
 
-function CreateWindow(func,window_id){
-    if (parent.windows[window_id]){
+function CreateWindow(func, window_id) {
+    if (parent.windows[window_id]) {
         parent.windows[window_id].bringToTop();
-    }else{
+    } else {
         parent.windows[window_id] = new func(parent);//funcクラスのウィンドウを作成
         parent.windows[window_id].window_id = window_id;
     }
 }
 
-function DestroyWindow(window_id){
-    if (parent.windows[window_id]){
+function DestroyWindow(window_id) {
+    if (parent.windows[window_id]) {
         parent.windows[window_id].destroy()
     }
 }
@@ -80,9 +82,9 @@ function EmitResult(data) {
 export let DesktopIconList = [
     { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Clickfunc: () => { CallWindow("JobManager", "Window_JobManager") } },
     { Name: "Internet Browser", Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("InternetBrowser", "Window_InternetBrowser") } },
-    { Name: "Game Manager", Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("GameManager","Window_GameManager") } },
-    { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { CallWindow("Mail","Window_Mail") } },
-    { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { CallWindow("LoginWindow","Window_LoginWindow") } },
+    { Name: "Game Manager", Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("GameManager", "Window_GameManager") } },
+    { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { CallWindow("Mail", "Window_Mail") } },
+    { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { CallWindow("LoginWindow", "Window_LoginWindow") } },
 ]
 
 export let TaskbarIconList = [
@@ -98,7 +100,7 @@ export function RefreshDesktop() {
                 <span class="desktop_icon_text">${icon.Name}</span>
             </div>`)
         temp.addEventListener('dblclick', () => {
-            if(typeof icon.Clickfunc == "function")icon.Clickfunc();
+            if (typeof icon.Clickfunc == "function") icon.Clickfunc();
         })
         temp.addEventListener('click', () => {
             const selectother = (e) => {
@@ -121,14 +123,14 @@ export function RefreshTaskbar() {
     TaskbarIconList.forEach((icon) => {
         let temp = createElementFromHTML(`<img src="${icon.Iconurl}" class="desktop_icon_image"></img>`)
         temp.addEventListener('dblclick', () => {
-            if(typeof icon.Clickfunc == "function")icon.Clickfunc();
+            if (typeof icon.Clickfunc == "function") icon.Clickfunc();
         })
         desktop_taskbar.insertAdjacentElement('beforeend', temp)
     })
 
 }
 
-function createElementFromHTML(html){
+function createElementFromHTML(html) {
     let template = document.createElement('template');
     html = html.trim();
     template.innerHTML = html;
