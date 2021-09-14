@@ -59,6 +59,7 @@ div.login-buttons{
   background-color: whitesmoke;
   border-top-width: 2em;
   box-sizing:content-box;
+  overflow: hidden;
 }
 .window::before{
   content: ' ';
