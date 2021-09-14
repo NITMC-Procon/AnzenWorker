@@ -57,7 +57,7 @@ export class Desktop extends Phaser.Scene {
         let managericon = this.add.sprite(80, 500, 'mailicon').setScale(0.5).setTint(0x00ffff).setInteractive();//setInteractiveしないとクリックできない!
 
         mailicon.on('pointerdown', () => {//メールアイコンをクリックで
-            this.CreateWindow(Mail);//mailクラスのウィンドウを作成
+            CallWindow("Mail","Window_Mail")
         }, this);//最後にthis入れないとthisの参照先が変わってしまう
 
         this.wifiicon.on('pointerdown', () => {//Wi-Fiアイコンをクリックで

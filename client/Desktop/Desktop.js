@@ -3,13 +3,15 @@ import { LoginWindow }from './Windows/LoginWindow.js'
 import { WiFi }from './Windows/WiFI.js'
 import { Socket } from '../Functions/socket.js'
 import { Crusher } from './Windows/Crusher.js'
+import { Mail } from './Windows/Mail.js'
 
 //ココにウィンドウのリストを追加していく
 const windowlist = {
     "GameManager":GameManager,
     "LoginWindow":LoginWindow,
     "WiFi":WiFi,
-    "Crusher":Crusher
+    "Crusher":Crusher,
+    "Mail":Mail
 }
 
 let parent = {
