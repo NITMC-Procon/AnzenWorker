@@ -36,7 +36,14 @@ class Room {
      * @param {SocketIO.Socket} socket
      */
     addListeners(socket){
-        
+        socket.on("sendTo",(arg)=>{this.SendTo(arg.SocketID,arg.arg)})
+    }
+
+    /**
+     * @param {SocketIO.Socket} socket
+     */
+    removeListeners(socket){
+        socket.off("sendTo",(arg)=>{this.SendTo(arg.SocketID,arg.arg)})
     }
 
     /** socket(送信元)以外に送信
@@ -54,6 +61,14 @@ class Room {
     SendToAll(param,...arg){
         this.parent.io.to(this.roomid).emit(param,...arg)
     }
+    /** 特定の相手に送信
+     * @param {String} destid
+     */
+    SendTo(destid,arg){
+        this.parent.io.to(destid).emit("sentToMe",arg)
+        console.log(arg,destid)
+    }
+    
     /** ルームに参加
      * @param {SocketIO.Socket} socket 
      */
@@ -68,6 +83,7 @@ class Room {
         socket.once("disconnect",()=>{
             this.Leave(socket)
         })
+        this.addListeners(socket)
     }
     /** ルームから離脱
      * @param {SocketIO.Socket} socket 
@@ -83,16 +99,19 @@ class Room {
         if (this.users.length == 0){
             this.parent.DeleteGame(this.roomid)
         }
+        this.removeListeners(socket)
     }
-    //ゲームの情報を返す
-    getGameInfo(){
+    /** ゲームの情報を返す
+     * @param {SocketIO.Socket} socket 
+     */
+    getGameInfo(socket){
         let stat
         if(this.status){
             stat = "started"
         }else{
             stat = "stopped"
         }
-        let res = {"status":stat,"roomid":this.roomid,"users":this.users}
+        let res = {"status":stat,"roomid":this.roomid,"users":this.users,"myID":socket.id}
         return res
     }
     
@@ -166,7 +185,7 @@ class Games{
                 if(!this.isThereRoom(roomid)){
                     res = {"status":"fail","message":"no such game"}
                 }else{
-                    res = this.rooms.get(roomid).getGameInfo()
+                    res = this.rooms.get(roomid).getGameInfo(socket)
                 }
                 if(typeof ack == 'function'){
                     ack(res)
