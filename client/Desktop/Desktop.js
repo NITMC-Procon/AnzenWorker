@@ -75,3 +75,64 @@ function Task_IsCompleted(task) {
 function EmitResult(data) {
     Socket.emit("taskresult", JSON.stringify(data))
 }
+
+export let DesktopIconList = [
+    { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Clickfunc: () => { CallWindow("JobManager", "Window_JobManager") } },
+    { Name: "Internet Browser", Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("InternetBrowser", "Window_InternetBrowser") } },
+    { Name: "Game Manager", Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("GameManager","Window_GameManager") } },
+    { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { CallWindow("Mail","Window_Mail") } },
+    { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { CallWindow("LoginWindow","Window_LoginWindow") } },
+]
+
+export let TaskbarIconList = [
+    { Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("WiFi", "Window_WiFi") } },
+]
+
+export function RefreshDesktop() {
+    const desktop_icons = document.getElementById("desktop_icons")
+    desktop_icons.innerHTML = "";
+    DesktopIconList.forEach((icon) => {
+        let temp = createElementFromHTML(`<div class="desktop_icon">
+                <img src="${icon.Iconurl}" class="desktop_icon_image"></img>
+                <span class="desktop_icon_text">${icon.Name}</span>
+            </div>`)
+        temp.addEventListener('dblclick', () => {
+            if(typeof icon.Clickfunc == "function")icon.Clickfunc();
+        })
+        temp.addEventListener('click', () => {
+            const selectother = (e) => {
+                if (e.target.closest('.selected') !== temp) {
+                    temp.classList.remove("selected");
+                    desktop_icons.removeEventListener('mousedown', selectother)
+                }
+            }
+            temp.classList.add("selected");
+            desktop_icons.addEventListener('mousedown', selectother)
+        })
+        desktop_icons.insertAdjacentElement('beforeend', temp)
+    })
+}
+
+
+export function RefreshTaskbar() {
+    const desktop_taskbar = document.getElementById("desktop_taskbar")
+    desktop_taskbar.innerHTML = "";
+    TaskbarIconList.forEach((icon) => {
+        let temp = createElementFromHTML(`<img src="${icon.Iconurl}" class="desktop_icon_image"></img>`)
+        temp.addEventListener('dblclick', () => {
+            if(typeof icon.Clickfunc == "function")icon.Clickfunc();
+        })
+        desktop_taskbar.insertAdjacentElement('beforeend', temp)
+    })
+
+}
+
+function createElementFromHTML(html){
+    let template = document.createElement('template');
+    html = html.trim();
+    template.innerHTML = html;
+    return template.content.firstElementChild;
+}
+
+RefreshDesktop()
+RefreshTaskbar()
