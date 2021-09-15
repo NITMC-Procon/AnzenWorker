@@ -6,6 +6,7 @@ export let Socket
 /** @type {Object} */
 export let Handlers = {
     "event":()=>{},
+    "sentToMe": (arg) =>{sentToMe(arg)}
 }
 
 export function Connect_to_server(server) {
@@ -82,4 +83,31 @@ function getCookieArray() {
         }
     }
     return arr;
+}
+
+/** 
+ * @param {String} socketid 
+ * @param {Object} arg
+ */
+export function SendTo(socketid,arg){
+    Socket.emit("sendTo",{"SocketID":socketid,"arg":arg})
+}
+
+export let SentToMeHandler = {
+}
+
+/**
+ * @typedef {Object} sentArg
+ * @property {String} event
+ * @property {Object} arg
+ */
+
+/** @param {sentArg} message */
+function sentToMe(message){
+    if(typeof SentToMeHandler[message.event] == 'function'){
+        SentToMeHandler[message.event](message.arg)
+    }else{
+        console.log(`Recieved event ${message.event} but handler was not found`)
+        console.log(message.arg)
+    }
 }
