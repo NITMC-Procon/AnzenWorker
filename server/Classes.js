@@ -6,6 +6,12 @@
 
 const SocketIO = require("socket.io")
 
+/**
+ * @typedef {Object} User
+ * @property {String} Name
+ * @property {String} SocketID
+ */
+
 class Room {
     /** 新しいルームを作成
      * @param {String} roomid - ルームID
@@ -18,6 +24,19 @@ class Room {
         this.parent = parent
         /** @type {Boolean} - 状態 */
         this.status = false
+        /** @type {Array.<User>} */
+        this.owners = [];
+        /** @type {Array.<User>} */
+        this.users = [];
+        // /** @type {Set.<String>} */
+        // this.Clients = parent.io.sockets.adapter.rooms.get(roomid);
+    }
+
+    /**
+     * @param {SocketIO.Socket} socket
+     */
+    addListeners(socket){
+        
     }
 
     /** socket(送信元)以外に送信
@@ -39,7 +58,31 @@ class Room {
      * @param {SocketIO.Socket} socket 
      */
     Join(socket){
+        let currentroom = this.parent.getRoomidFromSocket(socket)
+        if( currentroom != socket.id){
+            console.log("joined and leaved")
+            this.parent.rooms.get(currentroom).Leave(socket);
+        }
         socket.join(this.roomid);
+        this.users.push({Name:"",SocketID:socket.id})
+        socket.once("disconnect",()=>{
+            this.Leave(socket)
+        })
+    }
+    /** ルームから離脱
+     * @param {SocketIO.Socket} socket 
+     */
+    Leave(socket){
+        socket.leave(this.roomid)
+        this.users = this.users.filter((user)=> {
+            return user.SocketID != socket.id;
+        });
+        this.owners = this.owners.filter((user)=> {
+            return user.SocketID != socket.id;
+        });
+        if (this.users.length == 0){
+            this.parent.DeleteGame(this.roomid)
+        }
     }
     //ゲームの情報を返す
     getGameInfo(){
@@ -49,14 +92,19 @@ class Room {
         }else{
             stat = "stopped"
         }
-        let res = {"status":stat,"roomid":this.roomid}
+        let res = {"status":stat,"roomid":this.roomid,"users":this.users}
         return res
     }
     
-    //ゲームの情報をセットする(GameStart,GameEnd,...etc)
-    setGameInfo(arg){
+    /** ゲームの情報をセットする(GameStart,GameEnd,...etc)
+     * @param {SocketIO.Socket} socket 
+     */
+    setGameInfo(socket,info){
+        if(JSON.stringify(this.owners.filter(user=>{return user.SocketID === socket.id}))==="[]"){//オーナーの一覧にいなければ
+            return {"status":"failed","message":"You dont have permission"}
+        }
         let res = {}
-        if(arg.StartGame){
+        if(info.StartGame){
             if(!this.status){
                 //{}にゲーム情報ぶち込む
                 this.status=true
@@ -65,7 +113,7 @@ class Room {
             }else{
                 res = {"status":"started","message":"game already started"}
             }
-        } else if(arg.StopGame){        
+        } else if(info.StopGame){        
             if(this.status){
                 this.status=false
                 res = {"status":"stop","message":"game finished"}
@@ -93,7 +141,7 @@ class Games{
         this.io.on("connection", socket => {
             socket.on("createRoom", (roomid, ack) => {
                 if(!this.isThereRoom(roomid)){
-                    this.newGame(roomid).Join(socket);
+                    this.newGame(roomid,socket).Join(socket);
                     ack({roomres: 0});
                 }else{
                     ack({roomres: -1});
@@ -106,9 +154,6 @@ class Games{
                 }else{
                     ack({roomres: -2});
                 }
-            });
-            
-            socket.on("taskresult", arg => {
             });
             
             socket.on("regist-uuid", arg => {//socketにuuidを紐付け
@@ -129,12 +174,12 @@ class Games{
             });
 
             socket.on("setGameInfo", (arg,ack) => {
-                let roomid=this.getRoomidFromSocket(socket)
+                let roomid=arg.roomid||this.getRoomidFromSocket(socket)
                 let res = {}
                 if(!this.isThereRoom(roomid)){
                     res = {"status":"fail","message":"no such game"}
                 }else{
-                    res = this.rooms.get(roomid).setGameInfo(arg)
+                    res = this.rooms.get(roomid).setGameInfo(socket,arg)
                 }
                 if(typeof ack == 'function'){
                     ack(res)
@@ -143,27 +188,20 @@ class Games{
         });
     }
 
-    /**
-     * @param {SocketIO.Socket} socket 
-     * @param {String} event
-     * @param {(...args: any[]) => void} func
-     */
-    io_addEventListener(socket,event,func){
-        socket.on(event,func)
-    }
-
     /** 
      * @param {String} roomid - ルームID 
+     * @param {SocketIO.Socket} socket
      * @returns {Room} - 作成されたルーム
      * */
-    newGame(roomid){
+    newGame(roomid,socket){
         let room = new Room(roomid,this)
         this.rooms.set(roomid,room)
+        room.owners.push({Name:"",SocketID:socket.id})
         return room
     }
     
     /** @param {String} roomid - ルームID */
-    deleteGame(roomid){
+    DeleteGame(roomid){
         if(this.rooms.has(roomid)){
             this.rooms.delete(roomid)
         }else{
