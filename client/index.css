@@ -231,38 +231,87 @@ div.login-buttons{
   transform: rotate(45deg);
 }
 
+#desktop_icons>.desktop_icon{
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  margin: 10px;
+}
+#desktop_icons>.desktop_icon>.desktop_icon_image{
+  object-fit: contain;
+  width: 40px;
+  height: 40px;
+}
+#desktop_icons>.desktop_icon>.desktop_icon_text{
+  max-width: 5em;
+  padding: 1px 3px;
+  word-wrap: break-word;
+  border-width: 1px;
+  border-style: dotted;
+  border-color: transparent;
+  color: white;
+  text-align: center;
+  text-shadow: 1px 1px 2px #000000; 
+}
+#desktop_icons>.desktop_icon.selected>.desktop_icon_image {
+  filter: brightness(0.5) contrast(1.2) sepia(100%) hue-rotate(180deg) saturate(20);
+}
+#desktop_icons>.desktop_icon.selected>.desktop_icon_text{
+  border-color: white;
+  background-color: rgb(0, 81, 196);
+}
+#desktop_taskbar{
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  padding: 0 1em ;
+  height: 32px;
+  width: 100%;
+  background-color: #181818;
+  box-sizing: border-box;
+}
+#desktop_taskbar>.desktop_icon_image{
+  height: 80%;
+}
+
 ::-webkit-scrollbar {
-	width: 16px;
+	width: 17px;
 }
 
 ::-webkit-scrollbar:vertical {
-	height: 16px
+	height: 17px
 }
 
 ::-webkit-scrollbar-track {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAMAAABFaP0WAAAABlBMVEX///+qqqrjxhVdAAAAEUlEQVR4AQEGAPn/AAEAAAABAAwAA2VWjPMAAAAASUVORK5CYII=")
+	background-image: linear-gradient(to right,rgb(238,237,229),rgb(254, 254, 251));
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: #dfdfdf;
-	box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey, inset 2px 2px #dfdfdf;
+	background-color: rgb(195,213,253);
+  border-radius: 3px/3px;
+	box-shadow: inset -1px -1px #fff, inset 1px 1px #fff;
 }
 
 ::-webkit-scrollbar-button:vertical:start {
-	height: 16px;
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAACVBMVEUAAAD////AwMCy9wDPAAABG0lEQVR4AQEQAe/+AAEBAQEBAQEBAQEBAQEBAQAAAQICAgICAgICAgICAgICAAABAgICAgICAgICAgICAgIAAAECAgICAgICAgICAgICAgAAAQICAgICAgAAAgICAgICAAABAgICAgIAAAAAAgICAgIAAAECAgICAAAAAAAAAgICAgAAAQICAgAAAAAAAAAAAgICAAABAgIAAAAAAAAAAAAAAgIAAAECAAAAAAAAAAAAAAAAAgAAAQICAgICAgICAgICAgICAAABAgICAgICAgICAgICAgIAAAECAgICAgICAgICAgICAgAAAQICAgICAgICAgICAgICAAABAgICAgICAgICAgICAgIAAAAAAAAAAAAAAAAAAAAAAAC7EwFSv87wPwAAAABJRU5ErkJggg==")
+	height: 17px;
+	background-image: url("/images/window/up.png")
 }
 
 ::-webkit-scrollbar-button:vertical:end {
-	height: 16px;
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAACVBMVEUAAAD////AwMCy9wDPAAABG0lEQVR4AQEQAe/+AAEBAQEBAQEBAQEBAQEBAQAAAQICAgICAgICAgICAgICAAABAgICAgICAgICAgICAgIAAAECAgICAgICAgICAgICAgAAAQICAgICAgICAgICAgICAAABAgICAgICAgICAgICAgIAAAECAAAAAAAAAAAAAAAAAgAAAQICAAAAAAAAAAAAAAICAAABAgICAAAAAAAAAAACAgIAAAECAgICAAAAAAAAAgICAgAAAQICAgICAAAAAAICAgICAAABAgICAgICAAACAgICAgIAAAECAgICAgICAgICAgICAgAAAQICAgICAgICAgICAgICAAABAgICAgICAgICAgICAgIAAAAAAAAAAAAAAAAAAAAAAAC87wFSKHdVDAAAAABJRU5ErkJggg==")
+	height: 17px;
+	background-image: url("/images/window/down.png")
 }
 
 ::-webkit-scrollbar-button:horizontal:start {
-	width: 16px;
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAACVBMVEUAAAD////AwMCy9wDPAAABG0lEQVR4AQEQAe/+AAEBAQEBAQEBAQEBAQEBAQAAAQICAgICAgICAgICAgICAAABAgICAgICAgIAAgICAgIAAAECAgICAgICAAACAgICAgAAAQICAgICAgAAAAICAgICAAABAgICAgIAAAAAAgICAgIAAAECAgICAAAAAAACAgICAgAAAQICAgAAAAAAAAICAgICAAABAgICAAAAAAAAAgICAgIAAAECAgICAAAAAAACAgICAgAAAQICAgICAAAAAAICAgICAAABAgICAgICAAAAAgICAgIAAAECAgICAgICAAACAgICAgAAAQICAgICAgICAAICAgICAAABAgICAgICAgICAgICAgIAAAAAAAAAAAAAAAAAAAAAAAC78wFSDHkBEgAAAABJRU5ErkJggg==")
+	width: 17px;
+	background-image: url("/images/window/left.png")
 }
+
 ::-webkit-scrollbar-button:horizontal:end {
-	width: 16px;
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAACVBMVEUAAAD////AwMCy9wDPAAABG0lEQVR4AQEQAe/+AAEBAQEBAQEBAQEBAQEBAQAAAQICAgICAgICAgICAgICAAABAgICAgIAAgICAgICAgIAAAECAgICAgAAAgICAgICAgAAAQICAgICAAAAAgICAgICAAABAgICAgIAAAAAAgICAgIAAAECAgICAgAAAAAAAgICAgAAAQICAgICAAAAAAAAAgICAAABAgICAgIAAAAAAAACAgIAAAECAgICAgAAAAAAAgICAgAAAQICAgICAAAAAAICAgICAAABAgICAgIAAAACAgICAgIAAAECAgICAgAAAgICAgICAgAAAQICAgICAAICAgICAgICAAABAgICAgICAgICAgICAgIAAAAAAAAAAAAAAAAAAAAAAAC8DwFS9T/AnAAAAABJRU5ErkJggg==")
+	width: 17px;
+	background-image: url("/images/window/right.png")
 }

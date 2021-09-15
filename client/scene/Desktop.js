@@ -38,46 +38,6 @@ export class Desktop extends Phaser.Scene {
         this.resizebg(this.scale.width, this.scale.height)//背景サイズ調整
         this.taskbar = this.add.rectangle(0, this.scale.height - 30, this.scale.width, 30, 0x1c1c1c).setOrigin(0);//タスクバー作成
 
-        //メール用アイコン登録
-        let mailicon = this.add.sprite(80, 60, 'mailicon').setScale(0.5).setTint(0x00ffff).setInteractive();//setInteractiveしないとクリックできない!
-        this.add.text(80, 120, "メール").setOrigin(0.5);//OriginのX座標を中心にしてテキストを中央合わせ
-
-        // Wi-Fi用アイコン登録
-        this.wifiicon = this.add.sprite(this.scale.width - 25, this.scale.height - 15, 'wifiicon').setScale(0.05).setInteractive();//setInteractiveしないとクリックできない!
-
-        // ジョブ管理アイコン登録
-        let jobManagericon = this.add.sprite(80, 200, 'jobManagericon').setScale(0.2).setTint(0x00ffff).setInteractive();
-        this.add.text(80, 270, "ジョブ管理").setOrigin(0.5);//OriginのX座標を中心にしてテキストを中央合わせ
-
-        //ストア用アイコン登録
-        let storeicon = this.add.sprite(80, 360, 'storeicon').setScale(1.25).setTint(0x00ffff).setInteractive();//setInteractiveしないとクリックできない!
-        this.add.text(80, 440, "ストア").setOrigin(0.5);//OriginのX座標を中心にしてテキストを中央合わせ
-
-        //マネージャーアイコン登録
-        let managericon = this.add.sprite(80, 500, 'mailicon').setScale(0.5).setTint(0x00ffff).setInteractive();//setInteractiveしないとクリックできない!
-
-        mailicon.on('pointerdown', () => {//メールアイコンをクリックで
-            CallWindow("Mail","Window_Mail")
-        }, this);//最後にthis入れないとthisの参照先が変わってしまう
-
-        this.wifiicon.on('pointerdown', () => {//Wi-Fiアイコンをクリックで
-            // this.CreateWindow(Wifi);//wi-fiクラスのウィンドウを作成
-            CallWindow("WiFi","Window_WiFi")
-        }, this);//最後にthis入れないとthisの参照先が変わってしまう
-
-        jobManagericon.on('pointerdown', () => {//スタートアイコンをクリックで
-            this.CreateWindow(JobManager);//JobManagerクラスのウィンドウを作成
-        }, this);//最後にthis入れないとthisの参照先が変わってしまう
-
-        storeicon.on('pointerdown', () => {//スタートアイコンをクリックで
-            this.CreateWindow(Store);//JobManagerクラスのウィンドウを作成
-        }, this);//最後にthis入れないとthisの参照先が変わってしまう
-
-        managericon.on('pointerdown', () => {//スタートアイコンをクリックで
-            CallWindow("GameManager","Window_GameManager")
-        }, this);//最後にthis入れないとthisの参照先が変わってしまう
-
-
         this.scale.on('resize', this.resize, this);//画面リサイズ時にresize関数を呼ぶ
     }
 
@@ -123,7 +83,6 @@ export class Desktop extends Phaser.Scene {
         this.cameras.resize(width, height);//カメラ(描画領域)のサイズ合わせ
 
         this.taskbar.setPosition(0, height - 30);//タスクバーの位置合わせ
-        this.wifiicon.setPosition(this.scale.width - 25, this.scale.height - 15);
         this.taskbar.setSize(width, 30);//タスクバーのサイズ合わせ
     }
 
