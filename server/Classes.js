@@ -71,15 +71,16 @@ class Room {
     
     /** ルームに参加
      * @param {SocketIO.Socket} socket 
+     * @param {String} username
      */
-    Join(socket){
+    Join(socket,username){
         let currentroom = this.parent.getRoomidFromSocket(socket)
         if( currentroom != socket.id){
             console.log("joined and leaved")
             this.parent.rooms.get(currentroom).Leave(socket);
         }
         socket.join(this.roomid);
-        this.users.push({Name:"",SocketID:socket.id})
+        this.users.push({Name:username?username:"Anon",SocketID:socket.id})
         socket.once("disconnect",()=>{
             this.Leave(socket)
         })
@@ -158,17 +159,17 @@ class Games{
         /** @type {Map.<String,Room>} - ルームのリスト(MAP) */
         this.rooms = new Map();
         this.io.on("connection", socket => {
-            socket.on("createRoom", (roomid, ack) => {
-                if(!this.isThereRoom(roomid)){
-                    this.newGame(roomid,socket).Join(socket);
+            socket.on("createRoom", (req, ack) => {
+                if(!this.isThereRoom(req.roomid)){
+                    this.newGame(req.roomid,socket).Join(socket,req.username);
                     ack({roomres: 0});
                 }else{
                     ack({roomres: -1});
                 }
             });
-            socket.on("joinRoom", (roomid, ack) => {
-                if(this.isThereRoom(roomid)){
-                    this.rooms.get(roomid).Join(socket);
+            socket.on("joinRoom", (req, ack) => {
+                if(this.isThereRoom(req.roomid)){
+                    this.rooms.get(req.roomid).Join(socket,req.username);
                     ack({roomres: 0});
                 }else{
                     ack({roomres: -2});

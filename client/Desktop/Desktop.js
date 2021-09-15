@@ -39,7 +39,8 @@ export function CallWindow(classname,window_id){
 export let SystemConfigs = {
     "installed_software": [],      // アプリストアから入れたソフト
     room:{
-        roomid:""
+        roomid:"",
+        username:"名無しの社員さん",
     },
     connected_wifi: [],
     completed_task: [],

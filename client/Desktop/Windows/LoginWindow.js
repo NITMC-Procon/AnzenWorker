@@ -26,13 +26,17 @@ export class LoginWindow extends Dialog {
         this.bodyElem.lastElementChild.lastElementChild.addEventListener('click', () => { this.room_button("create") })
         this.drag.classList.add("login-window")
 
-        /** @type {any} */ //Element型にはinnerTextがなくてIntellisenseがエラー吐いてめんどい
+        /** @type {HTMLInputElement} *///@ts-ignore
         this.roomid_input = document.getElementById("room_id")
+        /** @type {HTMLInputElement} *///@ts-ignore
+        this.username_input = document.getElementById("user_name")
         this.roomid_input.value = SystemConfigs.room.roomid
+        this.username_input.value = SystemConfigs.room.username
     }
     room_button(str) {
         let success_flag = false
         let roomid = this.roomid_input.value
+        let username = this.username_input.value
         const message = document.getElementById("room_message")
         const callbackfunc = (resp) => {
             if (!resp.roomres) {//ログイン成功時
@@ -54,9 +58,9 @@ export class LoginWindow extends Dialog {
             return
         }
         if (str == "join") {
-            Socket.emit("joinRoom", roomid, callbackfunc);
+            Socket.emit("joinRoom", {roomid:roomid,username:username}, callbackfunc);
         } else if (str == "create") {
-            Socket.emit("createRoom", roomid, callbackfunc);
+            Socket.emit("createRoom", {roomid:roomid,username:username}, callbackfunc);
         }
         SystemConfigs.room.roomid = roomid
     }
