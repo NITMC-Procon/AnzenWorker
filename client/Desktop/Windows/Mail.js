@@ -2,6 +2,7 @@
 import { Window } from "../Window.js"
 import { SystemConfigs,CallWindow } from "../Desktop.js"
 import { SendTo,SentToMeHandler,Socket } from "../../Functions/socket.js"
+import { Notify } from "../../Functions/notify.js"
 
 const html = `
 <div style="display: flex;width: 100%;height: 100%;user-select:none;">
@@ -244,6 +245,10 @@ export class Mail extends Window{
         let sub = this.newmailsub.value
         let to = this.newmailto.value
         let text = this.newmailtext.value
+        if(!to){
+            Notify("送信先が見つかりませんでした")
+            return
+        }
         SendTo(to,{event:"newMail",arg:{
             sub:sub,
             from:this.newmailfrom,
