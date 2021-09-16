@@ -38,6 +38,13 @@ export function CallWindow(classname, window_id) {
     }
 }
 
+export let Task = {
+    Completed_task:[],
+    Complete: Complete,
+    IsCompleted: IsCompleted,
+    EmitResult: EmitResult
+}
+
 export let SystemConfigs = {
     "installed_software": [],      // アプリストアから入れたソフト
     room: {
@@ -45,10 +52,11 @@ export let SystemConfigs = {
         username: "名無しの社員さん",
     },
     connected_wifi: [],
-    completed_task: [],
-    Task_Complete: Task_Complete,
-    Task_IsCompleted: Task_IsCompleted,
-    EmitResult: EmitResult
+    Task: Task,
+    completed_task: Task.Completed_task,
+    Task_Complete: Task.Complete,
+    Task_IsCompleted: Task.IsCompleted,
+    EmitResult: Task.EmitResult
 }
 
 function CreateWindow(func, window_id) {
@@ -66,12 +74,12 @@ function DestroyWindow(window_id) {
     }
 }
 
-function Task_Complete(task) {
-    SystemConfigs.completed_task.push(task)
+function Complete(task) {
+    Task.Completed_task.push(task)
 }
 
-function Task_IsCompleted(task) {
-    let res = SystemConfigs.completed_task.findIndex(t => t === task)
+function IsCompleted(task) {
+    let res = Task.Completed_task.findIndex(t => t === task)
     return (res === -1) ? false : true
 }
 
