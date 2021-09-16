@@ -37,7 +37,6 @@ export class Desktop extends Phaser.Scene {
         this.background = this.add.image(this.scale.width / 2, this.scale.height / 2, 'background').setOrigin(0.5, 0.5)//背景
         this.resizebg(this.scale.width, this.scale.height)//背景サイズ調整
         this.taskbar = this.add.rectangle(0, this.scale.height - 30, this.scale.width, 30, 0x1c1c1c).setOrigin(0);//タスクバー作成
-
         this.scale.on('resize', this.resize, this);//画面リサイズ時にresize関数を呼ぶ
     }
 
