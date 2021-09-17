@@ -64,8 +64,9 @@ div.login-buttons{
   border-style: solid;
   border-width: 2px;
   border-top-width: 0;
+  height: 100%;
 }
-.window>.window-titlebar{
+.window>.window-titlebar {
   width: 100%;
   height:2em;
   line-height: 2em;
@@ -90,18 +91,19 @@ div.login-buttons{
   justify-content: space-between;
   user-select:none;
 }
-.window-titlebar>.Xbutton{
-  background-color: red;
+.window>.window-titlebar .button{
   border: white 1px solid;
+  margin-left: 0.2em;
   border-radius: 4px;
   width: 1.4em;
   height: 1.4em;
-  color: white;
-  vertical-align: middle;
   position: relative;
   display: inline-block;
 }
-.Xbutton::before, .Xbutton::after { /* 共通設定 */
+.window>.window-titlebar .button.close{
+  background-color: red;
+}
+.window>.window-titlebar .button.close::before, .window>.window-titlebar .button.close::after { /* 共通設定 */
   content: " ";
   position: absolute;
   top: 50%;
@@ -111,15 +113,48 @@ div.login-buttons{
   background: #fff;
   border-radius: 2.5px; /* 棒の四隅の丸み*/
 }
-.Xbutton::before {
+.window>.window-titlebar .button.close::before {
   transform: translate(-50%,-50%) rotate(45deg);
 }
-.Xbutton::after {
+.window>.window-titlebar .button.close::after {
   transform: translate(-50%,-50%) rotate(-45deg);
 }
-.window-body{
-  height: 100%;
+.window>.window-titlebar .button.fullscr{
+  background-color: linear-gradient(to bottom,rgb(35, 147, 251),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(0,110, 249),rgb(0, 62, 196));
 }
+.fullscr::after{
+  content:" ";
+  position: absolute;
+  top:50%;left: 50%;
+  transform: translate(-50%,-50%);
+  height: 70%; width: 70%;
+  border:white solid 2px;
+  border-top-width: 5px;
+  box-sizing: border-box;
+  border-radius: 1px;
+}
+.window>.window-titlebar .button.minimize{
+  background-color: linear-gradient(to bottom,rgb(35, 147, 251),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(0,110, 249),rgb(0, 62, 196));
+  border: white 1px solid;
+  border-radius: 4px;
+  width: 1.4em;
+  height: 1.4em;
+  color: white;
+  vertical-align: middle;
+  position: relative;
+  display: inline-block;
+}
+.window>.window-titlebar .button.minimize::after{
+  content:" ";
+  position: absolute;
+  top:60%;left: 45%;
+  transform: translate(-50%,0%);
+  height: 20%; width: 60%;
+  box-sizing: border-box;
+  border-radius: 1px;
+  background-color: white;
+}
+
 #notification_area{
   position:absolute;
   right:1em;bottom:2em;

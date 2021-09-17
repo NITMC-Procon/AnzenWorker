@@ -4,7 +4,10 @@
  * @typedef  {Object} Config - ウィンドウ用コンフィグ
  * @property {!String=} style - ウィンドウエレメントに適用されるスタイル
  * @property {!Boolean=} no_xbutton - ウィンドウの閉じるボタンの非表示
- * @property {!Boolean=} no_resizable
+ * @property {!Boolean=} no_resizable - ウィンドウのりサイズの無効化
+ * @property {!Boolean=} no_xbutton - ウィンドウの閉じるボタンの非表示
+ * @property {!Boolean=} no_fullscrbutton - ウィンドウのフルスクリーンボタンの非表示
+ * @property {!Boolean=} no_minimizebutton - ウィンドウの最小化ボタンの非表示
  */
 
 /**
@@ -36,7 +39,11 @@ export class Window{
             <div class="window" style="${(this.configs != null && this.configs.style) ? this.configs.style : ""}">
                 <div class="window-titlebar">
                     <span>${this.title}</span>
-                    ${(this.configs != null && !this.configs.no_xbutton) ? '<span class="Xbutton"></span>' : ''}
+                    <div style="display: flex;">
+                      ${(this.configs != null && !this.configs.no_minimizebutton) ? '<span class="button minimize"></span>' : ''}
+                      ${(this.configs != null && !this.configs.no_fullscrbutton) ? '<span class="button fullscr"></span>' : ''}
+                      ${(this.configs != null && !this.configs.no_xbutton) ? '<span class="button close"></span>' : ''}
+                    </div>
                 </div>
                 <div class="window-body">
                     ${this.html}
@@ -54,46 +61,76 @@ export class Window{
                 </div>`:""}
             </div>`)
         /** @type {HTMLElement} *///@ts-ignore
-        this.drag = this.parent.windowarea.insertAdjacentElement('afterbegin', windowhtml)
-        if(!this.drag.style["min-width"]) this.drag.style["min-width"]= this.title.length + 2 + "em";
-        if(!this.drag.style["min-height"]) this.drag.style["min-height"]= "2em";
+        this.window = this.parent.windowarea.insertAdjacentElement('afterbegin', windowhtml)
+        if(!this.window.style["min-width"]) this.window.style["min-width"]= this.title.length + 2 + "em";
+        if(!this.window.style["min-height"]) this.window.style["min-height"]= "2em";
         
-        this.drag.style.top = Math.random() * (document.documentElement.clientHeight / 2) + "px"
-        this.drag.style.left = Math.random() * (document.documentElement.clientWidth / 2) + "px"
-        this.drag.style["z-index"] = ++this.parent.windowindex;
+        this.window.style.top = Math.random() * (document.documentElement.clientHeight / 2) + "px"
+        this.window.style.left = Math.random() * (document.documentElement.clientWidth / 2) + "px"
+        this.window.style["z-index"] = ++this.parent.windowindex;
         for (const eventName of ['mouseup', 'mousedown', 'touchstart', 'touchend']) {
-            this.drag.addEventListener(eventName, e => e.stopPropagation(), { passive: true });
+            this.window.addEventListener(eventName, e => e.stopPropagation(), { passive: true });
         }
         
-        this.titleElem = this.drag.firstElementChild.firstElementChild
-        this.bodyElem = this.drag.firstElementChild.nextElementSibling
-        
+        this.titleElem = this.window.firstElementChild.firstElementChild
+        this.bodyElem = this.window.firstElementChild.nextElementSibling
+
+        let btns = this.window.firstElementChild.lastElementChild
+        this.buttons = {
+            xbutton:(this.configs != null && !this.configs.no_xbutton)?btns.querySelector(".button.close"):null,
+            fullscrbutton:(this.configs != null && !this.configs.no_fullscrbutton)?btns.querySelector(".button.fullscr"):null,
+            minimizebutton:(this.configs != null && !this.configs.no_minimizebutton)?btns.querySelector(".button.minimize"):null,
+        }
+        if(this.buttons.xbutton){
+            this.buttons.xbutton.addEventListener('click', () => {
+                this.destroy()
+            },{passive:true});
+            for (const eventName of ['mousedown', 'touchstart']) {
+                this.buttons.xbutton.addEventListener(eventName, (e) => {//アロー関数にするとthisがインスタンスを示すようになる
+                    e.stopPropagation()
+                },{passive:true});
+            }
+        }
+        if(this.buttons.fullscrbutton){
+            for (const eventName of ['mousedown', 'touchstart']) {
+                this.buttons.fullscrbutton.addEventListener(eventName, (e) => {//アロー関数にするとthisがインスタンスを示すようになる
+                    e.stopPropagation()
+                },{passive:true});
+            }
+        }
+        if(this.buttons.minimizebutton){
+            for (const eventName of ['mousedown', 'touchstart']) {
+                this.buttons.minimizebutton.addEventListener(eventName, (e) => {//アロー関数にするとthisがインスタンスを示すようになる
+                    e.stopPropagation()
+                },{passive:true});
+            }
+        }
         this.makeDraggable()
-        this.makeResizable()
+        if(!configs.no_resizable)this.makeResizable()
     }
     makeDraggable(){
         for (const eventName of ['mousedown', 'touchstart']) {
-            this.drag.addEventListener(eventName, () => {//アロー関数にするとthisがインスタンスを示すようになる
+            this.window.addEventListener(eventName, () => {//アロー関数にするとthisがインスタンスを示すようになる
                 this.bringToTop()
             }, { passive: true });
         }
         const mdown = (e) => {
-            this.drag.classList.add("dragging");
+            this.window.classList.add("dragging");
             var event = e;
             //タッチデイベントとマウスのイベントの差異を吸収
             if (e.type !== "mousedown") {
                 event = e.changedTouches[0];
             }
             //要素内の相対座標
-            this.localx = event.pageX - this.drag.offsetLeft;
-            this.localy = event.pageY - this.drag.offsetTop;
+            this.localx = event.pageX - this.window.offsetLeft;
+            this.localy = event.pageY - this.window.offsetTop;
             //ムーブイベントにコールバック
             document.body.addEventListener("mousemove", mmove, { passive: false });
             document.body.addEventListener("touchmove", mmove, { passive: false });
     
             //マウスボタンが離されたとき、またはカーソルが外れたとき発火
-            this.drag.addEventListener("mouseup", mup, { passive: true });
-            this.drag.addEventListener("touchend", mup, { passive: true });
+            this.window.addEventListener("mouseup", mup, { passive: true });
+            this.window.addEventListener("touchend", mup, { passive: true });
             document.body.addEventListener("mouseleave", mup, { passive: true });
             document.body.addEventListener("touchleave", mup, { passive: true });
         }
@@ -106,41 +143,28 @@ export class Window{
             //フリックしたときに画面を動かさないようにデフォルト動作を抑制
             e.preventDefault();
     
-            this.drag.style.top = event.pageY - this.localy + "px";
-            this.drag.style.left = event.pageX - this.localx + "px";
+            this.window.style.top = event.pageY - this.localy + "px";
+            this.window.style.left = event.pageX - this.localx + "px";
         }
         //マウスボタンが上がったら発火
         const mup = (e) => {
             //ムーブベントハンドラの消去
             document.body.removeEventListener("mousemove", mmove, false);
             document.body.removeEventListener("touchmove", mmove, false);
-            this.drag.removeEventListener("mouseup", mup, false);
-            this.drag.removeEventListener("touchend", mup, false);
+            this.window.removeEventListener("mouseup", mup, false);
+            this.window.removeEventListener("touchend", mup, false);
             document.body.removeEventListener("mouseleave", mup, false);
             document.body.removeEventListener("touchleave", mup, false);
             //クラス名 .drag も消す
-            this.drag.classList.remove("dragging");
+            this.window.classList.remove("dragging");
         }
     
         //ウィンドウバークリックで発火
-        this.drag.firstElementChild.addEventListener("mousedown", mdown, { passive: true });
-        this.drag.firstElementChild.addEventListener("touchstart", mdown, { passive: true });
-
-        if(this.configs != null && !this.configs.no_xbutton){
-            this.Xbutton = this.drag.firstElementChild.lastElementChild
-            this.Xbutton.addEventListener('click', () => {
-                this.destroy()
-            })
-            //閉じるボタンクリックではドラッグしないように…
-            for (const eventName of ['mousedown', 'touchstart']) {
-                this.Xbutton.addEventListener(eventName, (e) => {//アロー関数にするとthisがインスタンスを示すようになる
-                    e.stopPropagation()
-                },{passive:true});
-            }
-        }
+        this.window.firstElementChild.addEventListener("mousedown", mdown, { passive: true });
+        this.window.firstElementChild.addEventListener("touchstart", mdown, { passive: true });
     }
     makeResizable(){
-        Array.from(this.drag.lastElementChild.children).forEach(
+        Array.from(this.window.lastElementChild.children).forEach(
         /** @param {HTMLElement} child */
         (child, i) => {
             let top = i == 0 || i == 4 || i == 7 ? true : false;
@@ -182,8 +206,8 @@ export class Window{
                     //@ts-ignore
                     event = e.changedTouches[0];
                 }
-                this.localx = event.pageX - this.drag.offsetLeft;
-                this.localy = event.pageY - this.drag.offsetTop;
+                this.localx = event.pageX - this.window.offsetLeft;
+                this.localy = event.pageY - this.window.offsetTop;
                 let position = this.bodyElem.getBoundingClientRect()
 
                 const move = (e) => {
@@ -193,22 +217,22 @@ export class Window{
                     }
                     //フリックしたときに画面を動かさないようにデフォルト動作を抑制
                     e.preventDefault();
-                    if (bottom) this.drag.style.height = event.pageY - position.top + this.titleElem.clientHeight + "px";
-                    if (right) this.drag.style.width = event.pageX - position.left + "px";
+                    if (bottom) this.window.style.height = event.pageY - position.top + this.titleElem.clientHeight + "px";
+                    if (right) this.window.style.width = event.pageX - position.left + "px";
                     if (top){
-                        this.drag.style.top = event.pageY - this.localy + "px";
-                        this.drag.style.height = position.top + position.height - event.pageY + this.localy + "px";
+                        this.window.style.top = event.pageY - this.localy + "px";
+                        this.window.style.height = position.top + position.height - event.pageY + this.localy + "px";
                     }
                     if (left){
-                        this.drag.style.left = event.pageX - this.localx + "px";
-                        this.drag.style.width = position.left + position.width - event.pageX + this.localx + "px";
+                        this.window.style.left = event.pageX - this.localx + "px";
+                        this.window.style.width = position.left + position.width - event.pageX + this.localx + "px";
                     }
                 }
                 const up = (e) => {
                     document.body.removeEventListener("mousemove", move, false);
                     document.body.removeEventListener("touchmove", move, false);
-                    this.drag.lastElementChild.firstElementChild.removeEventListener("mouseup", up, false);
-                    this.drag.lastElementChild.firstElementChild.removeEventListener("touchend", up, false);
+                    this.window.lastElementChild.firstElementChild.removeEventListener("mouseup", up, false);
+                    this.window.lastElementChild.firstElementChild.removeEventListener("touchend", up, false);
                     document.body.removeEventListener("mouseleave", up, false);
                     document.body.removeEventListener("touchleave", up, false);
                 }
@@ -216,8 +240,8 @@ export class Window{
                 document.body.addEventListener("touchmove", move, { passive: false });
         
                 //マウスボタンが離されたとき、またはカーソルが外れたとき発火
-                this.drag.addEventListener("mouseup", up, { passive: true });
-                this.drag.addEventListener("touchend", up, { passive: true });
+                this.window.addEventListener("mouseup", up, { passive: true });
+                this.window.addEventListener("touchend", up, { passive: true });
                 document.body.addEventListener("mouseleave", up, { passive: true });
                 document.body.addEventListener("touchleave", up, { passive: true });
             }
@@ -230,13 +254,13 @@ export class Window{
         this.titleElem.textContent = this.title
     }
     bringToTop(){
-        this.drag.style["z-index"] = ++this.parent.windowindex;
+        this.window.style["z-index"] = ++this.parent.windowindex;
     }
     destroy(){
         if (this.parent.windows[this.window_id]){
             delete this.parent.windows[this.window_id]
         }
-        this.drag.remove()
+        this.window.remove()
     }
 }
 

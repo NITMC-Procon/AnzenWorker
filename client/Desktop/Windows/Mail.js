@@ -209,11 +209,12 @@ export class Mail extends Window{
             this.newmailfrom = res.myID
             this.newmailto.innerHTML = ""
             let temp = ""
-            console.log(res)
-            res.users.forEach((user)=>{
-                if(user.SocketID != this.newmailfrom) temp += `<option value="${user.SocketID}">${user.Name?user.Name:user.SocketID}</option>`
-            })
-            this.newmailto.innerHTML = temp
+            if(res.users){
+                res.users.forEach((user)=>{
+                    if(user.SocketID != this.newmailfrom) temp += `<option value="${user.SocketID}">${user.Name?user.Name:user.SocketID}</option>`
+                })
+                this.newmailto.innerHTML = temp
+            }
         })
 
         this.refreshMails()

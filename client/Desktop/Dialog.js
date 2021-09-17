@@ -25,6 +25,8 @@
  * @typedef  {Object} Config - ウィンドウ用コンフィグ
  * @property {!String=} style - ウィンドウエレメントに適用されるスタイル
  * @property {!Boolean=} no_xbutton - ウィンドウの閉じるボタンの非表示
+ * @property {!Boolean=} no_fullscrbutton - ウィンドウのフルスクリーンボタンの非表示
+ * @property {!Boolean=} no_minimizebutton - ウィンドウの最小化ボタンの非表示
  */
 
 /**
@@ -52,12 +54,21 @@ export class Dialog{
         this.configs = configs;
         this.window_id = "";
 
+        // デフォルトで非表示
+        if(this.configs.no_xbutton==undefined)this.configs.no_xbutton = true
+        if(this.configs.no_fullscrbutton==undefined)this.configs.no_fullscrbutton = true
+        if(this.configs.no_minimizebutton==undefined)this.configs.no_minimizebutton = true
+
         let windowhtml = createElementFromHTML(`
         <div class="overlay">
             <div class="window" style="${(this.configs != null && this.configs.style) ? this.configs.style : ""}">
                 <div class="window-titlebar">
                     <span>${this.title}</span>
-                    ${(this.configs != null && !this.configs.no_xbutton) ? '<span class="Xbutton"></span>' : ''}
+                    <div style="display: flex;">
+                      ${(this.configs != null && !this.configs.no_minimizebutton) ? '<span class="button minimize"></span>' : ''}
+                      ${(this.configs != null && !this.configs.no_fullscrbutton) ? '<span class="button fullscr"></span>' : ''}
+                      ${(this.configs != null && !this.configs.no_xbutton) ? '<span class="button close"></span>' : ''}
+                    </div>
                 </div>
                 <div class="window-body">
                     ${this.html}
@@ -79,16 +90,35 @@ export class Dialog{
         
         this.bodyElem = this.drag.lastElementChild
         this.titleElem = this.drag.firstElementChild.firstElementChild
-        if(this.configs != null && !this.configs.no_xbutton){
-            this.Xbutton = this.drag.firstElementChild.lastElementChild
-            this.Xbutton.addEventListener('click', () => {
+
+        let btns = this.drag.firstElementChild.lastElementChild
+        this.buttons = {
+            xbutton:(this.configs != null && !this.configs.no_xbutton)?btns.querySelector(".button.close"):null,
+            fullscrbutton:(this.configs != null && !this.configs.no_fullscrbutton)?btns.querySelector(".button.fullscr"):null,
+            minimizebutton:(this.configs != null && !this.configs.no_minimizebutton)?btns.querySelector(".button.minimize"):null,
+        }
+        if(this.buttons.xbutton){
+            this.buttons.xbutton.addEventListener('click', () => {
                 this.destroy()
-            })
-            //閉じるボタンクリックではドラッグしないように…
+            },{passive:true});
             for (const eventName of ['mousedown', 'touchstart']) {
-                this.Xbutton.addEventListener(eventName, (e) => {//アロー関数にするとthisがインスタンスを示すようになる
+                this.buttons.xbutton.addEventListener(eventName, (e) => {//アロー関数にするとthisがインスタンスを示すようになる
                     e.stopPropagation()
-                });
+                },{passive:true});
+            }
+        }
+        if(this.buttons.fullscrbutton){
+            for (const eventName of ['mousedown', 'touchstart']) {
+                this.buttons.fullscrbutton.addEventListener(eventName, (e) => {//アロー関数にするとthisがインスタンスを示すようになる
+                    e.stopPropagation()
+                },{passive:true});
+            }
+        }
+        if(this.buttons.minimizebutton){
+            for (const eventName of ['mousedown', 'touchstart']) {
+                this.buttons.minimizebutton.addEventListener(eventName, (e) => {//アロー関数にするとthisがインスタンスを示すようになる
+                    e.stopPropagation()
+                },{passive:true});
             }
         }
     }
