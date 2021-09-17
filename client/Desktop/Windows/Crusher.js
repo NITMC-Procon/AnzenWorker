@@ -3,8 +3,8 @@ import { Window } from "../Window.js"
 import { CallWindow } from "../Desktop.js"
 import { Socket } from '../../Functions/socket.js'
 
-const html = `<div>
-<div style="width: 20em;display: flex;height: 15em;justify-content: center;align-items: center;" class="rainbow">
+const html = `
+<div style="display: flex;justify-content: center;align-items: center;height:100%" class="rainbow">
 <h1 style="color:white;margin:0">LUCKY DAY</h1>
 </div>
 <style type="text/css">
@@ -54,10 +54,10 @@ const html = `<div>
     }
   </style>
 `
-
+const style = "width: 20em;height: 15em;"
 export class Crusher extends Window {
     constructor(parent) {
-        super(html, "NyAnCaT", parent, {no_xbutton: false})
+        super(html, "NyAnCaT", parent, {style:style ,no_xbutton: false})
         this.Xbutton.addEventListener('click',()=>{
             CallWindow("Crusher",Math.random())
             CallWindow("Crusher",Math.random())
