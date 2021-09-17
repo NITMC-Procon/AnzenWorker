@@ -161,3 +161,7 @@ function createElementFromHTML(html) {
     template.innerHTML = html;
     return template.content.firstElementChild;
 }
+
+export function RandomData(){
+    return "data-" + Math.random().toString(32).substring(2)
+}
