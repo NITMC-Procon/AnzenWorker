@@ -6,6 +6,7 @@ import { Crusher } from './Windows/Crusher.js'
 import { Mail } from './Windows/Mail.js'
 import { InternetBrowser } from './Windows/InternetBrowser.js'
 import { Store } from './Windows/Store.js'
+import { ResultWindow } from './Windows/ResultWindow.js'
 
 //ココにウィンドウのリストを追加していく
 const windowlist = {
@@ -15,7 +16,8 @@ const windowlist = {
     "Crusher": Crusher,
     "Mail": Mail,
     "InternetBrowser": InternetBrowser,
-    "Store": Store
+    "Store": Store,
+    "ResultWindow":ResultWindow
 }
 
 let parent = {
@@ -39,10 +41,18 @@ export function CallWindow(classname, window_id) {
 }
 
 export let Task = {
-    Completed_task:[],
+    CompletedTask:[],
+    SucceedTask:[],
+    FailedTask:[],
     Complete: Complete,
     IsCompleted: IsCompleted,
     EmitResult: EmitResult
+}
+
+export let Result = {
+    Revenue:0,
+    SecurityScore:0,
+    Flag:[],
 }
 
 export let SystemConfigs = {
@@ -53,7 +63,10 @@ export let SystemConfigs = {
     },
     connected_wifi: [],
     Task: Task,
-    completed_task: Task.Completed_task,
+    Result:Result,
+    
+    // Deprecated
+    completed_task: Task.CompletedTask,
     Task_Complete: Task.Complete,
     Task_IsCompleted: Task.IsCompleted,
     EmitResult: Task.EmitResult
@@ -74,12 +87,17 @@ function DestroyWindow(window_id) {
     }
 }
 
-function Complete(task) {
-    Task.Completed_task.push(task)
+function Complete(task,failed=false) {
+    Task.CompletedTask.push(task)
+    if(failed){
+        Task.FailedTask.push(task)
+    }else{
+        Task.SucceedTask.push(task)
+    }
 }
 
 function IsCompleted(task) {
-    let res = Task.Completed_task.findIndex(t => t === task)
+    let res = Task.CompletedTask.findIndex(t => t === task)
     return (res === -1) ? false : true
 }
 
@@ -94,6 +112,7 @@ export let DesktopIconList = [
     { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { CallWindow("Mail", "Window_Mail") } },
     { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { CallWindow("Store", "Window_Store") } },
     { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { CallWindow("LoginWindow", "Window_LoginWindow") } },
+    { Name: "リザルト 画面", Iconurl: "/images/padlock.png", Clickfunc: () => { CallWindow("ResultWindow", "Window_ResultWindow") } },
 ]
 
 export let TaskbarIconList = [
