@@ -174,7 +174,7 @@ export class Window{
             // if ((top && left) || (right && bottom)) child.style.cursor = "nwse-resize";
             // if ((top && right) || (left && bottom)) child.style.cursor = "nesw-resize";
 
-            child.addEventListener('mousedown',(e)=>{
+            const mousedown = (e)=>{
                 e.stopPropagation()
                 /** @type {any} */
                 let event = e
@@ -220,7 +220,9 @@ export class Window{
                 this.drag.addEventListener("touchend", up, { passive: true });
                 document.body.addEventListener("mouseleave", up, { passive: true });
                 document.body.addEventListener("touchleave", up, { passive: true });
-            })
+            }
+            child.addEventListener("mousedown", mousedown, { passive: true });
+            child.addEventListener("touchstart", mousedown, { passive: true });
         })
     }
     reload(){
