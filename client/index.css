@@ -51,39 +51,37 @@ div.login-buttons{
 
 .window {
   position:absolute;
-  border-color: rgb(0, 62, 196) ;
-  border-style: solid;
-  border-top-right-radius: 6px;
-  border-top-left-radius: 6px;
-  border-width: 2px;
+  display: flex;
+  flex-direction: column;
   background-color: whitesmoke;
-  border-top-width: 2em;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
   box-sizing:content-box;
 }
 .window-body{
   overflow: hidden;
-}
-.window::before{
-  content: ' ';
-  position:absolute;
-  top: -2em;
-  height:2em;
-  border-top-right-radius: 6px;
-  border-top-left-radius: 6px;
-  width: 100%;
-  box-sizing: border-box;
-  background-image: linear-gradient(to bottom,rgb(35, 147, 251),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(0,110, 249),rgb(0, 62, 196));
+  border-color: rgb(0, 62, 196) ;
+  border-style: solid;
+  border-width: 2px;
+  border-top-width: 0;
 }
 .window>.window-titlebar{
-  position:absolute;
-  top: -2em;
   width: 100%;
   height:2em;
   line-height: 2em;
   padding-left: 0.5em;
   padding-right: 0.2em;
   vertical-align: middle;
+  overflow: hidden;
+  flex-shrink: 0;
   
+  background-image: linear-gradient(to bottom,rgb(35, 147, 251),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(0,110, 249),rgb(0, 62, 196));
+  border-color: rgb(0, 62, 196) ;
+  border-style: solid;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
+  border-width: 0 1px 0 1px;
+
   color:white;
   box-sizing: border-box;
   display:flex;
