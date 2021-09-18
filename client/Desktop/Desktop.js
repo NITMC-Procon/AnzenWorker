@@ -122,26 +122,79 @@ export let TaskbarIconList = [
 export function RefreshDesktop() {
     const desktop_icons = document.getElementById("desktop_icons")
     desktop_icons.innerHTML = "";
+    let elm_drag
     DesktopIconList.forEach((icon) => {
-        let temp = createElementFromHTML(`<div class="desktop_icon">
+        /** @type {HTMLElement} *///@ts-ignore
+        let temp = createElementFromHTML(`<div class="desktop_icon" draggable="true">
                 <img src="${icon.Iconurl}" class="desktop_icon_image"></img>
                 <span class="desktop_icon_text">${icon.Name}</span>
-            </div>`)
+                </div>`)
         temp.addEventListener('dblclick', () => {
             if (typeof icon.Clickfunc == "function") icon.Clickfunc();
+            temp.classList.remove("selected");
         })
-        temp.addEventListener('click', () => {
+        temp.addEventListener('mousedown', (e) => {
             const selectother = (e) => {
                 if (e.target.closest('.selected') !== temp) {
                     temp.classList.remove("selected");
                     desktop_icons.removeEventListener('mousedown', selectother)
                 }
             }
+            if(!temp.classList.contains("selected"))desktop_icons.addEventListener('mousedown', selectother)
             temp.classList.add("selected");
-            desktop_icons.addEventListener('mousedown', selectother)
         })
         desktop_icons.insertAdjacentElement('beforeend', temp)
+
+
+        // 以下、ドラッグによるアイコン移動
+        temp.addEventListener("dragstart", (e) => {
+            elm_drag = temp;
+        });
+        
+        temp.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            let rect = temp.getBoundingClientRect();
+            if ((e.clientY - rect.top) < (temp.clientHeight / 2)) {
+                //マウスカーソルの位置が要素の半分より上
+                temp.style.borderTop = '2px solid white';
+                temp.style.borderBottom = '';
+            } else {
+                //マウスカーソルの位置が要素の半分より下
+                temp.style.borderTop = '';
+                temp.style.borderBottom = '2px solid white';
+            }
+        });
+        temp.addEventListener('dragleave', (e) => {
+            temp.style.borderTop = '';
+            temp.style.borderBottom = '';
+        });
+        temp.addEventListener('drop', (e) => {
+            if(!elm_drag)return
+            e.preventDefault();
+            e.stopPropagation();
+            let rect = temp.getBoundingClientRect();
+            if ((e.clientY - rect.top) < (temp.clientHeight / 2)) {
+                //マウスカーソルの位置が要素の半分より上
+                temp.parentElement.insertBefore(elm_drag, temp);
+            } else {
+                //マウスカーソルの位置が要素の半分より下
+                temp.parentElement.insertBefore(elm_drag, temp.nextSibling);
+            }
+            temp.style.borderTop = '';
+            temp.style.borderBottom = '';
+            elm_drag = null
+        });
     })
+    desktop_icons.addEventListener('drop',(e)=>{
+        if(!elm_drag)return;
+        e.preventDefault();
+        desktop_icons.insertBefore(elm_drag, desktop_icons.lastChild.nextSibling);
+        elm_drag = null
+    });
+    desktop_icons.addEventListener('dragover', (e) => {
+        if(!elm_drag)return
+        e.preventDefault();
+    });
 }
 
 
