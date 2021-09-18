@@ -1,5 +1,7 @@
 body {
   margin: 0 auto;
+  height: 100%;
+  overflow: hidden;
 }
 
 .overlay{
@@ -270,7 +272,8 @@ div.login-buttons{
   justify-content: center;
   align-items: center;
   width: 80px;
-  margin: 10px;
+  padding: 10px;
+  border:2px solid transparent;
 }
 #desktop_icons>.desktop_icon>.desktop_icon_image{
   object-fit: contain;
