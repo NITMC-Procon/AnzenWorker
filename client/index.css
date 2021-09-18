@@ -68,6 +68,15 @@ div.login-buttons{
   border-top-width: 0;
   height: 100%;
 }
+.window>.window-titlebar>span {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  flex-shrink: 1;
+}
+.window>.window-titlebar>div {
+  flex-shrink: 0;
+}
 .window>.window-titlebar {
   width: 100%;
   height:2em;
