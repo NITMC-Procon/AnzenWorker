@@ -57,6 +57,14 @@ export class LoginWindow extends Dialog {
             callbackfunc(0)//とりあえず成功扱い、ルームには入らない
             return
         }
+        if(SystemConfigs.room.status && SystemConfigs.room.roomid != roomid){//すでにゲーム始まってれば
+            message.innerText = "すでにゲームが開始されています!"
+            return
+        }
+        if(SystemConfigs.room.roomid == roomid){//すでに入ってる場所と同じなら
+            callbackfunc(0)
+            return
+        }
         if (str == "join") {
             Socket.emit("joinRoom", {roomid:roomid,username:username}, callbackfunc);
         } else if (str == "create") {

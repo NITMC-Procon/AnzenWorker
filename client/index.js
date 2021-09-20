@@ -1,5 +1,5 @@
 import { Desktop } from './scene/Desktop.js';
-import { CallWindow } from './Desktop/Desktop.js'
+import { CallWindow, SystemConfigs } from './Desktop/Desktop.js'
 import { Notify } from './Functions/notify.js';
 import { Handlers, Connect_to_server, Socket } from './Functions/socket.js';
 
@@ -28,10 +28,31 @@ window.addEventListener("load", () => {
     Connect_to_server(ServerAddress)
     
     Handlers["gameInfo"] = (msg) => {
-        console.log("status changed: " + JSON.stringify(msg));
         switch (msg.status) {
-            case "start": Notify("ゲームが開始されました"); break;
-            case "stop":Notify("ゲームが終了しました"); break;
+            case "start":gamestart(msg); break;
+            case "stop":gamestop(msg); break;
         }
     };
 });
+
+
+let stoptimer
+function gamestart(msg){
+    if(!SystemConfigs.room.status){//開始されてなければ
+        SystemConfigs.room.startat = msg.startat
+        SystemConfigs.room.duration = msg.duration
+        SystemConfigs.room.status=true
+        stoptimer = setTimeout(gamestop, msg.duration);
+    
+        Notify("ゲームが開始されました")
+    }
+}
+
+function gamestop(msg){
+    if(SystemConfigs.room.status){//終了してなければ
+        clearTimeout(stoptimer)
+        SystemConfigs.room.status=false
+        Notify("ゲームが終了しました")
+        CallWindow("ResultWindow", "Window_ResultWindow")
+    }
+}

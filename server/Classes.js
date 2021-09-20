@@ -28,6 +28,8 @@ class Room {
         this.owners = [];
         /** @type {Array.<User>} */
         this.users = [];
+        /** @type {NodeJS.Timeout} */
+        this.stoptimer = null;
         // /** @type {Set.<String>} */
         // this.Clients = parent.io.sockets.adapter.rooms.get(roomid);
     }
@@ -124,20 +126,31 @@ class Room {
             return {"status":"failed","message":"You dont have permission"}
         }
         let res = {}
+        let startat = Date.now()
+        let duration = info.duration || 1000 * 60 * 10 //10分
+        const timer = () =>{
+            if(this.status){
+                this.status=false
+                let res = {"status":"stop","message":"game finished"}
+                this.SendToAll("gameInfo",res)
+            }
+        }
         if(info.StartGame){
             if(!this.status){
                 //{}にゲーム情報ぶち込む
                 this.status=true
-                res = {"status":"start","message":"game started"}
+                res = {"status":"start","message":"game started","startat":startat,"duration":duration}
                 this.SendToAll("gameInfo",res)
+                this.stoptimer = setTimeout(timer, duration);
             }else{
                 res = {"status":"started","message":"game already started"}
             }
-        } else if(info.StopGame){        
+        } else if(info.StopGame){
             if(this.status){
                 this.status=false
                 res = {"status":"stop","message":"game finished"}
                 this.SendToAll("gameInfo",res)
+                clearTimeout(this.stoptimer);
             }else{
                 res = {"status":"stopped","message":"game already finished"}
             }
