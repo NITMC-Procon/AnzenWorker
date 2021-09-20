@@ -1,11 +1,13 @@
 'use strict'
-import { Window } from "../Window.js"
+import { Window, RandomData } from "../Window.js"
 import { SystemConfigs,CallWindow } from "../Desktop.js"
 import { SendTo,SentToMeHandler,Socket } from "../../Functions/socket.js"
 import { Notify } from "../../Functions/notify.js"
 
+const RandData = RandomData()
+
 const html = `
-<div style="display: flex;width: 100%;height: 100%;user-select:none;">
+<div style="display: flex;width: 100%;height: 100%;user-select:none;" ${RandData}>
   <div style="width: 15em;overflow:auto;">
     <div style="display: flex;justify-content: center;align-items: center;flex-direction: row;">
         <h2 style="padding: 0.2em;margin:0;text-align: center;">受信ボックス</h2>
@@ -40,19 +42,19 @@ const html = `
   </div>
 </div>
 <style>
-  .mailbox {
+  div[${RandData}] .mailbox {
     margin: 0.2em;
     padding: 0.2em;
     background-color: rgb(235, 235, 235);
     overflow: hidden;
   }
 
-  .mailbox>* {
+  div[${RandData}] .mailbox>* {
     margin: 0;
     white-space: nowrap;
   }
 
-  .mail {
+  div[${RandData}] .mail {
     border-left: black solid 2px;
     padding-left: 0.2em;
     padding-right: 0.2em;
@@ -60,7 +62,7 @@ const html = `
     overflow:auto;
   }
 
-  .file {
+  div[${RandData}] .file {
     display: inline-block;
     padding: 0.5em 1em;
     background-color: rgb(104, 104, 104);
@@ -86,7 +88,9 @@ export let maillist = [
         file:{
             name:"file.exe",
             func:()=>{ CallWindow("Crusher",Math.random())}
-        }
+        },
+        type:"virus",
+        read:true
     },
     {
         sub:"メール",
@@ -279,6 +283,10 @@ export class Mail extends Window{
         }
     }
     deleteMail(){
+        if(this.keep.type == "virus"){//ウイルスメール削除
+            SystemConfigs.Result.Revenue += 100;
+            SystemConfigs.Result.SecurityScore += 200;
+        }
         maillist = maillist.filter((item)=> {
             return item !== this.keep;
         });
@@ -295,6 +303,10 @@ export class Mail extends Window{
                 </div>`)
             temp.addEventListener('click',()=>{
                 this.select(mail)
+                if(!mail.read){ //未読メール
+                    mail.read = true;
+                    SystemConfigs.Result.Revenue += 100;
+                }
             })
             this.maillist.insertAdjacentElement('beforeend',temp)
         })
