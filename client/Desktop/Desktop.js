@@ -60,6 +60,11 @@ export let SystemConfigs = {
     room: {
         roomid: "",
         username: "名無しの社員さん",
+        users:[],
+        myID:"",        // 自分のソケットID
+        status:false,
+        startat:0,      // 開始時刻
+        duration:0,     // ゲームの長さ(ms)
     },
     connected_wifi: [],
     Task: Task,
