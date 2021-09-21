@@ -7,6 +7,7 @@ import { Mail } from './Windows/Mail.js'
 import { InternetBrowser } from './Windows/InternetBrowser.js'
 import { Store } from './Windows/Store.js'
 import { ResultWindow } from './Windows/ResultWindow.js'
+import { JobManager } from './Windows/JobManager.js'
 
 //ココにウィンドウのリストを追加していく
 const windowlist = {
@@ -17,7 +18,8 @@ const windowlist = {
     "Mail": Mail,
     "InternetBrowser": InternetBrowser,
     "Store": Store,
-    "ResultWindow":ResultWindow
+    "ResultWindow": ResultWindow,
+    "JobManager": JobManager
 }
 
 let parent = {
@@ -41,18 +43,18 @@ export function CallWindow(classname, window_id) {
 }
 
 export let Task = {
-    CompletedTask:[],
-    SucceedTask:[],
-    FailedTask:[],
+    CompletedTask: [],
+    SucceedTask: [],
+    FailedTask: [],
     Complete: Complete,
     IsCompleted: IsCompleted,
     EmitResult: EmitResult
 }
 
 export let Result = {
-    Revenue:0,
-    SecurityScore:0,
-    Flag:[],
+    Revenue: 0,
+    SecurityScore: 0,
+    Flag: [],
 }
 
 export let SystemConfigs = {
@@ -60,16 +62,16 @@ export let SystemConfigs = {
     room: {
         roomid: "",
         username: "名無しの社員さん",
-        users:[],
-        myID:"",        // 自分のソケットID
-        status:false,
-        startat:0,      // 開始時刻
-        duration:0,     // ゲームの長さ(ms)
+        users: [],
+        myID: "",        // 自分のソケットID
+        status: false,
+        startat: 0,      // 開始時刻
+        duration: 0,     // ゲームの長さ(ms)
     },
     connected_wifi: [],
     Task: Task,
-    Result:Result,
-    
+    Result: Result,
+
     // Deprecated
     completed_task: Task.CompletedTask,
     Task_Complete: Task.Complete,
@@ -92,11 +94,11 @@ function DestroyWindow(window_id) {
     }
 }
 
-function Complete(task,failed=false) {
+function Complete(task, failed = false) {
     Task.CompletedTask.push(task)
-    if(failed){
+    if (failed) {
         Task.FailedTask.push(task)
-    }else{
+    } else {
         Task.SucceedTask.push(task)
     }
 }
@@ -145,7 +147,7 @@ export function RefreshDesktop() {
                     desktop_icons.removeEventListener('mousedown', selectother)
                 }
             }
-            if(!temp.classList.contains("selected"))desktop_icons.addEventListener('mousedown', selectother)
+            if (!temp.classList.contains("selected")) desktop_icons.addEventListener('mousedown', selectother)
             temp.classList.add("selected");
         })
         desktop_icons.insertAdjacentElement('beforeend', temp)
@@ -155,7 +157,7 @@ export function RefreshDesktop() {
         temp.addEventListener("dragstart", (e) => {
             elm_drag = temp;
         });
-        
+
         temp.addEventListener('dragover', (e) => {
             e.preventDefault();
             let rect = temp.getBoundingClientRect();
@@ -174,7 +176,7 @@ export function RefreshDesktop() {
             temp.style.borderBottom = '';
         });
         temp.addEventListener('drop', (e) => {
-            if(!elm_drag)return
+            if (!elm_drag) return
             e.preventDefault();
             e.stopPropagation();
             let rect = temp.getBoundingClientRect();
@@ -190,14 +192,14 @@ export function RefreshDesktop() {
             elm_drag = null
         });
     })
-    desktop_icons.addEventListener('drop',(e)=>{
-        if(!elm_drag)return;
+    desktop_icons.addEventListener('drop', (e) => {
+        if (!elm_drag) return;
         e.preventDefault();
         desktop_icons.insertBefore(elm_drag, desktop_icons.lastChild.nextSibling);
         elm_drag = null
     });
     desktop_icons.addEventListener('dragover', (e) => {
-        if(!elm_drag)return
+        if (!elm_drag) return
         e.preventDefault();
     });
 }
