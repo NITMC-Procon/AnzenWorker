@@ -31,7 +31,7 @@ let parent = {
     DestroyWindow: DestroyWindow
 }
 
-parent.windowarea = document.getElementById("htmlwindows")
+parent.windowarea = document.getElementById("desktop_icons")
 
 export function CallWindow(classname, window_id) {
     if (!window_id) {
