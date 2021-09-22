@@ -1,5 +1,5 @@
 import { Desktop } from './scene/Desktop.js';
-import { CallWindow, SystemConfigs } from './Desktop/Desktop.js'
+import { CallWindow, SystemConfigs, Init } from './Desktop/Desktop.js'
 import { Notify } from './Functions/notify.js';
 import { Handlers, Connect_to_server, Socket } from './Functions/socket.js';
 
@@ -39,6 +39,7 @@ window.addEventListener("load", () => {
 let stoptimer
 function gamestart(msg){
     if(!SystemConfigs.room.status){//開始されてなければ
+        Init()
         SystemConfigs.room.startat = msg.startat
         SystemConfigs.room.duration = msg.duration
         SystemConfigs.room.status=true
