@@ -165,7 +165,7 @@ div.login-buttons{
   background-color: white;
 }
 .window>.window-titlebar .button:hover{
-  background: linear-gradient(-45deg,rgba(255, 255, 255, 0.466),rgba(255, 255, 255, 0.137),rgba(255, 255, 255, 0.788));
+  background-image: linear-gradient(-45deg,rgba(255, 255, 255, 0.466),rgba(255, 255, 255, 0.137),rgba(255, 255, 255, 0.788));
 }
 
 .window.active .window-body{

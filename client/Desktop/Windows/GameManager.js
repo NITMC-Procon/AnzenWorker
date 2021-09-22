@@ -2,6 +2,7 @@
 import { Window } from "../Window.js"
 import { SystemConfigs } from "../Desktop.js"
 import { Socket, Handlers } from '../../Functions/socket.js'
+import { Notify } from "../../Functions/notify.js"
 
 const html = `<br>
 <div style="text-align: center;">
@@ -31,11 +32,14 @@ export class GameManager extends Window{
             textarea.innerText = `ステータス:${resp.status}\nメッセージ: ${resp.message}`
         }
         
+        //@ts-ignore
+        let duration = 1000 * durationarea.value || 1000 * 60 * 10 //10分
+        if(duration < 30000 || duration > 1200000){//不正だったら(30秒以下、20分以上)
+            duration = 1000 * 60 * 10
+            Notify("ゲーム時間が不正です。")
+        }
         if (!SystemConfigs.room.roomid){//roomidがない => ローカルゲーム
             let startat = Date.now()
-            //@ts-ignore
-            let duration = 1000 * durationarea.value || 1000 * 60 * 10 //10分
-            if(duration < 30000 || duration > 1200000) duration = 600//不正だったら(30秒以下、20分以上)
             let res = {}
             if (stat == "start"){
                 res = {"status":"start","message":"game started(local)","startat":startat,"duration":duration,"localgame":true}
@@ -47,7 +51,7 @@ export class GameManager extends Window{
             return
         }
         if (stat == "start"){
-            Socket.emit("setGameInfo",{"StartGame":true},callbackfunc)
+            Socket.emit("setGameInfo",{"StartGame":true,"duration":duration},callbackfunc)
         }else if (stat=="stop"){
             Socket.emit("setGameInfo",{"StopGame":true},callbackfunc)
         }

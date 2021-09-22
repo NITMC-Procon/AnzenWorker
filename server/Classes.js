@@ -127,7 +127,7 @@ class Room {
         }
         let res = {}
         let startat = Date.now()
-        let duration = info.duration || 1000 * 60 * 10 //10分
+        let duration = info.duration
         const timer = () =>{
             if(this.status){
                 this.status=false
