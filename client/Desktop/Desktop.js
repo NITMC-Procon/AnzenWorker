@@ -73,10 +73,10 @@ export let SystemConfigs = {
     Result: Result,
 
     // Deprecated
-    completed_task: Task.CompletedTask,
-    Task_Complete: Task.Complete,
-    Task_IsCompleted: Task.IsCompleted,
-    EmitResult: Task.EmitResult
+    // completed_task: Task.CompletedTask,
+    // Task_Complete: Task.Complete,
+    // Task_IsCompleted: Task.IsCompleted,
+    // EmitResult: Task.EmitResult
 }
 
 function CreateWindow(func, window_id) {
@@ -227,3 +227,13 @@ function createElementFromHTML(html) {
 
 RefreshDesktop()
 RefreshTaskbar()
+
+export function Init(){//リザルトとかを初期化
+    SystemConfigs.connected_wifi=[]
+    SystemConfigs.installed_software=[]
+    Result.Revenue=0
+    Result.SecurityScore=0
+    Task.CompletedTask=[]
+    Task.FailedTask=[]
+    Task.SucceedTask=[]
+}

@@ -52,7 +52,7 @@ const html = `
     }
     div[${RandData}] td:nth-child(1){
       white-space: nowrap;
-      width: 100px;
+      width: 10em;
     }
     div[${RandData}] td:nth-child(2){
       white-space: nowrap;
@@ -89,6 +89,7 @@ export class ResultWindow extends Window {
     }
     this.temp.advices.classList.add("advices")
 
+    this.addRevenueAndScore()
     this.addSucceed()
     this.addFailed()
     
@@ -133,6 +134,20 @@ export class ResultWindow extends Window {
       temp.addEventListener('click',()=>{adv.scrollIntoView()})
     })
     this.temp.table.insertAdjacentElement('beforeend',failed)
+  }
+  addRevenueAndScore(){
+    let revenue = createElementFromHTML(`<tr>
+      <td>収益</td>
+      <td></td>
+      <td>${Result.Revenue}</td>
+    </tr>`)
+    this.temp.table.insertAdjacentElement('beforeend',revenue)
+    let score = createElementFromHTML(`<tr>
+      <td>セキュリティスコア</td>
+      <td></td>
+      <td>${Result.SecurityScore}</td>
+    </tr>`)
+    this.temp.table.insertAdjacentElement('beforeend',score)
   }
 }
 
