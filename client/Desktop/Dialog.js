@@ -61,7 +61,7 @@ export class Dialog{
 
         let windowhtml = createElementFromHTML(`
         <div class="overlay">
-            <div class="window" style="${(this.configs != null && this.configs.style) ? this.configs.style : ""}">
+            <div class="window active" style="${(this.configs != null && this.configs.style) ? this.configs.style : ""}">
                 <div class="window-titlebar">
                     <span>${this.title}</span>
                     <div style="display: flex;">

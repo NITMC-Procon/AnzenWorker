@@ -62,7 +62,7 @@ div.login-buttons{
 }
 .window-body{
   overflow: hidden;
-  border-color: rgb(0, 62, 196) ;
+  border-color: rgb(125,157, 224);
   border-style: solid;
   border-width: 2px;
   border-top-width: 0;
@@ -86,9 +86,8 @@ div.login-buttons{
   vertical-align: middle;
   overflow: hidden;
   flex-shrink: 0;
-  
-  background-image: linear-gradient(to bottom,rgb(35, 147, 251),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(0,110, 249),rgb(0, 62, 196));
-  border-color: rgb(0, 62, 196) ;
+  background: linear-gradient(to bottom,rgb(157, 185, 235),rgb(125,157, 224),rgb(125,157, 224),rgb(125,157, 224),rgb(125,157, 224),rgb(122, 147, 223));
+  border-color: rgb(125,157, 224);
   border-style: solid;
   border-top-right-radius: 6px;
   border-top-left-radius: 6px;
@@ -131,7 +130,7 @@ div.login-buttons{
   transform: translate(-50%,-50%) rotate(-45deg);
 }
 .window>.window-titlebar .button.fullscr{
-  background-color: linear-gradient(to bottom,rgb(35, 147, 251),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(0,110, 249),rgb(0, 62, 196));
+  background: linear-gradient(-45deg,rgba(0, 0, 0, 0.466),rgba(255, 255, 255, 0.0),rgba(255, 255, 255, 0.466));
 }
 .fullscr::after{
   content:" ";
@@ -145,7 +144,7 @@ div.login-buttons{
   border-radius: 1px;
 }
 .window>.window-titlebar .button.minimize{
-  background-color: linear-gradient(to bottom,rgb(35, 147, 251),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(0,110, 249),rgb(0, 62, 196));
+  background: linear-gradient(-45deg,rgba(0, 0, 0, 0.466),rgba(255, 255, 255, 0.0),rgba(255, 255, 255, 0.466));
   border: white 1px solid;
   border-radius: 4px;
   width: 1.4em;
@@ -164,6 +163,17 @@ div.login-buttons{
   box-sizing: border-box;
   border-radius: 1px;
   background-color: white;
+}
+.window>.window-titlebar .button:hover{
+  background: linear-gradient(-45deg,rgba(255, 255, 255, 0.466),rgba(255, 255, 255, 0.137),rgba(255, 255, 255, 0.788));
+}
+
+.window.active .window-body{
+  border-color: rgb(0, 62, 196) ;
+}
+.window.active .window-titlebar{
+  border-color: rgb(0, 62, 196) ;
+  background: linear-gradient(to bottom,rgb(35, 147, 251),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(0,110, 249),rgb(0, 62, 196));
 }
 
 #notification_area{
@@ -332,7 +342,7 @@ div.login-buttons{
 }
 
 ::-webkit-scrollbar-track {
-	background-image: linear-gradient(to right,rgb(238,237,229),rgb(254, 254, 251));
+	background: linear-gradient(to right,rgb(238,237,229),rgb(254, 254, 251));
 }
 
 ::-webkit-scrollbar-thumb {

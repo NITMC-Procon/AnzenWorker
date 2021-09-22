@@ -36,7 +36,7 @@ export class Window{
         this.window_id = "";
 
         let windowhtml = createElementFromHTML(`
-            <div class="window" style="${(this.configs != null && this.configs.style) ? this.configs.style : ""}">
+            <div class="window active" style="${(this.configs != null && this.configs.style) ? this.configs.style : ""}">
                 <div class="window-titlebar">
                     <span>${this.title}</span>
                     <div style="display: flex;">
@@ -105,6 +105,23 @@ export class Window{
                 },{passive:true});
             }
         }
+
+        //ウィンドウ以外をクリックしたら非アクティブ化
+        const desktop = document.getElementById("desktop")
+        const selectother = (e) => {
+            if (e.target.closest('.active') !== this.window) {
+                this.window.classList.remove("active");
+                desktop.removeEventListener('mousedown', selectother)
+            }
+        }
+        this.window.addEventListener('mousedown', (e) => {
+            if (!this.window.classList.contains("active")) desktop.addEventListener('mousedown', selectother)
+            this.window.classList.add("active");
+        })
+        desktop.addEventListener('mousedown', selectother)
+
+        this.bringToTop()
+
         this.makeDraggable()
         if(!configs.no_resizable)this.makeResizable()
     }
@@ -254,7 +271,18 @@ export class Window{
         this.titleElem.textContent = this.title
     }
     bringToTop(){
-        this.window.style["z-index"] = ++this.parent.windowindex;
+        if(this.parent.windowindex > this.window.style["z-index"])
+            this.window.style["z-index"] = ++this.parent.windowindex;
+
+        //一旦すべてのウィンドウを非アクティブ化
+        this.parent.windows.forEach(window =>{
+        })
+        for(let windowid in this.parent.windows){
+            this.parent.windows[windowid].window.classList.remove("active");
+        }
+
+        //自分をアクティブ化
+        this.window.classList.add("active");
     }
     destroy(){
         if (this.parent.windows[this.window_id]){
