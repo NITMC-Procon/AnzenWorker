@@ -55,6 +55,7 @@ export class LoginWindow extends Dialog {
         }
         if (roomid == "") {//ルームIDなければ
             callbackfunc(0)//とりあえず成功扱い、ルームには入らない
+            SystemConfigs.room.roomid = ""
             return
         }
         if(SystemConfigs.room.status && SystemConfigs.room.roomid != roomid){//すでにゲーム始まってれば
