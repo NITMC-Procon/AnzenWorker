@@ -8,7 +8,7 @@ import { InternetBrowser } from './Windows/InternetBrowser.js'
 import { Store } from './Windows/Store.js'
 import { ResultWindow } from './Windows/ResultWindow.js'
 import { JobManager } from './Windows/JobManager.js'
-import { MailReciever } from '../Services/MailReciever.js'
+import { MailReciever } from '../Services/Service/MailReciever.js'
 
 //ココにウィンドウのリストを追加していく
 const windowList = {
@@ -265,7 +265,7 @@ export function Init(){//リザルトとかを初期化
         parent.windows[windowid].destroy();
     }
     for(let serviceid in parent.services){//すべてのサービスを停止
-        parent.services[serviceid].destroy();
+        parent.services[serviceid].destuctor();
     }
     for(let serviceid in systemServiceList){//初期サービスを呼び出す
         CallService(serviceid)
@@ -274,6 +274,6 @@ export function Init(){//リザルトとかを初期化
 
 export function Stop(){//サービス等停止用
     for(let serviceid in parent.services){//すべてのサービスを停止
-        parent.services[serviceid].destroy();
+        parent.services[serviceid].destuctor();
     }
 }

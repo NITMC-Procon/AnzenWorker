@@ -1,7 +1,8 @@
 // 初期から呼び出されるサービス
 
-import { CallWindow } from "../Desktop/Desktop.js"
-import { maillist } from "../Desktop/Windows/Mail.js"
+import { CallWindow } from "../../Desktop/Desktop.js"
+import { maillist } from "../../Desktop/Windows/Mail.js"
+import { Service } from "../ServiceClass.js"
 
 let allmails = [
     {
@@ -88,28 +89,15 @@ let allmails = [
         text: "株式会社〇〇　〇〇様\n\nいつも大変お世話になっております。\n株式会社〇〇の山田です。\n\n先日メールにてお願いしておりました△△の商品サンプルの件についてですが、\nその後の進捗は、いかがでしょうか。\n当サンプルが必要となる会議が今週金曜日と迫っているため、本日15時までにご送付をお願いできますでしょうか。\n\nまた、本メールと行き違いでご連絡をいただいておりましたら申し訳ありません。\nお忙しいところ大変恐れ入りますが、お取り計らいの程、何卒よろしくお願いいたします。\n----------------------------------------------------\n株式会社△△　◎◎部 ○○太郎\n住所：〒111-1111　東京都◎◎区◎◎町1-2-3\nTEL：03-****-****　／　FAX：03-****-****\nMail:◎◎@***.co.jp\n----------------------------------------------------\n"
     }]
 
-
-/**
- * @typedef  {Object} Parent - 親要素指定用コンフィグ
- * @property {Object} services - サービスのリスト
- * @property {Array<import('../Desktop/Window.js').Window>} windows - ウィンドウのリスト
- */
-
-export class MailReciever {
-    /** @param {Parent} parent - 親要素指定用コンフィグ */
-    constructor(parent) {
+export class MailReciever extends Service {
+    create(){
         this.mails = allmails.slice();//.slice()でコピーしてる(そのままだと参照コピー)
-        this.parent = parent
-        this.timer = setInterval(this.reciever.bind(this), 1000*20);//10秒ごとに呼ぶ
-        console.log("caslled")
+        this.timer = setInterval(this.reciever.bind(this), 1000*20);//20秒ごとに呼ぶ
         for(let i = 0;i<6;i++){
             this.reciever()
         }
     }
     destroy(){
-        if (this.parent.services[this.constructor.name]){
-            delete this.parent.services[this.constructor.name]
-        }
         clearInterval(this.timer)
     }
     reciever(){
@@ -117,7 +105,6 @@ export class MailReciever {
             let index = Math.floor(Math.random() * this.mails.length)
             maillist.push(this.mails[index])
             this.mails.splice(index,1)//要素を削除(deleteは使えない)
-            console.log(this.mails)
             if(this.parent.windows["Window_Mail"]){
                 if(this.parent.windows["Window_Mail"].refreshMails)this.parent.windows["Window_Mail"].refreshMails.bind(this.parent.windows["Window_Mail"])()
             }
