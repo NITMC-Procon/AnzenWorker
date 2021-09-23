@@ -46,9 +46,9 @@ export let Task = {
     CompletedTask: [],
     SucceedTask: [],
     FailedTask: [],
-    Complete: Complete,
-    IsCompleted: IsCompleted,
-    EmitResult: EmitResult
+    Complete: Task_Complete,
+    IsCompleted: Task_IsCompleted,
+    EmitResult: Task_EmitResult
 }
 
 export let Result = {
@@ -88,13 +88,7 @@ function CreateWindow(func, window_id) {
     }
 }
 
-function DestroyWindow(window_id) {
-    if (parent.windows[window_id]) {
-        parent.windows[window_id].destroy()
-    }
-}
-
-function Complete(task, failed = false) {
+function Task_Complete(task, failed = false) {
     Task.CompletedTask.push(task)
     if (failed) {
         Task.FailedTask.push(task)
@@ -103,12 +97,12 @@ function Complete(task, failed = false) {
     }
 }
 
-function IsCompleted(task) {
+function Task_IsCompleted(task) {
     let res = Task.CompletedTask.findIndex(t => t === task)
     return (res === -1) ? false : true
 }
 
-function EmitResult(data) {
+function Task_EmitResult(data) {
     Socket.emit("taskresult", JSON.stringify(data))
 }
 
