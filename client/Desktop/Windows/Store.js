@@ -144,7 +144,7 @@ const html = `
     }
     .backbtn{
         position:absolute;
-        top:0px;
+        top:32px;
         left:0px;
         width: 57px;
         height: 50px;

@@ -8,8 +8,8 @@ const html = `
     <img class="login-icon" style="max-width: 300px;" src="./images/login/logo.svg">
 </div>
 <div>
-    <div class="input-area"><span style="width: 5em;">ユーザー名:</span><input type="text" id="user_name"></div>
-    <div class="input-area"><span style="width: 5em;">ルームID:</span><input type="text" id="room_id"></div>
+    <div class="input-area"><span style="width: 7em;">ユーザー名:</span><input type="text" id="user_name"></div>
+    <div class="input-area"><span style="width: 7em;">ルームID:</span><input type="text" id="room_id"></div>
 </div>
 <p id="room_message" class="message" style="color: red;text-align:center"></p>
 <div class="login-buttons">

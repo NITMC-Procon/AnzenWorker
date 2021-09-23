@@ -300,7 +300,7 @@ div.login-buttons{
   height: 40px;
 }
 #desktop_icons>.desktop_icon>.desktop_icon_text{
-  max-width: 5em;
+  font-size: 0.9rem;
   padding: 1px 3px;
   word-wrap: break-word;
   border-width: 1px;
