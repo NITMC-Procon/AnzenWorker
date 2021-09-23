@@ -1,5 +1,5 @@
 import { Desktop } from './scene/Desktop.js';
-import { CallWindow, SystemConfigs, Init } from './Desktop/Desktop.js'
+import { CallWindow, SystemConfigs, Init, Stop } from './Desktop/Desktop.js'
 import { Notify } from './Functions/notify.js';
 import { Handlers, Connect_to_server, Socket } from './Functions/socket.js';
 
@@ -51,6 +51,7 @@ function gamestart(msg){
 
 function gamestop(msg){
     if(SystemConfigs.room.status){//終了してなければ
+        Stop()
         clearTimeout(stoptimer)
         SystemConfigs.room.status=false
         Notify("ゲームが終了しました")
