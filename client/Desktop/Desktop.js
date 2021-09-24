@@ -1,6 +1,6 @@
 import { GameManager } from './Windows/GameManager.js'
 import { LoginWindow } from './Windows/LoginWindow.js'
-import { WiFi } from './Windows/WiFI.js'
+import { WiFi } from './Windows/WiFi.js'
 import { Socket } from '../Functions/socket.js'
 import { Crusher } from './Windows/Crusher.js'
 import { Mail } from './Windows/Mail.js'
