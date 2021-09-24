@@ -249,8 +249,10 @@ function createElementFromHTML(html) {
     return template.content.firstElementChild;
 }
 
-RefreshDesktop()
-RefreshTaskbar()
+export function Boot(){
+    RefreshDesktop()
+    RefreshTaskbar()
+}
 
 export function Init(){//リザルトとかを初期化
     SystemConfigs.connected_wifi=[]
