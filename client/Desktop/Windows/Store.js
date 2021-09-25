@@ -1,6 +1,7 @@
 'use strict'
 import { Window } from "../Window.js"
-import { SystemConfigs } from "../Desktop.js"
+import { SystemConfigs, DesktopIconList, CallWindow, RefreshDesktop } from "../Desktop.js"
+import { VirusScanner } from "./VirusScanner.js"
 
 const html = `
 <div style="display: flex;flex-direction: column;justify-content: space-between;height: 100%;">
@@ -310,15 +311,27 @@ export class Store extends Window {
 
                 //　保存されている配列の位置を検索
                 var loc = SystemConfigs.installed_software.indexOf(this.selectapp)
+                var loc2 = DesktopIconList.indexOf({ Name: this.selectapp, Iconurl: "/images/apps/AntiVirus.png", Clickfunc: () => { CallWindow("VirusScanner", "Window_" + this.selectapp) } })
 
                 //　Configのinstalled_softwareからアプリを削除
                 SystemConfigs.installed_software.splice(loc, 1)
+
+                // デスクトップからアイコンを削除
+                DesktopIconList.splice(loc2, 1)
+                this.destroy()
+                RefreshDesktop()
+
             }
             else {　// インストールしていなければ
                 document.getElementById("install_btn").innerText = "アンインストール"
 
                 //  Configのinstalled_softwareにアプリを追加
                 SystemConfigs.installed_software.push(this.selectapp)
+
+                // デスクトップにアイコンを追加
+                DesktopIconList.push({ Name: this.selectapp, Iconurl: "/images/apps/AntiVirus.png", Clickfunc: () => { CallWindow("VirusScanner", "Window_" + this.selectapp) } })
+                this.destroy()
+                RefreshDesktop()
             }
         })
 
