@@ -7,18 +7,22 @@ let ServerAddress = 'ws://' + host;         //  + ':8080';
 
 //ロードされたらゲーム開始
 window.addEventListener("load", () => {
-    Boot()
-
-    CallWindow("LoginWindow","Window_LoginWindow")//最初に呼ぶ
-
-    Connect_to_server(ServerAddress)
+    const bootwindow = document.getElementById("bootwindow")
+    setTimeout(() => {
+        bootwindow.classList.add("hidden")
+        Boot()
     
-    Handlers["gameInfo"] = (msg) => {
-        switch (msg.status) {
-            case "start":gamestart(msg); break;
-            case "stop":gamestop(msg); break;
-        }
-    };
+        CallWindow("LoginWindow","Window_LoginWindow")//最初に呼ぶ
+    
+        Connect_to_server(ServerAddress)
+        
+        Handlers["gameInfo"] = (msg) => {
+            switch (msg.status) {
+                case "start":gamestart(msg); break;
+                case "stop":gamestop(msg); break;
+            }
+        };
+    }, 1000);
 });
 
 
