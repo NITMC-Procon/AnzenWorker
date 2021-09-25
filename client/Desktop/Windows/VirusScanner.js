@@ -1,6 +1,5 @@
 'use strict'
 import { Window } from "../Window.js"
-import { CallWindow } from "../Desktop.js"
 
 const html = `
 <div style="display: block;width: 100%;height: 100%;user-select:none;background-color:#3399cc">
