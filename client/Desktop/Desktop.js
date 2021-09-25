@@ -146,7 +146,7 @@ export let DesktopIconList = [
     { Name: "リザルト 画面", Iconurl: "/images/result.svg", Clickfunc: () => { CallWindow("ResultWindow", "Window_ResultWindow") } },
 ]
 
-export let TaskbarIconList = [
+export let TaskbarIconList_R = [
     { Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("WiFi", "Window_WiFi") } },
 ]
 
@@ -230,16 +230,26 @@ export function RefreshDesktop() {
 
 
 export function RefreshTaskbar() {
-    const desktop_taskbar = document.getElementById("desktop_taskbar")
-    desktop_taskbar.innerHTML = "";
-    TaskbarIconList.forEach((icon) => {
+    const desktop_taskbar_R = document.getElementById("desktop_taskbar_r")
+    const desktop_taskbar_menu = document.getElementById("desktop_taskbar_menu")
+    desktop_taskbar_R.innerHTML = "";
+    TaskbarIconList_R.forEach((icon) => {
         let temp = createElementFromHTML(`<img src="${icon.Iconurl}" class="desktop_icon_image"></img>`)
         temp.addEventListener('dblclick', () => {
             if (typeof icon.Clickfunc == "function") icon.Clickfunc();
         })
-        desktop_taskbar.insertAdjacentElement('beforeend', temp)
+        desktop_taskbar_R.insertAdjacentElement('beforeend', temp)
     })
 
+    desktop_taskbar_menu.firstElementChild.classList.add("hidden")
+    desktop_taskbar_menu.onclick=()=>{
+        console.log("test")
+        if(!desktop_taskbar_menu.firstElementChild.classList.contains("hidden")){
+            desktop_taskbar_menu.firstElementChild.classList.add("hidden")
+        }else{
+            desktop_taskbar_menu.firstElementChild.classList.remove("hidden")
+        }
+    }
 }
 
 function createElementFromHTML(html) {
