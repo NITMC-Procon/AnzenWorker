@@ -1,6 +1,7 @@
 'use strict'
 import { Window } from "../Window.js"
-import { SystemConfigs } from "../Desktop.js"
+import { SystemConfigs, DesktopIconList, CallWindow, RefreshDesktop } from "../Desktop.js"
+import { VirusScanner } from "./VirusScanner.js"
 
 const html = `
 <div style="display: flex;flex-direction: column;justify-content: space-between;height: 100%;">
@@ -66,7 +67,7 @@ const html = `
         left:325px;
         white-space: nowrap;
     }
-    .corp_shortdescription{
+    .introduction{
         white-space: pre;
         position:absolute;
         font-size:1.2em;
@@ -194,34 +195,64 @@ const html = `
 </style>`
 const style = "width:54em;height:33em;"
 
+export let apps = [
+    {
+        name: "AntiVirus",
+        star: 4,
+        price: 0,
+        introduction: "ウイルス対策ソフト\n誰にとっても使いやすくて信頼度も高い",
+        func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
+        corporation: "©Anti Virus Corporation",
+        safety: "safe",
+        type: "security"
+    }, {
+        name: "EasyVirusScanner",
+        star: 1,
+        price: 0,
+        introduction: "Virusのすきゃんができる.\nすごく安心する.",
+        func: "・Virusがみつかる.\n・コンピュータを防衛する",
+        corporation: "不明",
+        safety: "danger",
+        type: "security"
+    }, {
+        name: "AntiVirusPro",
+        star: 3,
+        price: 3900,
+        introduction: "ウイルス対策ソフト有料版\n誰にとっても使いやすくて信頼度も高い",
+        func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
+        corporation: "©Anti Virus Corporation",
+        safety: "safe",
+        type: "security"
+    }
+]
+
 export class Store extends Window {
     constructor(parent) {
         super(html, "Store", parent, { style: style });
-        this.apps = this.get_apps()
         this.list_container = this.bodyElem.firstElementChild.firstElementChild
         let allapp = ''
-        this.selectapp = ""     //　選んだアプリを記憶
+        this.selectapp = -1     //　選んだアプリを記憶
 
         allapp += `<div class = "title">
         おすすめアプリ
         </div>`
 
-        this.apps.forEach((app) => {
+        apps.forEach((app) => {
             let container = `
             <div class="list_container">
                 <div class = "app_icon">
                     <img src = '../images/apps/AntiVirus.png' width="110px" height="110px">
                 </div>
 
-                <h2 style="margin:0.2em 0.5em;font-size:1.2em;">${this.fix_app(app[0])}</h2>
+                <h2 style="margin:0.2em 0.5em;font-size:1.2em;">${this.fix_app(app.name)}</h2>
                 
                 <div class = "star_icon">
                     <p>
-                        <span class="star5_rating" data-rate=${app[1]}></span>
+                        <span class="star5_rating" data-rate=${app.star}></span>
                     </p>
                 </div>
 
-                <h4 style="margin:-2em 0.5em;font-size:1.2em;">${app[2]}</h4>
+                <h4 style="margin:-2em 0.5em;font-size:1.2em;">${app.price ? "￥" + app.price : "無料"}</h4>
             </div>`
             allapp += container
         })
@@ -234,7 +265,7 @@ export class Store extends Window {
 
                 <div class = "title2" id = "title2">AntiVirus</div>
                 <div class = "copname" id = "corpname">©Anti Virus Corporation</div>
-                <div class = "corp_shortdescription" id = "corp_shortdescription">
+                <div class = "introduction" id = "introduction">
                 ウイルス対策ソフト
                 誰にとっても使いやすくて信頼度も高い</div>
 
@@ -280,10 +311,10 @@ export class Store extends Window {
                 this.list_container.children[this.list_container.childElementCount - 1].classList.toggle('is_hidden')
 
                 // 選んだアプリを記憶
-                this.selectapp = this.fix_text(this.apps[i - 1][0])
+                this.selectapp = i - 1
 
                 // テキスト変更
-                this.change_text(this.apps[i - 1])
+                this.change_text(apps[i - 1])
 
             })
         }
@@ -299,26 +330,71 @@ export class Store extends Window {
             this.list_container.children[this.list_container.childElementCount - 1].classList.toggle('is_hidden')
 
             // 記憶したアプリをリセット
-            this.selectapp = ""
+            this.selectapp = -1
         })
 
         // installボタンが押された時
         this.list_container.children[this.list_container.childElementCount - 1].children[5].addEventListener('click', () => {
-            //  インストール済みなら
-            if (SystemConfigs.installed_software.includes(this.selectapp)) {
-                document.getElementById("install_btn").innerText = "インストール"
-
-                //　保存されている配列の位置を検索
-                var loc = SystemConfigs.installed_software.indexOf(this.selectapp)
-
-                //　Configのinstalled_softwareからアプリを削除
-                SystemConfigs.installed_software.splice(loc, 1)
+            // アプリを入れれるかどうか
+            let can = true
+            let apppos
+            // 自分がセキュリティソフトの時
+            if (apps[this.selectapp].type == "security") {
+                // 既にセキュリティソフトが入っていたら
+                for (var k = 0; k < SystemConfigs.installed_software.length; k++) {
+                    if (SystemConfigs.installed_software[k][2] == "security") {
+                        // セキュリティソフトをこれ以上入れられないようにする
+                        can = false
+                        apppos = SystemConfigs.installed_software[k][0]
+                    }
+                }
             }
-            else {　// インストールしていなければ
+
+            if (can) {
                 document.getElementById("install_btn").innerText = "アンインストール"
 
                 //  Configのinstalled_softwareにアプリを追加
-                SystemConfigs.installed_software.push(this.selectapp)
+                SystemConfigs.installed_software.push([apps[this.selectapp].name, apps[this.selectapp].safety, apps[this.selectapp].type])
+
+                //  評価
+                // 安全なソフトをインストールしたら、
+                if (apps[this.selectapp].safety == "safe") {
+                    if (apps[this.selectapp].price) {
+                        // 有料のものを導入
+                        SystemConfigs.Result.SecurityScore += 400
+                        //　アプリの値段を収入から引く
+                        SystemConfigs.Result.Revenue -= apps[this.selectapp].price
+                    }
+                    else {
+                        //　無料のものを導入
+                        SystemConfigs.Result.SecurityScore += 200
+                    }
+                }
+                else {  // 怪しいソフトをインストールしたら、
+                    SystemConfigs.Result.SecurityScore -= 200
+                }
+
+                // デスクトップにアイコンを追加
+                DesktopIconList.push({ Name: apps[this.selectapp].name, Iconurl: "/images/apps/AntiVirus.png", Clickfunc: () => { CallWindow("VirusScanner", "Window_" + apps[this.selectapp].name) } })
+                this.destroy()
+                RefreshDesktop()
+            }
+            else {
+                if (apppos == apps[this.selectapp].name) {
+                    document.getElementById("install_btn").innerText = "インストール"
+
+                    //　保存されている配列の位置を検索
+                    var loc = SystemConfigs.installed_software.indexOf([apps[this.selectapp].name, apps[this.selectapp].safety])
+                    var loc2 = DesktopIconList.indexOf({ Name: apps[this.selectapp].name, Iconurl: "/images/apps/AntiVirus.png", Clickfunc: () => { CallWindow("VirusScanner", "Window_" + apps[this.selectapp].name) } })
+
+                    //　Configのinstalled_softwareからアプリを削除
+                    SystemConfigs.installed_software.splice(loc, 1)
+
+                    // デスクトップからアイコンを削除
+                    DesktopIconList.splice(loc2, 1)
+                    this.destroy()
+                    RefreshDesktop()
+                }
             }
         })
 
@@ -326,24 +402,7 @@ export class Store extends Window {
         // this.bodyElem.firstElementChild.nextElementSibling.firstChild.addEventListener('click',() => {this.game_button("start")})
         // this.bodyElem.firstElementChild.nextElementSibling.lastElementChild.addEventListener('click',() => {this.game_button("stop")})
     }
-    get_apps() {//アプリ一覧取得
-        let apps = [
-            ["AntiVirus", 4, "無料", "ウイルス対策ソフト\n誰にとっても使いやすくて信頼度も高い",
-                "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック", "©Anti Virus Corporation"],
-            ["EasyVirusScanner", 1, "無料", "Virusのすきゃんができる.\nすごく安心する.",
-                "・Virusがみつかる.\n・コンピュータを防衛する", "不明"],
-            ["app3", 1, "無料"],
-            ["app4", 2, "無料"],
-            ["AntiVirusPro", 3, "￥3,900", "ウイルス対策ソフト有料版\n誰にとっても使いやすくて信頼度も高い",
-                "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック", "©Anti Virus Corporation"],
-            ["app6", 5, "無料"],
-            ["app7", 5, "無料"],
-            ["app8", 5, "無料"],
-            ["app9", 5, "無料"],
-            ["app10", 5, "無料"]
-        ]
-        return apps
-    }
+
     // リスト画面でアプリ名表示
     fix_app(text) {
         text = text.replaceAll("\n", " ")
@@ -354,18 +413,27 @@ export class Store extends Window {
         return text
     }
     change_text(app) {
-        document.getElementById("title2").innerText = app[0]
-        document.getElementById("corpname").innerText = app[5]
-        document.getElementById("corp_shortdescription").innerText = app[3]
-        document.getElementById("author").innerText = app[5]
-        document.getElementById("function").innerText = app[4]
-        document.getElementById("price").innerText = app[2]
+        document.getElementById("title2").innerText = app.name
+        document.getElementById("corpname").innerText = app.corporation
+        document.getElementById("introduction").innerText = app.introduction
+        document.getElementById("author").innerText = app.corporation
+        document.getElementById("function").innerText = app.func
 
-        if (SystemConfigs.installed_software.includes(this.selectapp)) {
-            document.getElementById("install_btn").innerText = "アンインストール"
+        if (app.price == 0) {
+            document.getElementById("price").innerText = "無料"
         }
-        else {　// インストールしていなければ
-            document.getElementById("install_btn").innerText = "インストール"
+        else {
+            document.getElementById("price").innerText = "￥" + app.price
+        }
+
+
+        for (var i = 0; i < SystemConfigs.installed_software.length; i++) {
+            if (SystemConfigs.installed_software[i][0] == apps[this.selectapp].name) {
+                document.getElementById("install_btn").innerText = "アンインストール"
+            }
+            else {
+                document.getElementById("install_btn").innerText = "インストール"
+            }
         }
     }
 }

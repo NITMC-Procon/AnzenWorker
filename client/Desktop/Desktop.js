@@ -9,6 +9,7 @@ import { Store } from './Windows/Store.js'
 import { ResultWindow } from './Windows/ResultWindow.js'
 import { JobManager } from './Windows/JobManager.js'
 import { MailReciever } from '../Services/Service/MailReciever.js'
+import { VirusScanner } from './Windows/VirusScanner.js'
 
 //ココにウィンドウのリストを追加していく
 const windowList = {
@@ -20,7 +21,8 @@ const windowList = {
     "InternetBrowser": InternetBrowser,
     "Store": Store,
     "ResultWindow": ResultWindow,
-    "JobManager": JobManager
+    "JobManager": JobManager,
+    "VirusScanner": VirusScanner
 }
 
 //ココに最初から動かすバックグラウンドサービスのリストを追加していく
@@ -47,12 +49,12 @@ export function CallWindow(classfunc, window_id) {
     if (!window_id && typeof classfunc == 'string') {
         window_id = classfunc
     }
-    if (typeof classfunc == 'string'){
+    if (typeof classfunc == 'string') {
         if (windowList[classfunc]) {
             CreateWindow(windowList[classfunc], window_id)
         }
-    }else if(typeof classfunc == 'function'){
-        CreateWindow(classfunc,window_id)
+    } else if (typeof classfunc == 'function') {
+        CreateWindow(classfunc, window_id)
     }
 }
 
@@ -60,13 +62,13 @@ export function CallWindow(classfunc, window_id) {
  * @param {String|Object} classfunc
  * サービスは1つだけなので識別用IDは無い
  */
-export function CallService(classfunc){
+export function CallService(classfunc) {
     if (typeof classfunc == 'string') {
-        if (!parent.services[classfunc] && systemServiceList[classfunc]){
+        if (!parent.services[classfunc] && systemServiceList[classfunc]) {
             parent.services[classfunc] = new systemServiceList[classfunc](parent);//サービスを作成
         }
-    }else if(typeof classfunc == 'function'){
-        if (!parent.services[classfunc.name] && systemServiceList[classfunc]){
+    } else if (typeof classfunc == 'function') {
+        if (!parent.services[classfunc.name] && systemServiceList[classfunc]) {
             parent.services[classfunc.name] = new classfunc(parent)
         }
     }
@@ -252,28 +254,28 @@ function createElementFromHTML(html) {
 RefreshDesktop()
 RefreshTaskbar()
 
-export function Init(){//リザルトとかを初期化
-    SystemConfigs.connected_wifi=[]
-    SystemConfigs.installed_software=[]
-    Result.Revenue=0
-    Result.SecurityScore=0
-    Task.CompletedTask=[]
-    Task.FailedTask=[]
-    Task.SucceedTask=[]
+export function Init() {//リザルトとかを初期化
+    SystemConfigs.connected_wifi = []
+    SystemConfigs.installed_software = []
+    Result.Revenue = 0
+    Result.SecurityScore = 0
+    Task.CompletedTask = []
+    Task.FailedTask = []
+    Task.SucceedTask = []
 
-    for(let windowid in parent.windows){//すべてのウィンドウを削除
+    for (let windowid in parent.windows) {//すべてのウィンドウを削除
         parent.windows[windowid].destroy();
     }
-    for(let serviceid in parent.services){//すべてのサービスを停止
+    for (let serviceid in parent.services) {//すべてのサービスを停止
         parent.services[serviceid].destuctor();
     }
-    for(let serviceid in systemServiceList){//初期サービスを呼び出す
+    for (let serviceid in systemServiceList) {//初期サービスを呼び出す
         CallService(serviceid)
     }
 }
 
-export function Stop(){//サービス等停止用
-    for(let serviceid in parent.services){//すべてのサービスを停止
+export function Stop() {//サービス等停止用
+    for (let serviceid in parent.services) {//すべてのサービスを停止
         parent.services[serviceid].destuctor();
     }
 }
