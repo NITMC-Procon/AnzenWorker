@@ -35,10 +35,6 @@ export function Notify(text,option){
 
     notifyelem.addEventListener('click',clickfunc)
     
-    //クリック透過無効化
-    for (const eventName of ['mouseup','mousedown', 'touchstart', 'touchmove', 'touchend', 'touchcancel']){
-        notifyelem.addEventListener(eventName, e => e.stopPropagation(),{passive: true});
-    }
     return notifyelem
 }
 
