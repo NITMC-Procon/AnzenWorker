@@ -79,9 +79,6 @@ export class Dialog{
         /** @type {HTMLElement} *///@ts-ignore
         this.drag = this.dialog.firstElementChild
         this.drag.style.position = "relative";
-        for (const eventName of ['mouseup', 'mousedown', 'touchstart', 'touchmove', 'touchend', 'touchcancel']) {
-            this.drag.addEventListener(eventName, e => e.stopPropagation(), { passive: true });
-        }
         for (const eventName of ['mousedown', 'touchstart']) {
             this.drag.addEventListener(eventName, () => {//アロー関数にするとthisがインスタンスを示すようになる
                 this.bringToTop()

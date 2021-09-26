@@ -68,9 +68,6 @@ export class Window{
         this.window.style.top = Math.random() * (document.documentElement.clientHeight / 2) + "px"
         this.window.style.left = Math.random() * (document.documentElement.clientWidth / 2) + "px"
         this.window.style["z-index"] = ++this.parent.windowindex;
-        for (const eventName of ['mouseup', 'mousedown', 'touchstart', 'touchend']) {
-            this.window.addEventListener(eventName, e => e.stopPropagation(), { passive: true });
-        }
         
         this.titleElem = this.window.firstElementChild.firstElementChild
         this.bodyElem = this.window.firstElementChild.nextElementSibling
@@ -216,7 +213,6 @@ export class Window{
             // if ((top && right) || (left && bottom)) child.style.cursor = "nesw-resize";
 
             const mousedown = (e)=>{
-                e.stopPropagation()
                 /** @type {any} */
                 let event = e
                 if (e.type !== "mousedown") {

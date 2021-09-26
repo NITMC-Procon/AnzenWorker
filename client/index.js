@@ -1,4 +1,4 @@
-import { CallWindow, SystemConfigs, Init, Stop } from './Desktop/Desktop.js'
+import { CallWindow, SystemConfigs, Init, Stop, Boot } from './Desktop/Desktop.js'
 import { Notify } from './Functions/notify.js';
 import { Handlers, Connect_to_server, Socket } from './Functions/socket.js';
 
@@ -7,16 +7,22 @@ let ServerAddress = 'ws://' + host;         //  + ':8080';
 
 //ロードされたらゲーム開始
 window.addEventListener("load", () => {
-    CallWindow("LoginWindow","Window_LoginWindow")//最初に呼ぶ
-
-    Connect_to_server(ServerAddress)
+    const bootwindow = document.getElementById("bootwindow")
+    setTimeout(() => {
+        bootwindow.classList.add("hidden")
+        Boot()
     
-    Handlers["gameInfo"] = (msg) => {
-        switch (msg.status) {
-            case "start":gamestart(msg); break;
-            case "stop":gamestop(msg); break;
-        }
-    };
+        CallWindow("LoginWindow","Window_LoginWindow")//最初に呼ぶ
+    
+        Connect_to_server(ServerAddress)
+        
+        Handlers["gameInfo"] = (msg) => {
+            switch (msg.status) {
+                case "start":gamestart(msg); break;
+                case "stop":gamestop(msg); break;
+            }
+        };
+    }, 1000);
 });
 
 

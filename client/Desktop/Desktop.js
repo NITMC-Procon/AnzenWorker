@@ -148,7 +148,7 @@ export let DesktopIconList = [
     { Name: "リザルト 画面", Iconurl: "/images/result.svg", Clickfunc: () => { CallWindow("ResultWindow", "Window_ResultWindow") } },
 ]
 
-export let TaskbarIconList = [
+export let TaskbarIconList_R = [
     { Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("WiFi", "Window_WiFi") } },
 ]
 
@@ -185,6 +185,7 @@ export function RefreshDesktop() {
         });
 
         temp.addEventListener('dragover', (e) => {
+            if (!elm_drag) return
             e.preventDefault();
             let rect = temp.getBoundingClientRect();
             if ((e.clientY - rect.top) < (temp.clientHeight / 2)) {
@@ -198,13 +199,13 @@ export function RefreshDesktop() {
             }
         });
         temp.addEventListener('dragleave', (e) => {
+            if (!elm_drag) return
             temp.style.borderTop = '';
             temp.style.borderBottom = '';
         });
         temp.addEventListener('drop', (e) => {
             if (!elm_drag) return
             e.preventDefault();
-            e.stopPropagation();
             let rect = temp.getBoundingClientRect();
             if ((e.clientY - rect.top) < (temp.clientHeight / 2)) {
                 //マウスカーソルの位置が要素の半分より上
@@ -232,16 +233,36 @@ export function RefreshDesktop() {
 
 
 export function RefreshTaskbar() {
-    const desktop_taskbar = document.getElementById("desktop_taskbar")
-    desktop_taskbar.innerHTML = "";
-    TaskbarIconList.forEach((icon) => {
+    const desktop_taskbar_R = document.getElementById("desktop_taskbar_r")
+    const desktop_taskbar_menu = document.getElementById("desktop_taskbar_menu")
+    desktop_taskbar_R.innerHTML = "";
+    TaskbarIconList_R.forEach((icon) => {
         let temp = createElementFromHTML(`<img src="${icon.Iconurl}" class="desktop_icon_image"></img>`)
         temp.addEventListener('dblclick', () => {
             if (typeof icon.Clickfunc == "function") icon.Clickfunc();
         })
-        desktop_taskbar.insertAdjacentElement('beforeend', temp)
+        desktop_taskbar_R.insertAdjacentElement('beforeend', temp)
     })
 
+    const menu = desktop_taskbar_menu.firstElementChild;
+    menu.classList.add("hidden")
+    desktop_taskbar_menu.onclick=(e)=>{
+        const selectother = (e) => {
+            if (e.target.closest('#desktop_taskbar_menu') !== desktop_taskbar_menu){//メニュー以外のクリックなら
+                menu.classList.add("hidden")
+                document.removeEventListener('mousedown', selectother)
+            }
+        }
+        if (menu.classList.contains("hidden")){//メニューが表示されていないとき
+            menu.classList.remove("hidden")
+            document.addEventListener('mousedown', selectother)
+        }else{//メニューが表示されているとき
+            if (!e.target.closest('#menu')){//メニューボタンを押していたなら
+                menu.classList.add("hidden")
+                document.removeEventListener('mousedown', selectother)
+            }
+        }
+    }
 }
 
 function createElementFromHTML(html) {
@@ -251,8 +272,10 @@ function createElementFromHTML(html) {
     return template.content.firstElementChild;
 }
 
-RefreshDesktop()
-RefreshTaskbar()
+export function Boot(){
+    RefreshDesktop()
+    RefreshTaskbar()
+}
 
 export function Init() {//リザルトとかを初期化
     SystemConfigs.connected_wifi = []
