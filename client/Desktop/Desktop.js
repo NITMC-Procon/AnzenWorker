@@ -183,6 +183,7 @@ export function RefreshDesktop() {
         });
 
         temp.addEventListener('dragover', (e) => {
+            if (!elm_drag) return
             e.preventDefault();
             let rect = temp.getBoundingClientRect();
             if ((e.clientY - rect.top) < (temp.clientHeight / 2)) {
@@ -196,13 +197,13 @@ export function RefreshDesktop() {
             }
         });
         temp.addEventListener('dragleave', (e) => {
+            if (!elm_drag) return
             temp.style.borderTop = '';
             temp.style.borderBottom = '';
         });
         temp.addEventListener('drop', (e) => {
             if (!elm_drag) return
             e.preventDefault();
-            e.stopPropagation();
             let rect = temp.getBoundingClientRect();
             if ((e.clientY - rect.top) < (temp.clientHeight / 2)) {
                 //マウスカーソルの位置が要素の半分より上
@@ -241,13 +242,23 @@ export function RefreshTaskbar() {
         desktop_taskbar_R.insertAdjacentElement('beforeend', temp)
     })
 
-    desktop_taskbar_menu.firstElementChild.classList.add("hidden")
-    desktop_taskbar_menu.onclick=()=>{
-        console.log("test")
-        if(!desktop_taskbar_menu.firstElementChild.classList.contains("hidden")){
-            desktop_taskbar_menu.firstElementChild.classList.add("hidden")
-        }else{
-            desktop_taskbar_menu.firstElementChild.classList.remove("hidden")
+    const menu = desktop_taskbar_menu.firstElementChild;
+    menu.classList.add("hidden")
+    desktop_taskbar_menu.onclick=(e)=>{
+        const selectother = (e) => {
+            if (e.target.closest('#desktop_taskbar_menu') !== desktop_taskbar_menu){//メニュー以外のクリックなら
+                menu.classList.add("hidden")
+                document.removeEventListener('mousedown', selectother)
+            }
+        }
+        if (menu.classList.contains("hidden")){//メニューが表示されていないとき
+            menu.classList.remove("hidden")
+            document.addEventListener('mousedown', selectother)
+        }else{//メニューが表示されているとき
+            if (!e.target.closest('#menu')){//メニューボタンを押していたなら
+                menu.classList.add("hidden")
+                document.removeEventListener('mousedown', selectother)
+            }
         }
     }
 }
