@@ -203,7 +203,8 @@ export let apps = [
         introduction: "ウイルス対策ソフト\n誰にとっても使いやすくて信頼度も高い",
         func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
         corporation: "©Anti Virus Corporation",
-        safety: "safe"
+        safety: "safe",
+        type: "security"
     }, {
         name: "EasyVirusScanner",
         star: 1,
@@ -211,7 +212,8 @@ export let apps = [
         introduction: "Virusのすきゃんができる.\nすごく安心する.",
         func: "・Virusがみつかる.\n・コンピュータを防衛する",
         corporation: "不明",
-        safety: "danger"
+        safety: "danger",
+        type: "security"
     }, {
         name: "AntiVirusPro",
         star: 3,
@@ -219,7 +221,8 @@ export let apps = [
         introduction: "ウイルス対策ソフト有料版\n誰にとっても使いやすくて信頼度も高い",
         func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
         corporation: "©Anti Virus Corporation",
-        safety: "safe"
+        safety: "safe",
+        type: "security"
     }
 ]
 
@@ -332,46 +335,66 @@ export class Store extends Window {
 
         // installボタンが押された時
         this.list_container.children[this.list_container.childElementCount - 1].children[5].addEventListener('click', () => {
-            //  インストール済みなら
-            if (SystemConfigs.installed_software.includes(apps[this.selectapp].name)) {
-                document.getElementById("install_btn").innerText = "インストール"
-
-                //　保存されている配列の位置を検索
-                var loc = SystemConfigs.installed_software.indexOf(apps[this.selectapp].name)
-                var loc2 = DesktopIconList.indexOf({ Name: apps[this.selectapp].name, Iconurl: "/images/apps/AntiVirus.png", Clickfunc: () => { CallWindow("VirusScanner", "Window_" + apps[this.selectapp].name) } })
-
-                //　Configのinstalled_softwareからアプリを削除
-                SystemConfigs.installed_software.splice(loc, 1)
-
-                // デスクトップからアイコンを削除
-                DesktopIconList.splice(loc2, 1)
-                this.destroy()
-                RefreshDesktop()
-
+            // アプリを入れれるかどうか
+            let can = true
+            let apppos
+            // 自分がセキュリティソフトの時
+            if (apps[this.selectapp].type == "security") {
+                // 既にセキュリティソフトが入っていたら
+                for (var k = 0; k < SystemConfigs.installed_software.length; k++) {
+                    if (SystemConfigs.installed_software[k][2] == "security") {
+                        // セキュリティソフトをこれ以上入れられないようにする
+                        can = false
+                        apppos = SystemConfigs.installed_software[k][0]
+                    }
+                }
             }
-            else {　// インストールしていなければ
+
+            if (can) {
                 document.getElementById("install_btn").innerText = "アンインストール"
 
                 //  Configのinstalled_softwareにアプリを追加
-                SystemConfigs.installed_software.push(apps[this.selectapp].name)
-
-                //　アプリの値段を収入から引く
-                SystemConfigs.Result.Revenue -= apps[this.selectapp].price
+                SystemConfigs.installed_software.push([apps[this.selectapp].name, apps[this.selectapp].safety, apps[this.selectapp].type])
 
                 //  評価
-                if (apps[this.selectapp].price) {
-                    // 有料のものを導入
-                    SystemConfigs.Result.SecurityScore += 400;
+                // 安全なソフトをインストールしたら、
+                if (apps[this.selectapp].safety == "safe") {
+                    if (apps[this.selectapp].price) {
+                        // 有料のものを導入
+                        SystemConfigs.Result.SecurityScore += 400
+                        //　アプリの値段を収入から引く
+                        SystemConfigs.Result.Revenue -= apps[this.selectapp].price
+                    }
+                    else {
+                        //　無料のものを導入
+                        SystemConfigs.Result.SecurityScore += 200
+                    }
                 }
-                else {
-                    //　無料のものを導入
-                    SystemConfigs.Result.SecurityScore += 200;
+                else {  // 怪しいソフトをインストールしたら、
+                    SystemConfigs.Result.SecurityScore -= 200
                 }
 
                 // デスクトップにアイコンを追加
                 DesktopIconList.push({ Name: apps[this.selectapp].name, Iconurl: "/images/apps/AntiVirus.png", Clickfunc: () => { CallWindow("VirusScanner", "Window_" + apps[this.selectapp].name) } })
                 this.destroy()
                 RefreshDesktop()
+            }
+            else {
+                if (apppos == apps[this.selectapp].name) {
+                    document.getElementById("install_btn").innerText = "インストール"
+
+                    //　保存されている配列の位置を検索
+                    var loc = SystemConfigs.installed_software.indexOf([apps[this.selectapp].name, apps[this.selectapp].safety])
+                    var loc2 = DesktopIconList.indexOf({ Name: apps[this.selectapp].name, Iconurl: "/images/apps/AntiVirus.png", Clickfunc: () => { CallWindow("VirusScanner", "Window_" + apps[this.selectapp].name) } })
+
+                    //　Configのinstalled_softwareからアプリを削除
+                    SystemConfigs.installed_software.splice(loc, 1)
+
+                    // デスクトップからアイコンを削除
+                    DesktopIconList.splice(loc2, 1)
+                    this.destroy()
+                    RefreshDesktop()
+                }
             }
         })
 
@@ -404,11 +427,13 @@ export class Store extends Window {
         }
 
 
-        if (SystemConfigs.installed_software.includes(apps[this.selectapp].name)) {
-            document.getElementById("install_btn").innerText = "アンインストール"
-        }
-        else {　// インストールしていなければ
-            document.getElementById("install_btn").innerText = "インストール"
+        for (var i = 0; i < SystemConfigs.installed_software.length; i++) {
+            if (SystemConfigs.installed_software[i][0] == apps[this.selectapp].name) {
+                document.getElementById("install_btn").innerText = "アンインストール"
+            }
+            else {
+                document.getElementById("install_btn").innerText = "インストール"
+            }
         }
     }
 }
