@@ -228,7 +228,7 @@ export class Store extends Window {
         super(html, "Store", parent, { style: style });
         this.list_container = this.bodyElem.firstElementChild.firstElementChild
         let allapp = ''
-        this.selectapp = ""     //　選んだアプリを記憶
+        this.selectapp = -1     //　選んだアプリを記憶
 
         allapp += `<div class = "title">
         おすすめアプリ
@@ -308,7 +308,7 @@ export class Store extends Window {
                 this.list_container.children[this.list_container.childElementCount - 1].classList.toggle('is_hidden')
 
                 // 選んだアプリを記憶
-                this.selectapp = this.fix_text(apps[i - 1][0])
+                this.selectapp = i - 1
 
                 // テキスト変更
                 this.change_text(apps[i - 1])
@@ -327,18 +327,18 @@ export class Store extends Window {
             this.list_container.children[this.list_container.childElementCount - 1].classList.toggle('is_hidden')
 
             // 記憶したアプリをリセット
-            this.selectapp = ""
+            this.selectapp = -1
         })
 
         // installボタンが押された時
         this.list_container.children[this.list_container.childElementCount - 1].children[5].addEventListener('click', () => {
             //  インストール済みなら
-            if (SystemConfigs.installed_software.includes(this.selectapp)) {
+            if (SystemConfigs.installed_software.includes(apps[this.selectapp].name)) {
                 document.getElementById("install_btn").innerText = "インストール"
 
                 //　保存されている配列の位置を検索
-                var loc = SystemConfigs.installed_software.indexOf(this.selectapp)
-                var loc2 = DesktopIconList.indexOf({ Name: this.selectapp, Iconurl: "/images/apps/AntiVirus.png", Clickfunc: () => { CallWindow("VirusScanner", "Window_" + this.selectapp) } })
+                var loc = SystemConfigs.installed_software.indexOf(apps[this.selectapp].name)
+                var loc2 = DesktopIconList.indexOf({ Name: apps[this.selectapp].name, Iconurl: "/images/apps/AntiVirus.png", Clickfunc: () => { CallWindow("VirusScanner", "Window_" + apps[this.selectapp].name) } })
 
                 //　Configのinstalled_softwareからアプリを削除
                 SystemConfigs.installed_software.splice(loc, 1)
@@ -353,13 +353,13 @@ export class Store extends Window {
                 document.getElementById("install_btn").innerText = "アンインストール"
 
                 //  Configのinstalled_softwareにアプリを追加
-                SystemConfigs.installed_software.push(this.selectapp)
+                SystemConfigs.installed_software.push(apps[this.selectapp].name)
 
                 //　アプリの値段を収入から引く
-                SystemConfigs.Result.Revenue -= apps[this.selectapp][2]
+                SystemConfigs.Result.Revenue -= apps[this.selectapp].price
 
                 //  評価
-                if (apps[this.selectapp][2]) {
+                if (apps[this.selectapp].price) {
                     // 有料のものを導入
                     SystemConfigs.Result.SecurityScore += 400;
                 }
@@ -369,7 +369,7 @@ export class Store extends Window {
                 }
 
                 // デスクトップにアイコンを追加
-                DesktopIconList.push({ Name: this.selectapp, Iconurl: "/images/apps/AntiVirus.png", Clickfunc: () => { CallWindow("VirusScanner", "Window_" + this.selectapp) } })
+                DesktopIconList.push({ Name: apps[this.selectapp].name, Iconurl: "/images/apps/AntiVirus.png", Clickfunc: () => { CallWindow("VirusScanner", "Window_" + apps[this.selectapp].name) } })
                 this.destroy()
                 RefreshDesktop()
             }
@@ -404,7 +404,7 @@ export class Store extends Window {
         }
 
 
-        if (SystemConfigs.installed_software.includes(this.selectapp)) {
+        if (SystemConfigs.installed_software.includes(apps[this.selectapp].name)) {
             document.getElementById("install_btn").innerText = "アンインストール"
         }
         else {　// インストールしていなければ
