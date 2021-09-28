@@ -121,11 +121,23 @@ function CreateWindow(func, window_id) {
 }
 
 function Task_Complete(task, failed = false) {
-    Task.CompletedTask.push(task)
-    if (failed) {
+    if(Task.IsCompleted(task)&&!failed)return;//すでにタスクをクリアしていて、失敗でなかったなら
+    else if(!Task.IsCompleted(task)){//未クリアなら
+        Task.CompletedTask.push(task)
+        if (failed) {
+            if(Task.IsCompleted(task))
+            Task.FailedTask.push(task)
+        } else {
+            Task.SucceedTask.push(task)
+        }
+    }else if(failed){//クリア済みで失敗したのなら
+        Task.SucceedTask = Task.SucceedTask.filter((item)=> {
+            return item !== task;
+        });
+        Task.FailedTask = Task.FailedTask.filter((item)=> {
+            return item !== task;
+        });
         Task.FailedTask.push(task)
-    } else {
-        Task.SucceedTask.push(task)
     }
 }
 
