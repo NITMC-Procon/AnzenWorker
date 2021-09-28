@@ -167,6 +167,15 @@ export let TaskbarIconList_R = [
     { Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("WiFi", "Window_WiFi") } },
 ]
 
+export let MenuIconList = [
+    { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Clickfunc: () => { CallWindow("JobManager", "Window_JobManager") } },
+    { Name: "Internet Browser", Iconurl: "/images/earth.svg", Clickfunc: () => { CallWindow("InternetBrowser", "Window_InternetBrowser") } },
+    { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { CallWindow("Mail", "Window_Mail") } },
+    { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { CallWindow("Store", "Window_Store") } },
+    { Name: "全てのプログラム", Iconurl: "", Clickfunc: () => { CallWindow("", "") } },
+]
+
+
 export function RefreshDesktop() {
     const desktop_icons = document.getElementById("desktop_icons")
     desktop_icons.innerHTML = "";
@@ -260,19 +269,46 @@ export function RefreshTaskbar() {
     })
 
     const menu = desktop_taskbar_menu.firstElementChild;
+    menu.innerHTML = "";
+    let user = createElementFromHTML(`<div style = "display:flex;">
+            <img src="/images/usericon.png" style="display:flex;width:60px; height:60px; margin:10px 10px;"></img>
+            <div style = "color:white;padding-top:20px;padding-left:30px;font-size:1.5em;">User</div>
+            </div>`);
+    menu.insertAdjacentElement('beforeend', user)
+
+    MenuIconList.forEach((icon) => {
+        let temp = createElementFromHTML(`<div style = "display:flex;background-color:#ffffff;width:98%;padding-left:5px;">
+            <img src="${icon.Iconurl}" style="display:flex;width:40px; height:40px; margin:10px 10px;"></img>
+            <div style = "color:black;padding-top:15px;">${icon.Name}</div>
+        </div>`)
+
+        menu.insertAdjacentElement('beforeend', temp)
+        temp.addEventListener('dblclick', () => {
+            if (typeof icon.Clickfunc == "function") icon.Clickfunc();
+        })
+    })
+    let logoff_shutdown = createElementFromHTML(`<div style = "display:flex;width:80%;padding-left:5px;margin:5px 100px;">
+            <img src="" style="display:flex;width:20px; height:20px; margin:10px 10px;"></img>
+            <div style = "color:white;padding-top:8px;">ログオフ</div>
+            <img src="" style="display:flex;width:20px; height:20px; margin:10px 10px;"></img>
+            <div style = "color:white;padding-top:8px;">シャットダウン</div>
+        </div>`)
+    menu.insertAdjacentElement('beforeend', logoff_shutdown)
+
+
     menu.classList.add("hidden")
-    desktop_taskbar_menu.onclick=(e)=>{
+    desktop_taskbar_menu.onclick = (e) => {
         const selectother = (e) => {
-            if (e.target.closest('#desktop_taskbar_menu') !== desktop_taskbar_menu){//メニュー以外のクリックなら
+            if (e.target.closest('#desktop_taskbar_menu') !== desktop_taskbar_menu) {//メニュー以外のクリックなら
                 menu.classList.add("hidden")
                 document.removeEventListener('mousedown', selectother)
             }
         }
-        if (menu.classList.contains("hidden")){//メニューが表示されていないとき
+        if (menu.classList.contains("hidden")) {//メニューが表示されていないとき
             menu.classList.remove("hidden")
             document.addEventListener('mousedown', selectother)
-        }else{//メニューが表示されているとき
-            if (!e.target.closest('#menu')){//メニューボタンを押していたなら
+        } else {//メニューが表示されているとき
+            if (!e.target.closest('#menu')) {//メニューボタンを押していたなら
                 menu.classList.add("hidden")
                 document.removeEventListener('mousedown', selectother)
             }
@@ -287,7 +323,7 @@ function createElementFromHTML(html) {
     return template.content.firstElementChild;
 }
 
-export function Boot(){
+export function Boot() {
     RefreshDesktop()
     RefreshTaskbar()
 }
