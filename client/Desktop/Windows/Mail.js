@@ -1,6 +1,6 @@
 'use strict'
 import { Window, RandomData } from "../Window.js"
-import { SystemConfigs,CallWindow } from "../Desktop.js"
+import { SystemConfigs,CallWindow, Task } from "../Desktop.js"
 import { SendTo,SentToMeHandler,Socket } from "../../Functions/socket.js"
 import { Notify } from "../../Functions/notify.js"
 
@@ -184,11 +184,15 @@ export class Mail extends Window{
         if(this.keep && this.keep.file.func){
             this.keep.file.func()
         }
+        if(this.keep.type=="virus"){//ウイルス開いたのなら
+            Task.Complete("Mail",true);//失敗
+        }
     }
     deleteMail(){
         if(this.keep.type == "virus"){//ウイルスメール削除
             SystemConfigs.Result.Revenue += 100;
             SystemConfigs.Result.SecurityScore += 200;
+            Task.Complete("Mail");
         }
         maillist = maillist.filter((item)=> {
             return item !== this.keep;

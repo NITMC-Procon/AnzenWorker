@@ -142,34 +142,30 @@ export class WiFi extends Window{
             // 接続先のWifiを記憶する
             SystemConfigs.connected_wifi = this.keep
 
-            // まだクリアしてなかったら
-            if(!SystemConfigs.Task_IsCompleted("Wi-Fi")){
-                let current_wifi = this.keep
+            let current_wifi = this.keep
 
-                // this.time.delayedCallだとウィンドウ閉じたら消える
-                setTimeout(() => {
-                    // 5秒後に繋がりっぱなしだったら
-                    if (SystemConfigs.connected_wifi == current_wifi) {
-                        // 接続先の暗号強度によってスコアを変える
-                        let score=50
-                        switch(current_wifi[1]){
-                            case "802.1x":score=150;break;
-                            case "open":score=50;break;
-                            case "WPA2-PSK":score=100;break;
-                        }
-                        //　結果を送信
-                        SystemConfigs.EmitResult({
-                            type: "task",
-                            status: "success",
-                            task: {
-                                id: 2,
-                                "point": score
-                            }
-                        })
-                        SystemConfigs.Task_Complete("Wi-Fi")
+            // this.time.delayedCallだとウィンドウ閉じたら消える
+            setTimeout(() => {
+                // 5秒後に繋がりっぱなしだったら
+                if (SystemConfigs.connected_wifi == current_wifi) {
+                    // 接続先の暗号強度によってスコアを変える
+                    let score=50
+                    switch(current_wifi[1]){
+                        case "802.1x":score=150;break;
+                        case "open":score=0;break;
+                        case "WPA2-PSK":score=100;break;
                     }
-                }, 5000);
-            }
+                    if(!SystemConfigs.Task.IsCompleted("Wi-Fi")){
+                        SystemConfigs.Result.Revenue += score;
+                        SystemConfigs.Result.SecurityScore += score;
+                    }
+                    if(score == 0){
+                        SystemConfigs.Task.Complete("Wi-Fi",true)
+                    }else{
+                        SystemConfigs.Task.Complete("Wi-Fi")
+                    }
+                }
+            }, 5000);
         }
     }
 }
