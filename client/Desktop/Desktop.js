@@ -10,6 +10,7 @@ import { ResultWindow } from './Windows/ResultWindow.js'
 import { JobManager } from './Windows/JobManager.js'
 import { MailReciever } from '../Services/Service/MailReciever.js'
 import { VirusScanner } from './Windows/VirusScanner.js'
+import { Excol } from './Windows/Excol.js'
 
 //ココにウィンドウのリストを追加していく
 const windowList = {
@@ -22,7 +23,8 @@ const windowList = {
     "Store": Store,
     "ResultWindow": ResultWindow,
     "JobManager": JobManager,
-    "VirusScanner": VirusScanner
+    "VirusScanner": VirusScanner,
+    "Excol": Excol
 }
 
 //ココに最初から動かすバックグラウンドサービスのリストを追加していく
@@ -158,6 +160,7 @@ export let DesktopIconList = [
     { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { CallWindow("Store", "Window_Store") } },
     { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { CallWindow("LoginWindow", "Window_LoginWindow") } },
     { Name: "リザルト 画面", Iconurl: "/images/result.svg", Clickfunc: () => { CallWindow("ResultWindow", "Window_ResultWindow") } },
+    { Name: "Micrasoft Excol", Iconurl: "/images/excol/logo.svg", Clickfunc: () => { CallWindow("Excol", "Window_Excol") } },
 ]
 
 export let TaskbarIconList_R = [
