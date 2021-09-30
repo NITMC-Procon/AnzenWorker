@@ -1,6 +1,5 @@
 'use strict'
 import { Window } from "../Window.js"
-import { SystemConfigs,CallWindow } from "../Desktop.js"
 
 const html = `
 <div style="width: 100%;height: 100%;display:flex;flex-direction: column;">
@@ -9,7 +8,7 @@ const html = `
         <input style="flex:1;">
         <button>Go</button>
     </div>
-    <iframe src="http://u-haru.com/" style="flex:1;" onLoad="alert(this.contentWindow.location);">
+    <iframe src="https://www.maizuru-ct.ac.jp/" style="flex:1;">
     </iframe>
 </div>
 `
@@ -42,11 +41,4 @@ export class InternetBrowser extends Window{
             console.log(this.iframe.contentWindow.document)
         })
     }
-}
-
-function createElementFromHTML(html) {
-    let template = document.createElement('template');
-    html = html.trim(); // Never return a text node of whitespace as the result
-    template.innerHTML = html;
-    return template.content.firstElementChild;
 }
