@@ -19,6 +19,14 @@ let allmails = [
         sub: "アンバサダープログラムへの勧誘",
         from:"asdvbsdfwaq@fuckdns.omg",
         text: "いつもお世話になっております。\nOO商業です。\nこの度あなたは特別なプログラムの参加可能メンバーに選ばれました。\nぜひ参加をご検討ください。"
+    },{
+        sub: "【重要】納品書確認のお願い",
+        from:"eigyou@nitmccorp.co.jp.duwhjfvw.xyz",
+        text: "いつもお世話になっております。\nこの度、ご依頼いただいておりました案件の納品準備が整いましたので、再度納品書のご確認をお願いいたします。",
+        file:{
+            name:"納品書20210930.xlsm",
+            func:()=>{ CallWindow("Excol","Window_Excol")}
+        }
     }, {
         sub: "限りある資源を大切に使う、やさしい生活　サステナブルなお買いもの特集",
         from:"eco@echo.eco",
