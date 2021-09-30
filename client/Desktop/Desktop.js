@@ -167,6 +167,20 @@ export let TaskbarIconList_R = [
     { Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("WiFi", "Window_WiFi") } },
 ]
 
+export let MenuIconList_L = [
+    { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Clickfunc: () => { CallWindow("JobManager", "Window_JobManager") } },
+    { Name: "Internet Browser", Iconurl: "/images/earth.svg", Clickfunc: () => { CallWindow("InternetBrowser", "Window_InternetBrowser") } },
+    { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { CallWindow("Mail", "Window_Mail") } },
+    { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { CallWindow("Store", "Window_Store") } },
+    { Name: "Game Manager", Iconurl: "/images/manager.svg", Clickfunc: () => { CallWindow("GameManager", "Window_GameManager") } },
+]
+export let MenuIconList_R = [
+    { Name: "マイドキュメント", Iconurl: "/images/directory.png" },
+    { Name: "マイピクチャ", Iconurl: "/images/directory.png" },
+    { Name: "マイミュージック", Iconurl: "/images/directory.png" },
+    { Name: "マイコンピュータ", Iconurl: "/images/directory.png" },
+    { Name: "Wi-Fi", Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("WiFi", "Window_WiFi") } },
+]
 export function RefreshDesktop() {
     const desktop_icons = document.getElementById("desktop_icons")
     desktop_icons.innerHTML = "";
@@ -260,19 +274,73 @@ export function RefreshTaskbar() {
     })
 
     const menu = desktop_taskbar_menu.firstElementChild;
+    menu.innerHTML = "";
+    let user = createElementFromHTML(`<div style = "display:flex;padding-bottom:10px;">
+            <img src="/images/usericon.png" style="display:flex;width:60px; height:60px; margin:0px 10px;"></img>
+            <div style = "color:white;padding-top:20px;padding-left:30px;font-size:1.5em;">User</div>
+            </div>`);
+    menu.insertAdjacentElement('beforeend', user)
+
+    MenuIconList_L.forEach((icon, i) => {
+        let temp = createElementFromHTML(`<div style = "display:flex;background-color:#c0c0c0;width:98%;padding-left:5px;">
+            <img src="${icon.Iconurl}" style="display:flex;width:30px; height:30px; margin:10px 10px;"></img>
+            <div style = "color:black;padding-top:15px;font-size:0.9em;width:130px;">${icon.Name}</div>
+
+            <img src="${MenuIconList_R[i].Iconurl}" style="display:flex;width:30px;background-color:rgb(157, 185, 220);height:30px;width:30px;margin-left:40px;padding-left:10px;padding-top:14px;padding-bottom:14px;"></img>
+            <div style = "display:flex;background-color:rgb(157, 185, 220);width:51%;>
+                <div style = "color:black;padding-top:15px;font-size:0.9em;">${MenuIconList_R[i].Name}</div>
+            </div>
+        </div>`)
+
+        menu.insertAdjacentElement('beforeend', temp)
+        temp.firstElementChild.addEventListener('click', () => {
+            if (typeof icon.Clickfunc == "function") icon.Clickfunc();
+        })
+        temp.firstElementChild.nextElementSibling.addEventListener('click', () => {
+            if (typeof icon.Clickfunc == "function") icon.Clickfunc();
+        })
+
+        temp.firstElementChild.nextElementSibling.nextElementSibling.addEventListener('click', () => {
+            if (typeof MenuIconList_R[i].Clickfunc == "function") MenuIconList_R[i].Clickfunc();
+        })
+        temp.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.addEventListener('click', () => {
+            if (typeof MenuIconList_R[i].Clickfunc == "function") MenuIconList_R[i].Clickfunc();
+        })
+    })
+    let temp = createElementFromHTML(`<div style = "display:flex;background-color:#c0c0c0;width:49%;padding-left:5px;">
+            <div style = "color:black;padding-top:10px;padding-left:10px;">全てのプログラム</div>
+            <img src="/images/arrow.png" style="display:flex;width:45px; height:30px;margin-left:0px;margin-top:5px;"></img>
+        </div>`);
+    menu.insertAdjacentElement('beforeend', temp);
+
+    let logoff_shutdown = createElementFromHTML(`<div style = "display:flex;width:80%;padding-left:5px;margin:1px 80px;">
+            <img src="/images/logoff.png" style="display:flex;width:30px; height:30px; margin:10px 10px;"></img>
+            <div style = "color:white;padding-top:15px;">ログオフ</div>
+            <img src="/images/shutdown.png" style="display:flex;width:30px; height:30px; margin:10px 10px;"></img>
+            <div style = "color:white;padding-top:15px;">シャットダウン</div>
+        </div>`)
+    menu.insertAdjacentElement('beforeend', logoff_shutdown);
+
+    logoff_shutdown.firstElementChild.addEventListener('click', () => {
+        CallWindow("LoginWindow", "Window_LoginWindow");
+    })
+    logoff_shutdown.firstElementChild.nextElementSibling.nextElementSibling.addEventListener('click', () => {
+        CallWindow("GameManager", "Window_GameManager");
+    })
+
     menu.classList.add("hidden")
-    desktop_taskbar_menu.onclick=(e)=>{
+    desktop_taskbar_menu.onclick = (e) => {
         const selectother = (e) => {
-            if (e.target.closest('#desktop_taskbar_menu') !== desktop_taskbar_menu){//メニュー以外のクリックなら
+            if (e.target.closest('#desktop_taskbar_menu') !== desktop_taskbar_menu) {//メニュー以外のクリックなら
                 menu.classList.add("hidden")
                 document.removeEventListener('mousedown', selectother)
             }
         }
-        if (menu.classList.contains("hidden")){//メニューが表示されていないとき
+        if (menu.classList.contains("hidden")) {//メニューが表示されていないとき
             menu.classList.remove("hidden")
             document.addEventListener('mousedown', selectother)
-        }else{//メニューが表示されているとき
-            if (!e.target.closest('#menu')){//メニューボタンを押していたなら
+        } else {//メニューが表示されているとき
+            if (!e.target.closest('#menu')) {//メニューボタンを押していたなら
                 menu.classList.add("hidden")
                 document.removeEventListener('mousedown', selectother)
             }
@@ -287,7 +355,7 @@ function createElementFromHTML(html) {
     return template.content.firstElementChild;
 }
 
-export function Boot(){
+export function Boot() {
     RefreshDesktop()
     RefreshTaskbar()
 }
