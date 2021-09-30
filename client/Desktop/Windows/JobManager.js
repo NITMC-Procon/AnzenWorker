@@ -51,15 +51,19 @@ const html = `
 const style = "width:40em;height:20em;"
 
 export let tasklist = [
-    {
-        title: "メール確認",
-        text: `届いたメールを確認してみよう\n\n中には、怪しいメールもあるから注意しよう\n間違って開いてしまうと大変なことになるかも...`,
-        class: "Mail"
-    }, {
-        title: "Wi-Fi接続",
-        text: `Wi-Fiに接続してみよう\n\nいろんな接続先が出てくるけど、一番安全なものを選ぼう！\nセキュリティのないWi-Fiに接続してしまうと、大変なことになるかも...`,
-        class: "WiFi"
-    }
+  {
+      title: "メールを確認",
+      text: `届いたメールを確認する\n\nメールを確認しましょう。中には怪しいメールもあるので注意しましょう\n間違って開いたりすると大変なことになってしまうかもしれません…`,
+      class: "Mail"
+  }, {
+    title: "Wi-Fiに接続",
+    text: `Wi-Fiに接続する\n\n様々な接続先の中から、一番安全なものを選びましょう。\n誤ったWi-Fiに接続すると、大変なことになってしまうかもしれません…`,
+    class: "WiFi"
+  }, {
+    title: "ソフトをインストール",
+    text: `必要なソフトをインストールする\n\nPCを利用する上で必要なソフトをインストールしましょう。場合によっては、`,
+    class: "Store"
+  }
 ]
 
 export class JobManager extends Window {
