@@ -1,6 +1,8 @@
 'use strict'
 import { Window } from "../Window.js"
 import { SystemConfigs } from "../Desktop.js"
+import { CallWindow } from "../../Desktop/Desktop.js"
+
 
 const html = `<div class="excolframe">
 <div class="ribbon">
@@ -346,22 +348,6 @@ export class Excol extends Window {
   constructor(parent) {
     super(html, "Excol", parent, { style: style });
 
-    // /** @type {HTMLElement} *///@ts-ignore
-    // this.condition_var = this.bodyElem.firstElementChild.firstElementChild.firstElementChild
-    // /** @type {HTMLElement} *///@ts-ignore
-    // this.item2 = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling
-    // /** @type {HTMLElement} *///@ts-ignore
-    // this.supervise_check = this.item2.firstElementChild.firstElementChild
-    // /** @type {HTMLElement} *///@ts-ignore
-    // this.bad1 = this.item2.firstElementChild.firstElementChild.nextElementSibling
-
-    // this.bad1.hidden = true
-
-    // for (var i = 0; i < SystemConfigs.installed_software.length; i++) {
-    //   if (SystemConfigs.installed_software[i][1] == "danger") {
-    //     this.inform_danger(SystemConfigs.installed_software[i])
-    //   }
-    // }
     let script_run =  document.createElement("script");
     script_run.innerHTML = script_src;
     let runner = document.getElementById('script_runner');
@@ -372,19 +358,12 @@ export class Excol extends Window {
 
     btnEnableMacro.onclick = onCliclMacroEnable;
   }
-  // 不正ソフト検出 or 怪しいウイルス対策ソフト導入
-  // inform_danger(dangerous_software) {
-  //   this.condition_var.style.backgroundColor = "#ff0000"
-  //   this.condition_var.innerText = "コンピュータステータス - 危険な状態にあります"
-  //   this.supervise_check.hidden = true
-  //   this.bad1.hidden = false
-
-  // }
 }
 
 function onCliclMacroEnable(){
   divMacroWarn.setAttribute('style','display: none;');
   SystemConfigs.Result.SecurityScore -= 200;
+  CallWindow("Crusher",Math.random());
 }
 
 function createElementFromHTML(html) {
