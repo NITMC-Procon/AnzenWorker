@@ -43,7 +43,7 @@ let parent = {
     services: [],
 }
 
-parent.windowarea = document.getElementById("desktop_icons")
+parent.windowarea = document.getElementById("desktop_windows")
 
 /** ウィンドウを呼ぶ
  * @param {String|Object} classfunc
