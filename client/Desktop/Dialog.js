@@ -75,9 +75,9 @@ export class Dialog{
                 </div>
             </div>
         </div>`)
-        this.dialog = this.parent.windowarea.insertAdjacentElement('afterbegin', windowhtml)
+        this.window = this.parent.windowarea.insertAdjacentElement('afterbegin', windowhtml)
         /** @type {HTMLElement} *///@ts-ignore
-        this.drag = this.dialog.firstElementChild
+        this.drag = this.window.firstElementChild
         this.drag.style.position = "relative";
         for (const eventName of ['mousedown', 'touchstart']) {
             this.drag.addEventListener(eventName, () => {//アロー関数にするとthisがインスタンスを示すようになる
@@ -130,7 +130,7 @@ export class Dialog{
         if (this.parent.windows[this.window_id]){
             delete this.parent.windows[this.window_id]
         }
-        this.dialog.remove()
+        this.window.remove()
     }
 }
 
