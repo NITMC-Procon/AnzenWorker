@@ -16,8 +16,8 @@ const html = `<br>
 const style="width:20em;"
 
 export class GameManager extends Window{
-    constructor(parent){
-        super(html,"ゲームマネージャー",parent,{style:style})
+    constructor(){
+        super(html,"ゲームマネージャー",{style:style})
         this.bodyElem.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.addEventListener('click',() => {this.game_button("start")})
         this.bodyElem.firstElementChild.nextElementSibling.nextElementSibling.lastElementChild.addEventListener('click',() => {this.game_button("stop")})
     }

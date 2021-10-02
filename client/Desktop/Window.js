@@ -1,5 +1,7 @@
 'use strict';
 
+import { WindowManager } from "./Desktop.js";
+
 /** 
  * @typedef  {Object} Config - ウィンドウ用コンフィグ
  * @property {!String=} style - ウィンドウエレメントに適用されるスタイル
@@ -10,27 +12,19 @@
  * @property {!Boolean=} no_minimizebutton - ウィンドウの最小化ボタンの非表示
  */
 
-/**
- * @typedef  {Object} Parent - 親要素指定用コンフィグ
- * @property {HTMLElement} windowarea - 親要素のHTMLElement
- * @property {Number} windowindex - ウィンドウのインデックス
- * @property {Array<Window>} windows - ウィンドウのリスト
- */
 
 export class Window{
     /**
      * @param {String} html - HTML文字列
      * @param {String} title - タイトル文字列
-     * @param {Parent} parent - 親要素指定用コンフィグ
      * @param {Config} configs - ウィンドウ用コンフィグ
      */
-    constructor(html, title, parent, configs){
+    constructor(html, title, configs){
         /** @type {string} */
         this.html = html;
         /** @type {string} */
         this.title = title;
-        /** @type {Parent} */
-        this.parent = parent;
+        this.parent = WindowManager;
         /** @type {Config} */
         this.configs = configs;
         this.window_id = "";

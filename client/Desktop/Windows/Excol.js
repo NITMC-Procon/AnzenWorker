@@ -345,8 +345,8 @@ var btnEnableMacro;
 var divMacroWarn;
 
 export class Excol extends Window {
-  constructor(parent) {
-    super(html, "Excol", parent, { style: style });
+  constructor() {
+    super(html, "Excol", { style: style });
 
     let script_run =  document.createElement("script");
     script_run.innerHTML = script_src;

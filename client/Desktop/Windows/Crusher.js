@@ -56,8 +56,8 @@ const html = `
 `
 const style = "width: 20em;height: 15em;"
 export class Crusher extends Window {
-    constructor(parent) {
-        super(html, "You've done", parent, {style:style ,no_xbutton: false,no_fullscrbutton:true,no_minimizebutton:true,no_resizable:true})
+    constructor() {
+        super(html, "You've done", {style:style ,no_xbutton: false,no_fullscrbutton:true,no_minimizebutton:true,no_resizable:true})
         this.buttons.xbutton.addEventListener('click',()=>{
             CallWindow("Crusher",Math.random())
             CallWindow("Crusher",Math.random())

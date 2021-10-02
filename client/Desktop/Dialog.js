@@ -1,25 +1,6 @@
 'use strict';
 
-/* parent
-{
-    windowarea:document.getElementById("htmlwindows"),
-    windowindex:0
-}
-*/
-/*configs
-{
-    no_xbutton: true,
-    style:""
-}*/
-
-// 例
-// new func(`<div style="display: flex;align-items: center;justify-content: space-evenly;">
-//              <input value="ゲーム開始" type="button" id="gamestart_button"></input>
-//              <input value="ゲーム終了" type="button" id="gamestop_button"></input>
-//              </div>`,
-//     "title",window["parent"],{
-//     no_xbutton: true
-//   })
+import { WindowManager } from "./Desktop.js";
 
 /** 
  * @typedef  {Object} Config - ウィンドウ用コンフィグ
@@ -29,27 +10,18 @@
  * @property {!Boolean=} no_minimizebutton - ウィンドウの最小化ボタンの非表示
  */
 
-/**
- * @typedef  {Object} Parent - 親要素指定用コンフィグ
- * @property {HTMLElement} windowarea - 親要素のHTMLElement
- * @property {Number} windowindex - ウィンドウのインデックス
- * @property {Array<Window>} windows - ウィンドウのリスト
- */
-
 export class Dialog{
     /**
      * @param {String} html - HTML文字列
      * @param {String} title - タイトル文字列
-     * @param {Parent} parent - 親要素指定用コンフィグ
      * @param {Config} configs - ウィンドウ用コンフィグ
      */
-    constructor(html, title, parent, configs){
+    constructor(html, title, configs){
         /** @type {string} */
         this.html = html;
         /** @type {string} */
         this.title = title;
-        /** @type {Parent} */
-        this.parent = parent;
+        this.parent = WindowManager;
         /** @type {Config} */
         this.configs = configs;
         this.window_id = "";

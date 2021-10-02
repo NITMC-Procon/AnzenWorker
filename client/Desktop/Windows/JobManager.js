@@ -67,8 +67,8 @@ export let tasklist = [
 ]
 
 export class JobManager extends Window {
-    constructor(parent) {
-        super(html, "タスク管理", parent, { style: style });
+    constructor() {
+        super(html, "タスク管理", { style: style });
 
         /** @type {HTMLElement} *///@ts-ignore
         this.tasklist = this.bodyElem.firstElementChild.firstElementChild.lastElementChild
