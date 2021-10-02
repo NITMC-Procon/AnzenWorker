@@ -74,8 +74,8 @@ const style="width:40em;height:20em;"
 export let maillist = []
 
 export class Mail extends Window{
-    constructor(parent){
-        super(html,"メール",parent,{style:style});
+    constructor(){
+        super(html,"メール",{style:style});
         
         /** @type {HTMLElement} *///@ts-ignore
         this.maillist = this.bodyElem.firstElementChild.firstElementChild.lastElementChild

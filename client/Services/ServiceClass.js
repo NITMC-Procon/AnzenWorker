@@ -1,14 +1,9 @@
 
-/**
- * @typedef  {Object} Parent - 親要素指定用コンフィグ
- * @property {Object} services - サービスのリスト
- * @property {Array<import('../Desktop/Window.js').Window>} windows - ウィンドウのリスト
- */
+import { WindowManager } from "../Desktop/Desktop.js";
 
 export class Service{
-    /** @param {Parent} parent - 親要素指定用コンフィグ */
-    constructor(parent) {
-        this.parent = parent
+    constructor() {
+        this.parent = WindowManager
         this.create()
     }
     destuctor(){

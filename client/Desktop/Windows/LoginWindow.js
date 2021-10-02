@@ -20,8 +20,8 @@ const html = `
 const style = "width:35em;"
 
 export class LoginWindow extends Dialog {
-    constructor(parent) {
-        super(html, "AnzenWorkerにログオン", parent, { style: style ,no_xbutton: true})
+    constructor() {
+        super(html, "AnzenWorkerにログオン", { style: style ,no_xbutton: true})
         this.bodyElem.lastElementChild.firstElementChild.addEventListener('click', () => { this.room_button("join") })
         this.bodyElem.lastElementChild.lastElementChild.addEventListener('click', () => { this.room_button("create") })
         this.drag.classList.add("login-window")

@@ -1,3 +1,4 @@
+import { Folder,File,Link,Root} from '../Desktop/FileSystem.js'
 import { GameManager } from './Windows/GameManager.js'
 import { LoginWindow } from './Windows/LoginWindow.js'
 import { WiFi } from './Windows/WiFi.js'
@@ -12,6 +13,9 @@ import { MailReciever } from '../Services/Service/MailReciever.js'
 import { VirusScanner } from './Windows/VirusScanner.js'
 import { Excol } from './Windows/Excol.js'
 import { Installer } from './Windows/Installer.js'
+import { Explorer } from './Windows/Explorer.js'
+
+const UserName = "ANZEN"
 
 //ココにウィンドウのリストを追加していく
 const windowList = {
@@ -26,6 +30,7 @@ const windowList = {
     "JobManager": JobManager,
     "VirusScanner": VirusScanner,
     "Excol": Excol,
+    "Explorer":Explorer,
     "Installer": Installer
 }
 
@@ -34,7 +39,7 @@ const systemServiceList = {
     "MailReciever": MailReciever
 }
 
-let parent = {
+export let WindowManager = {
     /** @type {HTMLElement} */
     windowarea: null,
     windowindex: 0,
@@ -43,7 +48,7 @@ let parent = {
     services: [],
 }
 
-parent.windowarea = document.getElementById("desktop_windows")
+WindowManager.windowarea = document.getElementById("desktop_windows")
 
 /** ウィンドウを呼ぶ
  * @param {String|Object} classfunc
@@ -68,12 +73,12 @@ export function CallWindow(classfunc, window_id) {
  */
 export function CallService(classfunc) {
     if (typeof classfunc == 'string') {
-        if (!parent.services[classfunc] && systemServiceList[classfunc]) {
-            parent.services[classfunc] = new systemServiceList[classfunc](parent);//サービスを作成
+        if (!WindowManager.services[classfunc] && systemServiceList[classfunc]) {
+            WindowManager.services[classfunc] = new systemServiceList[classfunc]();//サービスを作成
         }
     } else if (typeof classfunc == 'function') {
-        if (!parent.services[classfunc.name] && systemServiceList[classfunc]) {
-            parent.services[classfunc.name] = new classfunc(parent)
+        if (!WindowManager.services[classfunc.name] && systemServiceList[classfunc]) {
+            WindowManager.services[classfunc.name] = new classfunc()
         }
     }
 }
@@ -108,19 +113,45 @@ export let SystemConfigs = {
     Task: Task,
     Result: Result,
 
-    // Deprecated
-    // completed_task: Task.CompletedTask,
-    // Task_Complete: Task.Complete,
-    // Task_IsCompleted: Task.IsCompleted,
-    // EmitResult: Task.EmitResult
+    Packages:{
+        List:[],
+        Install:package_Install,
+        Uninstall:package_Uninstall
+    }
+}
+
+function package_Install(name,iconurl,func){
+    SystemConfigs.Packages.List.push(name)
+    /**@type {Folder} *///@ts-ignore
+    let desktopfolder = Root.GetPath(`/Users/${UserName}/Desktop/`)
+    /**@type {Folder} *///@ts-ignore
+    let progfolder = Root.GetPath(`/Programs/`)
+
+    let tmp = new File(progfolder,name)
+    tmp.icon = iconurl
+    tmp.content = func
+    new Link(desktopfolder,name,tmp).icon=iconurl
+
+}
+function package_Uninstall(name){
+    SystemConfigs.Packages.List.filter((item)=>{
+        return item !== name
+    })
+    /**@type {Folder} *///@ts-ignore
+    let desktopfolder = Root.GetPath(`/Users/${UserName}/Desktop/`)
+    /**@type {Folder} *///@ts-ignore
+    let progfolder = Root.GetPath(`/Programs/`)
+
+    desktopfolder.children.delete(name)
+    progfolder.children.delete(name)
 }
 
 function CreateWindow(func, window_id) {
-    if (parent.windows[window_id]) {
-        parent.windows[window_id].bringToTop();
+    if (WindowManager.windows[window_id]) {
+        WindowManager.windows[window_id].bringToTop();
     } else {
-        parent.windows[window_id] = new func(parent);//funcクラスのウィンドウを作成
-        parent.windows[window_id].window_id = window_id;
+        WindowManager.windows[window_id] = new func();//funcクラスのウィンドウを作成
+        WindowManager.windows[window_id].window_id = window_id;
     }
 }
 
@@ -163,6 +194,7 @@ export let DesktopIconList = [
     { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { CallWindow("LoginWindow", "Window_LoginWindow") } },
     { Name: "リザルト 画面", Iconurl: "/images/result.svg", Clickfunc: () => { CallWindow("ResultWindow", "Window_ResultWindow") } },
     { Name: "Micrasoft Excol", Iconurl: "/images/excol/logo.svg", Clickfunc: () => { CallWindow("Excol", "Window_Excol") } },
+    { Name: "Explorer", Iconurl: "/images/folder.svg", Clickfunc: () => { CallWindow("Explorer",Math.random()) } },
     { Name: "インストーラー(暫定)", Iconurl: "/images/excol/logo.svg", Clickfunc: () => { CallWindow("Installer", "Window_Installer") } },
 
 ]
@@ -187,16 +219,18 @@ export let MenuIconList_R = [
 ]
 export function RefreshDesktop() {
     const desktop_icons = document.getElementById("desktop_icons")
+    /** @type {Folder} *///@ts-ignore
+    let desktopfolder = Root.GetPath(`/Users/${UserName}/Desktop/`)
     desktop_icons.innerHTML = "";
     let elm_drag
-    DesktopIconList.forEach((icon) => {
+    desktopfolder.children.forEach(item=>{
         /** @type {HTMLElement} *///@ts-ignore
         let temp = createElementFromHTML(`<div class="desktop_icon" draggable="true">
-                <img src="${icon.Iconurl}" class="desktop_icon_image"></img>
-                <span class="desktop_icon_text">${icon.Name}</span>
+                <img src="${item.icon}" class="desktop_icon_image"></img>
+                <span class="desktop_icon_text">${item.name}</span>
                 </div>`)
         temp.addEventListener('dblclick', () => {
-            if (typeof icon.Clickfunc == "function") icon.Clickfunc();
+            item.Open()
             temp.classList.remove("selected");
         })
         temp.addEventListener('mousedown', (e) => {
@@ -271,7 +305,7 @@ export function RefreshTaskbar() {
     desktop_taskbar_R.innerHTML = "";
     TaskbarIconList_R.forEach((icon) => {
         let temp = createElementFromHTML(`<img src="${icon.Iconurl}" class="desktop_icon_image"></img>`)
-        temp.addEventListener('dblclick', () => {
+        temp.addEventListener('click', () => {
             if (typeof icon.Clickfunc == "function") icon.Clickfunc();
         })
         desktop_taskbar_R.insertAdjacentElement('beforeend', temp)
@@ -344,6 +378,7 @@ export function RefreshTaskbar() {
             menu.classList.remove("hidden")
             document.addEventListener('mousedown', selectother)
         } else {//メニューが表示されているとき
+            //@ts-ignore
             if (!e.target.closest('#menu')) {//メニューボタンを押していたなら
                 menu.classList.add("hidden")
                 document.removeEventListener('mousedown', selectother)
@@ -360,11 +395,12 @@ function createElementFromHTML(html) {
 }
 
 export function Boot() {
+    initFileSystem()
     RefreshDesktop()
     RefreshTaskbar()
 }
 
-export function Init() {//リザルトとかを初期化
+export function InitGame() {//リザルトとかを初期化
     SystemConfigs.connected_wifi = []
     SystemConfigs.installed_software = []
     Result.Revenue = 0
@@ -373,19 +409,49 @@ export function Init() {//リザルトとかを初期化
     Task.FailedTask = []
     Task.SucceedTask = []
 
-    for (let windowid in parent.windows) {//すべてのウィンドウを削除
-        parent.windows[windowid].destroy();
+    for (let windowid in WindowManager.windows) {//すべてのウィンドウを削除
+        WindowManager.windows[windowid].destroy();
     }
-    for (let serviceid in parent.services) {//すべてのサービスを停止
-        parent.services[serviceid].destuctor();
+    for (let serviceid in WindowManager.services) {//すべてのサービスを停止
+        WindowManager.services[serviceid].destuctor();
     }
     for (let serviceid in systemServiceList) {//初期サービスを呼び出す
         CallService(serviceid)
     }
 }
 
-export function Stop() {//サービス等停止用
-    for (let serviceid in parent.services) {//すべてのサービスを停止
-        parent.services[serviceid].destuctor();
+export function StopGame() {//サービス等停止用
+    for (let serviceid in WindowManager.services) {//すべてのサービスを停止
+        WindowManager.services[serviceid].destuctor();
     }
 }
+
+function initFileSystem(){
+    Root.children.clear()
+    /**@type {Folder} *///@ts-ignore
+    let desktop = Root.NewItem(`/Users/${UserName}/Desktop/`)
+    let progfolder = Root.Mkdir("Programs")
+
+
+    DesktopIconList.forEach(icon=>{
+        let tmp = new File(progfolder,icon.Name)
+        tmp.icon = icon.Iconurl
+        tmp.content = icon.Clickfunc
+        new Link(desktop,icon.Name,tmp).icon=icon.Iconurl
+    })
+    RefreshDesktop()
+}
+
+function lsall(dir){
+    /** @type {Folder} *///@ts-ignore
+    if(typeof dir == "string") dir = Root.GetPath(dir).children
+    else if(!dir) dir = Root.children
+    dir.forEach(element => {
+        console.log(element.Pwd())
+        if(element.isdir){
+            lsall(element.children)
+        }
+    });
+}
+window["lsall"] = lsall
+window["getpath"] = (path)=>{return Root.GetPath(path)}

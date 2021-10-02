@@ -227,8 +227,8 @@ export let apps = [
 ]
 
 export class Store extends Window {
-    constructor(parent) {
-        super(html, "Store", parent, { style: style });
+    constructor() {
+        super(html, "Store", { style: style });
         this.list_container = this.bodyElem.firstElementChild.firstElementChild
         let allapp = ''
         this.selectapp = -1     //　選んだアプリを記憶
@@ -374,9 +374,8 @@ export class Store extends Window {
                     SystemConfigs.Result.SecurityScore -= 200
                 }
 
-                // デスクトップにアイコンを追加
-                DesktopIconList.push({ Name: apps[this.selectapp].name, Iconurl: "/images/apps/AntiVirus.png", Clickfunc: () => { CallWindow("VirusScanner", "Window_" + apps[this.selectapp].name) } })
-                this.destroy()
+                // インストール
+                SystemConfigs.Packages.Install(apps[this.selectapp].name,"/images/apps/AntiVirus.png",()=>{CallWindow(VirusScanner, "Window_" + apps[this.selectapp].name)})
                 RefreshDesktop()
             }
             else {
@@ -385,13 +384,11 @@ export class Store extends Window {
 
                     //　保存されている配列の位置を検索
                     var loc = SystemConfigs.installed_software.indexOf([apps[this.selectapp].name, apps[this.selectapp].safety])
-                    var loc2 = DesktopIconList.indexOf({ Name: apps[this.selectapp].name, Iconurl: "/images/apps/AntiVirus.png", Clickfunc: () => { CallWindow("VirusScanner", "Window_" + apps[this.selectapp].name) } })
-
                     //　Configのinstalled_softwareからアプリを削除
                     SystemConfigs.installed_software.splice(loc, 1)
 
                     // デスクトップからアイコンを削除
-                    DesktopIconList.splice(loc2, 1)
+                    SystemConfigs.Packages.Uninstall(apps[this.selectapp].name)
                     this.destroy()
                     RefreshDesktop()
                 }
