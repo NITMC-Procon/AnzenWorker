@@ -52,7 +52,8 @@ div[${RandData}] .icon.selected>.icon_text{
 </style>
 `
 
-const style = "width: 20em;height: 15em;"
+const style="width:40em;height:30em;"
+
 export class Explorer extends Window {
     constructor() {
         super(html, "Explorer",{style:style})

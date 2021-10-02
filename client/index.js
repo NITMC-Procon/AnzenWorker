@@ -1,4 +1,4 @@
-import { CallWindow, SystemConfigs, Init, Stop, Boot } from './Desktop/Desktop.js'
+import { CallWindow, SystemConfigs, InitGame, StopGame, Boot } from './Desktop/Desktop.js'
 import { Notify } from './Functions/notify.js';
 import { Handlers, Connect_to_server, Socket } from './Functions/socket.js';
 
@@ -29,7 +29,7 @@ window.addEventListener("load", () => {
 let stoptimer
 function gamestart(msg){
     if(!SystemConfigs.room.status){//開始されてなければ
-        Init()
+        InitGame()
         SystemConfigs.room.startat = msg.startat
         SystemConfigs.room.duration = msg.duration
         SystemConfigs.room.status=true
@@ -41,7 +41,7 @@ function gamestart(msg){
 
 function gamestop(msg){
     if(SystemConfigs.room.status){//終了してなければ
-        Stop()
+        StopGame()
         clearTimeout(stoptimer)
         SystemConfigs.room.status=false
         Notify("ゲームが終了しました")
