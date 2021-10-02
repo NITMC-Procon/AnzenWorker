@@ -125,20 +125,20 @@ function CreateWindow(func, window_id) {
 }
 
 function Task_Complete(task, failed = false) {
-    if(Task.IsCompleted(task)&&!failed)return;//すでにタスクをクリアしていて、失敗でなかったなら
-    else if(!Task.IsCompleted(task)){//未クリアなら
+    if (Task.IsCompleted(task) && !failed) return;//すでにタスクをクリアしていて、失敗でなかったなら
+    else if (!Task.IsCompleted(task)) {//未クリアなら
         Task.CompletedTask.push(task)
         if (failed) {
-            if(Task.IsCompleted(task))
-            Task.FailedTask.push(task)
+            if (Task.IsCompleted(task))
+                Task.FailedTask.push(task)
         } else {
             Task.SucceedTask.push(task)
         }
-    }else if(failed){//クリア済みで失敗したのなら
-        Task.SucceedTask = Task.SucceedTask.filter((item)=> {
+    } else if (failed) {//クリア済みで失敗したのなら
+        Task.SucceedTask = Task.SucceedTask.filter((item) => {
             return item !== task;
         });
-        Task.FailedTask = Task.FailedTask.filter((item)=> {
+        Task.FailedTask = Task.FailedTask.filter((item) => {
             return item !== task;
         });
         Task.FailedTask.push(task)
@@ -279,20 +279,20 @@ export function RefreshTaskbar() {
 
     const menu = desktop_taskbar_menu.firstElementChild;
     menu.innerHTML = "";
-    let user = createElementFromHTML(`<div style = "display:flex;padding-bottom:10px;">
-            <img src="/images/usericon.png" style="display:flex;width:60px; height:60px; margin:0px 10px;"></img>
-            <div style = "color:white;padding-top:20px;padding-left:30px;font-size:1.5em;">User</div>
+    let user = createElementFromHTML(`<div style = "display:flex;padding-bottom:0.5vw;">
+            <img src="/images/usericon.png" style="display:flex;width:4vw; height:4vw; margin-left:2vw;margin-top:0.5vw;"></img>
+            <div style = "color:white;padding-top:1.5vw;padding-left:3vw;font-size:2vw;">User</div>
             </div>`);
     menu.insertAdjacentElement('beforeend', user)
 
     MenuIconList_L.forEach((icon, i) => {
-        let temp = createElementFromHTML(`<div style = "display:flex;background-color:#c0c0c0;width:98%;padding-left:5px;">
-            <img src="${icon.Iconurl}" style="display:flex;width:30px; height:30px; margin:10px 10px;"></img>
-            <div style = "color:black;padding-top:15px;font-size:0.9em;width:130px;">${icon.Name}</div>
+        let temp = createElementFromHTML(`<div style = "display:flex;background-color:#c0c0c0;width:98%;padding-left:0.5vw;">
+            <img src="${icon.Iconurl}" style="display:flex;width:2vw; height:1.7vw; margin:0.8vw 0.6vw;"></img>
+            <div style = "color:black;padding-top:1vw;font-size:1vw;width:12vw;">${icon.Name}</div>
 
-            <img src="${MenuIconList_R[i].Iconurl}" style="display:flex;width:30px;background-color:rgb(157, 185, 220);height:30px;width:30px;margin-left:40px;padding-left:10px;padding-top:14px;padding-bottom:14px;"></img>
-            <div style = "display:flex;background-color:rgb(157, 185, 220);width:51%;>
-                <div style = "color:black;padding-top:15px;font-size:0.9em;">${MenuIconList_R[i].Name}</div>
+            <img src="${MenuIconList_R[i].Iconurl}" style="display:flex;width:2vw;height:1.7vw;background-color:rgb(157, 185, 220);padding-left:1vw;padding-top:1vw;padding-bottom:1vw;"></img>
+            <div style = "display:flex;background-color:rgb(157, 185, 220);width:46%;color:black;padding-top:1vw;padding-left:1vw;font-size:1vw;>
+                <div style = "">${MenuIconList_R[i].Name}</div>
             </div>
         </div>`)
 
@@ -311,17 +311,17 @@ export function RefreshTaskbar() {
             if (typeof MenuIconList_R[i].Clickfunc == "function") MenuIconList_R[i].Clickfunc();
         })
     })
-    let temp = createElementFromHTML(`<div style = "display:flex;background-color:#c0c0c0;width:49%;padding-left:5px;">
-            <div style = "color:black;padding-top:10px;padding-left:10px;">全てのプログラム</div>
-            <img src="/images/arrow.png" style="display:flex;width:45px; height:30px;margin-left:0px;margin-top:5px;"></img>
+    let temp = createElementFromHTML(`<div style = "display:flex;background-color:#c0c0c0;width:48%;padding-left:0.5vw;">
+            <div style = "color:black;padding-left:1.7vw;padding-top:0.3vw;font-size:1vw;width:12vw;">全てのプログラム</div>
+            <img src="/images/arrow.png" style="display:flex;width:3.3vw; height:2vw;margin-left:0px;margin-top:0vw;"></img>
         </div>`);
     menu.insertAdjacentElement('beforeend', temp);
 
-    let logoff_shutdown = createElementFromHTML(`<div style = "display:flex;width:80%;padding-left:5px;margin:1px 80px;">
-            <img src="/images/logoff.png" style="display:flex;width:30px; height:30px; margin:10px 10px;"></img>
-            <div style = "color:white;padding-top:15px;">ログオフ</div>
-            <img src="/images/shutdown.png" style="display:flex;width:30px; height:30px; margin:10px 10px;"></img>
-            <div style = "color:white;padding-top:15px;">シャットダウン</div>
+    let logoff_shutdown = createElementFromHTML(`<div style = "display:flex;width:80%;padding-left:1vw;margin:0.1vw 4vw;">
+            <img src="/images/logoff.png" style="display:flex;width:2vw; height:2vw; margin:0.5vw 1vw;"></img>
+            <div style = "color:white;padding-top:1vw;font-size:1vw;">ログオフ</div>
+            <img src="/images/shutdown.png" style="display:flex;width:2vw; height:2vw; margin:0.5vw 1vw;"></img>
+            <div style = "color:white;padding-top:1vw;font-size:1vw;">シャットダウン</div>
         </div>`)
     menu.insertAdjacentElement('beforeend', logoff_shutdown);
 
