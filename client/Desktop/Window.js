@@ -1,6 +1,6 @@
 'use strict';
 
-import { WindowManager } from "./Desktop.js";
+import { WindowManager,RefreshTaskbarIcons } from "./Desktop.js";
 
 /** 
  * @typedef  {Object} Config - ウィンドウ用コンフィグ
@@ -8,7 +8,7 @@ import { WindowManager } from "./Desktop.js";
  * @property {!Boolean=} no_xbutton - ウィンドウの閉じるボタンの非表示
  * @property {!Boolean=} no_resizable - ウィンドウのりサイズの無効化
  * @property {!Boolean=} no_xbutton - ウィンドウの閉じるボタンの非表示
- * @property {!Boolean=} no_fullscrbutton - ウィンドウのフルスクリーンボタンの非表示
+ * @property {!Boolean=} no_maxmizebutton - ウィンドウのフルスクリーンボタンの非表示
  * @property {!Boolean=} no_minimizebutton - ウィンドウの最小化ボタンの非表示
  */
 
@@ -35,7 +35,7 @@ export class Window{
                     <span>${this.title}</span>
                     <div style="display: flex;">
                       ${(this.configs != null && !this.configs.no_minimizebutton) ? '<span class="button minimize"></span>' : ''}
-                      ${(this.configs != null && !this.configs.no_fullscrbutton) ? '<span class="button fullscr"></span>' : ''}
+                      ${(this.configs != null && !this.configs.no_maxmizebutton) ? '<span class="button maxmize"></span>' : ''}
                       ${(this.configs != null && !this.configs.no_xbutton) ? '<span class="button close"></span>' : ''}
                     </div>
                 </div>
@@ -69,7 +69,7 @@ export class Window{
         let btns = this.window.firstElementChild.lastElementChild
         this.buttons = {
             xbutton:(this.configs != null && !this.configs.no_xbutton)?btns.querySelector(".button.close"):null,
-            fullscrbutton:(this.configs != null && !this.configs.no_fullscrbutton)?btns.querySelector(".button.fullscr"):null,
+            maxmizebutton:(this.configs != null && !this.configs.no_maxmizebutton)?btns.querySelector(".button.maxmize"):null,
             minimizebutton:(this.configs != null && !this.configs.no_minimizebutton)?btns.querySelector(".button.minimize"):null,
         }
         if(this.buttons.xbutton){
@@ -82,14 +82,20 @@ export class Window{
                 },{passive:true});
             }
         }
-        if(this.buttons.fullscrbutton){
+        if(this.buttons.maxmizebutton){
+            this.buttons.maxmizebutton.addEventListener('click', () => {
+                this.Fullsize()
+            },{passive:true});
             for (const eventName of ['mousedown', 'touchstart']) {
-                this.buttons.fullscrbutton.addEventListener(eventName, (e) => {//アロー関数にするとthisがインスタンスを示すようになる
+                this.buttons.maxmizebutton.addEventListener(eventName, (e) => {//アロー関数にするとthisがインスタンスを示すようになる
                     e.stopPropagation()
                 },{passive:true});
             }
         }
         if(this.buttons.minimizebutton){
+            this.buttons.minimizebutton.addEventListener('click', () => {
+                this.Minimize()
+            },{passive:true});
             for (const eventName of ['mousedown', 'touchstart']) {
                 this.buttons.minimizebutton.addEventListener(eventName, (e) => {//アロー関数にするとthisがインスタンスを示すようになる
                     e.stopPropagation()
@@ -111,7 +117,7 @@ export class Window{
         })
         desktop.addEventListener('mousedown', selectother)
 
-        this.bringToTop()
+        this.BringToTop()
 
         this.makeDraggable()
         if(!configs.no_resizable)this.makeResizable()
@@ -119,7 +125,7 @@ export class Window{
     makeDraggable(){
         for (const eventName of ['mousedown', 'touchstart']) {
             this.window.addEventListener(eventName, () => {//アロー関数にするとthisがインスタンスを示すようになる
-                this.bringToTop()
+                this.BringToTop()
             }, { passive: true });
         }
         const mdown = (e) => {
@@ -153,6 +159,13 @@ export class Window{
     
             this.window.style.top = event.pageY - this.localy + "px";
             this.window.style.left = event.pageX - this.localx + "px";
+            if(this.lastsize){
+                this.lastsize.y = event.pageY + "px";
+                this.lastsize.x = event.pageX + "px";
+                this.Fullsize()
+                this.localy = this.titleElem.clientHeight / 2
+                this.localx = this.window.clientWidth / 2 
+            }
         }
         //マウスボタンが上がったら発火
         const mup = (e) => {
@@ -260,7 +273,7 @@ export class Window{
         this.bodyElem.innerHTML = this.html
         this.titleElem.textContent = this.title
     }
-    bringToTop(){
+    BringToTop(){
         if(this.parent.windowindex > this.window.style["z-index"])
             this.window.style["z-index"] = ++this.parent.windowindex;
 
@@ -273,12 +286,37 @@ export class Window{
 
         //自分をアクティブ化
         this.window.classList.add("active");
+        this.window.classList.remove("disabled");
     }
     destroy(){
         if (this.parent.windows[this.window_id]){
             delete this.parent.windows[this.window_id]
         }
+        RefreshTaskbarIcons()
         this.window.remove()
+    }
+    Minimize(){
+        this.window.classList.add("disabled");
+    }
+    Fullsize(){
+        if(!this.lastsize){
+            this.lastsize = {
+                x:this.window.style.left,
+                y:this.window.style.top,
+                w:this.window.style.width,
+                h:this.window.style.height
+            }
+            this.window.style.left = "0"
+            this.window.style.top = "0"
+            this.window.style.width = "100%"
+            this.window.style.height = "100%"
+        }else{
+            this.window.style.left = this.lastsize.x
+            this.window.style.top = this.lastsize.y
+            this.window.style.width = this.lastsize.w
+            this.window.style.height = this.lastsize.h
+            delete this.lastsize
+        }
     }
 }
 

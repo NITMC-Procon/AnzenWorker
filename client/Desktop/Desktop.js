@@ -148,10 +148,11 @@ function package_Uninstall(name){
 
 function CreateWindow(func, window_id) {
     if (WindowManager.windows[window_id]) {
-        WindowManager.windows[window_id].bringToTop();
+        WindowManager.windows[window_id].BringToTop();
     } else {
         WindowManager.windows[window_id] = new func();//funcクラスのウィンドウを作成
         WindowManager.windows[window_id].window_id = window_id;
+        RefreshTaskbarIcons();
     }
 }
 
@@ -384,6 +385,24 @@ export function RefreshTaskbar() {
                 document.removeEventListener('mousedown', selectother)
             }
         }
+    }
+}
+
+export function RefreshTaskbarIcons(){
+    const icons = document.getElementById("desktop_taskbar_l");
+    icons.innerHTML = "";
+    for (let windowid in WindowManager.windows) {
+        let temp = createElementFromHTML(`<div style="height:100%;width:6em;overflow: hidden;display: flex;flex-direction: row;align-items: center;user-select:none;border-top:white solid 2px;margin-right: 2px;box-sizing:border-box;">
+        <span style="color:white;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;flex-shrink: 1;">${WindowManager.windows[windowid].title}</span>
+        </div>`)
+        temp.addEventListener("click",()=>{
+            if(WindowManager.windows[windowid].window.classList.contains("disabled") || !WindowManager.windows[windowid].window.classList.contains("active")){
+                WindowManager.windows[windowid].BringToTop()
+            }else{
+                WindowManager.windows[windowid].Minimize()
+            }
+        })
+        icons.insertAdjacentElement("beforeend",temp)
     }
 }
 
