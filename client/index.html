@@ -12,14 +12,16 @@
     <link rel="stylesheet" href="./index.css">
 </head>
 
-<body style="overflow: hidden;height:100%;">
+<body style="height:100vh;">
     <div id="bootwindow" class="">
         <h1 style='position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);font-style: italic;font-family: Times New Roman, "ＭＳ Ｐゴシック";'>ようこそ</h1>
     </div>
-    <div id="desktop" style="position: absolute;top:0;left: 0;width: 100%;height: 100%;background-image: url(/images/background.svg);background-size: cover;">
-        <div id="desktop_windows">
-        </div>
-        <div id="desktop_icons" style="width: 100%;height: calc(100% - 32px);user-select: none;display: flex;flex-wrap: wrap;flex-direction: column;align-content: flex-start;">
+    <div id="desktop" style="position: absolute;top:0;left: 0;width: 100%;height: 100%;background-image: url(/images/background.svg);background-size: cover;overflow: hidden;">
+        <div style="width: 100%;height: calc(100% - 32px);position: relative;">
+            <div id="desktop_windows">
+            </div>
+            <div id="desktop_icons" style="width: 100%;height: 100%;user-select: none;display: flex;flex-wrap: wrap;flex-direction: column;align-content: flex-start;">
+            </div>
         </div>
         <div id="desktop_taskbar">
             <div id="desktop_taskbar_menu">
@@ -32,23 +34,6 @@
             </div>
         </div>
         <div id="notification_area">
-        </div>
-    </div>
-    <div class="menubar">
-        <input type="checkbox" id="menu_btn_check" style="display: none;">
-        <label class="menu-btn" for="menu_btn_check"><span></span></label>
-        <div class="menu-content">
-            <script type="module">
-                import { CallWindow } from './Desktop/Desktop.js'
-                document.getElementById("callmanager_button").onclick = () => CallWindow("GameManager","Window_GameManager")
-                document.getElementById("callloginwindow_button").onclick = () => CallWindow("LoginWindow","Window_LoginWindow")
-                document.getElementById("internetbrowser_button").onclick = () => CallWindow("InternetBrowser","Window_InternetBrowser")
-            </script>
-            <ul>
-                <li><span id="callloginwindow_button">ログインウィンドウ</span></li>
-                <li><span id="callmanager_button">マネージャー</span></li>
-                <li><span id="internetbrowser_button">インターネット</span></li>
-            </ul>
         </div>
     </div>
 </body>
