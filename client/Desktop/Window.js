@@ -288,7 +288,10 @@ export class Window{
         this.window.classList.add("active");
         this.window.classList.remove("disabled");
     }
+    destructor(){
+    }
     destroy(){
+        this.destructor()
         if (this.parent.windows[this.window_id]){
             delete this.parent.windows[this.window_id]
         }
@@ -320,10 +323,12 @@ export class Window{
     }
 }
 
+/** @returns {HTMLElement} */
 export function createElementFromHTML(html) {
     let template = document.createElement('template');
     html = html.trim(); // Never return a text node of whitespace as the result
     template.innerHTML = html;
+    //@ts-ignore
     return template.content.firstElementChild;
 }
 
