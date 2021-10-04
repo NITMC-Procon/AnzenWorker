@@ -279,13 +279,14 @@ div.login-buttons{
   background: linear-gradient(to bottom,rgb(0, 62, 196),rgb(0,110, 249),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(35, 147, 251),rgb(0, 62, 196));
   border-color: rgb(0, 62, 196) ;
   width: 25vw;
-  height: 60vh;
+  max-height: 100vh;
+  overflow: hidden;
   opacity: 1;
   visibility: visible;
   transition: all 0.2s;
 }
 #desktop_taskbar_menu>div.hidden{
-  height: 0;
+  max-height: 0;
 }
 
 ::-webkit-scrollbar {
