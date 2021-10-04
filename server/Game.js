@@ -90,7 +90,7 @@ class Games{
      * @returns {Room} - 作成されたルーム
      * */
     newGame(roomid,socket){
-        let room = new RoomClass.Room(roomid,this)
+        let room = new Room(roomid,this)
         this.rooms.set(roomid,room)
         room.owners.push({Name:"",SocketID:socket.id})
         return room

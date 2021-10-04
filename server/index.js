@@ -1,15 +1,18 @@
 'use strict';
 
-const Classes = require("./Classes.js")
+const Classes = require("./Game.js")
 const port = 8080
 
 const http = require('http');
 const express = require('express');//サーバー
+
 const app = express();
 app.use("/", express.static('client'));//clientを返す
 
 const httpServer = http.createServer(app);
-let Games = new Classes.Games({server:httpServer})
+const redisServer = {hostname: "localhost", port: 8081};
+
+let Games = new Classes.Games({server:httpServer}, redisServer)
 
 httpServer.listen(port, () => {
     console.log(`listening on ${port}`)
