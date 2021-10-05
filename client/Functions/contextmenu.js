@@ -3,7 +3,7 @@
  * @param {HTMLElement} elem
  */
 export function AddContextMenu(target,elem){
-    target.addEventListener('contextmenu',(e) => {
+    target.oncontextmenu = (e) => {
         e.stopPropagation()
         e.preventDefault()
         let menu = createElementFromHTML(`<div id="contextmenu"></div>`)
@@ -30,7 +30,7 @@ export function AddContextMenu(target,elem){
         menu.style.left=e.pageX+"px";
         menu.style.top=e.pageY+"px";
         desktop.insertAdjacentElement(`beforeend`,menu)
-    });
+    }
 }
 
 export function RemoveContextMenu(){
