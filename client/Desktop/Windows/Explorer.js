@@ -5,10 +5,8 @@ import { AddContextMenu } from '../../Functions/contextmenu.js'
 import { TextInputWindow, YesNoButtonWindow } from '../../Functions/InputWindow.js'
 
 
-const RandData = RandomData()
-
 const html = `
-<div ${RandData} style="height:100%;display:flex;flex-direction:column;">
+<div style="height:100%;display:flex;flex-direction:column;">
     <div style="display:flex;margin:0.2em;flex-shrink:0;">
         <div style="background-image: url(/images/explorer/back.svg);width:1em;height:1em;background-size:contain;margin:2px"></div>
         <input style="flex:1;">
@@ -17,41 +15,6 @@ const html = `
     <div style="flex:1;">
     </div>
 </div>
-<style>
-
-div[${RandData}] .icon{
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 80px;
-    padding: 10px;
-    border:2px solid transparent;
-}
-div[${RandData}] .icon>.icon_image{
-    object-fit: contain;
-    width: 40px;
-    height: 40px;
-}
-div[${RandData}] .icon>.icon_text{
-    font-size: 0.9rem;
-    padding: 1px 3px;
-    word-wrap: break-word;
-    border-width: 1px;
-    border-style: dotted;
-    border-color: transparent;
-    color: white;
-    text-align: center;
-    text-shadow: 1px 1px 2px #000000; 
-}
-div[${RandData}] .icon.selected>.icon_image {
-    filter: brightness(0.5) contrast(1.2) sepia(100%) hue-rotate(180deg) saturate(20);
-}
-div[${RandData}] .icon.selected>.icon_text{
-    border-color: white;
-    background-color: rgb(0, 81, 196);
-}
-</style>
 `
 
 const style="width:40em;height:30em;"

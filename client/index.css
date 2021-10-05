@@ -206,38 +206,6 @@ div.login-buttons{
   visibility:visible;
 }
 
-#desktop_icons>.desktop_icon{
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 80px;
-  padding: 10px;
-  border:2px solid transparent;
-}
-#desktop_icons>.desktop_icon>.desktop_icon_image{
-  object-fit: contain;
-  width: 40px;
-  height: 40px;
-}
-#desktop_icons>.desktop_icon>.desktop_icon_text{
-  font-size: 0.9rem;
-  padding: 1px 3px;
-  word-wrap: break-word;
-  border-width: 1px;
-  border-style: dotted;
-  border-color: transparent;
-  color: white;
-  text-align: center;
-  text-shadow: 1px 1px 2px #000000; 
-}
-#desktop_icons>.desktop_icon.selected>.desktop_icon_image {
-  filter: brightness(0.5) contrast(1.2) sepia(100%) hue-rotate(180deg) saturate(20);
-}
-#desktop_icons>.desktop_icon.selected>.desktop_icon_text{
-  border-color: white;
-  background-color: rgb(0, 81, 196);
-}
 #desktop_taskbar{
   position: absolute;
   bottom: 0;
@@ -249,6 +217,47 @@ div.login-buttons{
   width: 100%;
   background-color: #181818;
   box-sizing: border-box;
+}
+.icon{
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 80px;
+  height: 60px;
+  overflow: visible;
+  padding: 10px;
+  border:2px solid transparent;
+}
+.icon>.icon_image{
+  object-fit: contain;
+  width: 40px;
+  height: 40px;
+}
+.icon>.icon_text{
+  font-size: 0.9rem;
+  padding: 1px 3px;
+  word-wrap: break-word;
+  border-width: 1px;
+  border-style: dotted;
+  border-color: transparent;
+  color: white;
+  text-align: center;
+  text-shadow: 1px 1px 2px #000000; 
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.icon.selected>.icon_image {
+  filter: brightness(0.5) contrast(1.2) sepia(100%) hue-rotate(180deg) saturate(20);
+}
+.icon.selected>.icon_text{
+  border-color: white;
+  background-color: rgb(0, 81, 196);
+  overflow: visible;
+  white-space: break-spaces;
+  z-index: 100;
 }
 #desktop_taskbar .desktop_icon_image{
   height: 80%;

@@ -227,9 +227,9 @@ export function RefreshDesktop() {
     let elm_drag
     desktopfolder.children.forEach(item=>{
         /** @type {HTMLElement} *///@ts-ignore
-        let temp = createElementFromHTML(`<div class="desktop_icon" draggable="true">
-                <img src="${item.icon}" class="desktop_icon_image"></img>
-                <span class="desktop_icon_text">${item.name}</span>
+        let temp = createElementFromHTML(`<div class="icon" draggable="true">
+                <img src="${item.icon}" class="icon_image"></img>
+                <span class="icon_text">${item.name}</span>
                 </div>`)
         temp.addEventListener('dblclick', () => {
             item.Open()
