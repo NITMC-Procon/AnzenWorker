@@ -10,10 +10,10 @@ const app = express();
 app.use("/", express.static('client'));//clientを返す
 
 const httpServer = http.createServer(app);
-const redisServer = {hostname: "localhost", port: 8081};
+const redisServer = {hostname: "localhost", port: 6379};
 
 let Games = new Classes.Games({server:httpServer}, redisServer)
 
-httpServer.listen(port, () => {
-    console.log(`listening on ${port}`)
-})
+//httpServer.listen(port, () => {
+//    console.log(`listening on ${port}`)
+//})

@@ -13,7 +13,7 @@
  * @property {String} SocketID
  */
 
-module.exports = class Room {
+class Room {
     /** 新しいルームを作成
      * @param {String} roomid - ルームID
      * @param {Games} parent - 親クラス
@@ -159,4 +159,4 @@ module.exports = class Room {
         return res
     }
 }
-
+exports.Room = Room
