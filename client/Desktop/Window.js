@@ -302,9 +302,14 @@ export class Window{
         desktop.addEventListener('mousedown', selectother)
     }
     destructor(){
+        return true
     }
-    destroy(){
-        this.destructor()
+    /** destroy(true)で強制終了
+     * @param {Boolean=} force */
+    destroy(force){
+        if(!force)//もし強制終了じゃなく
+            if(!this.destructor())//destructorがfalseを返したら
+                return
         if (this.parent.windows[this.window_id]){
             delete this.parent.windows[this.window_id]
         }

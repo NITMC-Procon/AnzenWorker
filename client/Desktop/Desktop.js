@@ -486,7 +486,7 @@ export function InitGame() {//リザルトとかを初期化
     Task.SucceedTask = []
 
     for (let windowid in WindowManager.windows) {//すべてのウィンドウを削除
-        WindowManager.windows[windowid].destroy();
+        WindowManager.windows[windowid].destroy(true);
     }
     for (let serviceid in WindowManager.services) {//すべてのサービスを停止
         WindowManager.services[serviceid].destuctor();
