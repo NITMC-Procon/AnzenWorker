@@ -1,5 +1,5 @@
 'use strict'
-import { Window } from "../Window.js"
+import { Window,RandomData } from "../Window.js"
 import { CallWindow } from "../Desktop.js"
 import { Socket } from '../../Functions/socket.js'
 
@@ -57,7 +57,8 @@ const html = `
 const style = "width: 20em;height: 15em;"
 export class Crusher extends Window {
     constructor() {
-        super(html, "You've done", {style:style ,no_xbutton: false,no_maxmizebutton:true,no_minimizebutton:true,no_resizable:true})
+        super(html, "You've done", {style:style ,no_xbutton: false,no_maxmizebutton:true,no_minimizebutton:true,no_resizable:true,window_id:"Crusher"+RandomData()})
+        if(this.creationFailed)return
         this.buttons.xbutton.addEventListener('click',()=>{
             CallWindow("Crusher",Math.random())
             CallWindow("Crusher",Math.random())

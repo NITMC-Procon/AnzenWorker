@@ -58,7 +58,9 @@ const style="width:40em;height:30em;"
 
 export class Explorer extends Window {
     constructor() {
-        super(html, "Explorer",{style:style})
+        super(html, "Explorer",{style:style,window_id:"Explorer"+RandomData()})
+        if(this.creationFailed)return
+        
         /** @type {HTMLElement} *///@ts-ignore
         this.filesarea = this.bodyElem.firstElementChild.lastElementChild
         this.addressarea = this.bodyElem.firstElementChild.firstElementChild.firstElementChild.nextElementSibling

@@ -159,6 +159,8 @@ const style = "width:40em;height:27em;"
 export class VirusScanner extends Window {
   constructor() {
     super(html, "VirusScanner", { style: style });
+    if(this.creationFailed)return
+
 
     /** @type {HTMLElement} *///@ts-ignore
     this.condition_var = this.bodyElem.firstElementChild.firstElementChild.firstElementChild

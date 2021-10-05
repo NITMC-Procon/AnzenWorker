@@ -229,6 +229,8 @@ export let apps = [
 export class Store extends Window {
     constructor() {
         super(html, "Store", { style: style });
+        if(this.creationFailed)return
+
         this.list_container = this.bodyElem.firstElementChild.firstElementChild
         let allapp = ''
         this.selectapp = -1     //　選んだアプリを記憶

@@ -64,6 +64,8 @@ const style="width:20em;height:20em;"
 export class WiFi extends Window{
     constructor(){
         super(html,"WiFi",{style:style});
+        if(this.creationFailed)return
+
         this.wifi_list = this.get_wifis()
         this.wifi_container = this.bodyElem.firstElementChild.firstElementChild
         let allwifi = ''

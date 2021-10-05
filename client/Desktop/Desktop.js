@@ -150,8 +150,9 @@ function CreateWindow(func, window_id) {
     if (WindowManager.windows[window_id]) {
         WindowManager.windows[window_id].BringToTop();
     } else {
-        WindowManager.windows[window_id] = new func();//funcクラスのウィンドウを作成
-        WindowManager.windows[window_id].window_id = window_id;
+        // WindowManager.windows[window_id] = new func();//funcクラスのウィンドウを作成
+        // WindowManager.windows[window_id].window_id = window_id;
+        new func()
         RefreshTaskbarIcons();
     }
 }

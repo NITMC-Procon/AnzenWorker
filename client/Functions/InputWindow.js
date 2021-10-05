@@ -1,4 +1,4 @@
-import { Window } from '../Desktop/Window.js'
+import { RandomData, Window } from '../Desktop/Window.js'
 
 export class TextInputWindow extends Window {
     /**
@@ -26,7 +26,9 @@ export class TextInputWindow extends Window {
         }
         </style>
         `
-        super(html,title,{no_minimizebutton:true,no_maxmizebutton:true,no_resizable:true})
+        super(html,title,{no_minimizebutton:true,no_maxmizebutton:true,no_resizable:true,window_id:"TextInput"+RandomData()})
+        if(this.creationFailed)return
+
         this.callback = callback
         /** @type {HTMLInputElement} *///@ts-ignore
         this.input = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling
@@ -78,7 +80,9 @@ export class YesNoButtonWindow extends Window {
         }
         </style>
         `
-        super(html,title,{no_minimizebutton:true,no_maxmizebutton:true,no_resizable:true})
+        super(html,title,{no_minimizebutton:true,no_maxmizebutton:true,no_resizable:true,window_id:"YesNoInput"+RandomData()})
+        if(this.creationFailed)return
+
         this.callback = callback
         /** @type {HTMLInputElement} *///@ts-ignore
         this.nobutton = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling.firstElementChild
