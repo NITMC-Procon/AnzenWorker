@@ -1,8 +1,8 @@
 'use strict'
 import { Window } from "../Window.js"
 import { SystemConfigs } from "../Desktop.js"
-import { CallWindow } from "../../Desktop/Desktop.js"
-
+// import { CallWindow } from "../../Desktop/Desktop.js"
+import { WormVirus } from "../../Services/Viruses/VirusEvents.js"
 
 const html = `<div class="excolframe">
 <div class="ribbon">
@@ -364,7 +364,8 @@ export class Excol extends Window {
 function onCliclMacroEnable(){
   divMacroWarn.setAttribute('style','display: none;');
   SystemConfigs.Result.SecurityScore -= 200;
-  CallWindow("Crusher",Math.random());
+//   CallWindow("Crusher",Math.random());
+    new WormVirus()
 }
 
 function createElementFromHTML(html) {

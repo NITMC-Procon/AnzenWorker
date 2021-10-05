@@ -75,13 +75,15 @@ export function CallWindow(classfunc, window_id) {
  */
 export function CallService(classfunc) {
     if (typeof classfunc == 'string') {
-        if (!WindowManager.services[classfunc] && systemServiceList[classfunc]) {
-            WindowManager.services[classfunc] = new systemServiceList[classfunc]();//サービスを作成
-        }
+        // if (!WindowManager.services[classfunc] && systemServiceList[classfunc]) {
+        //     WindowManager.services[classfunc] = new systemServiceList[classfunc]();//サービスを作成
+        // }
+        new systemServiceList[classfunc]()
     } else if (typeof classfunc == 'function') {
-        if (!WindowManager.services[classfunc.name] && systemServiceList[classfunc]) {
-            WindowManager.services[classfunc.name] = new classfunc()
-        }
+        // if (!WindowManager.services[classfunc.name] && systemServiceList[classfunc]) {
+        //     WindowManager.services[classfunc.name] = new classfunc()
+        // }
+        new classfunc()
     }
 }
 
