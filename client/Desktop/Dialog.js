@@ -104,6 +104,7 @@ export class Dialog{
                 },{passive:true});
             }
         }
+        RefreshTaskbarIcons()
     }
     reload(){
         this.bodyElem.innerHTML = this.html

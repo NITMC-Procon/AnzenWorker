@@ -122,6 +122,7 @@ export class Window{
 
         this.makeDraggable()
         if(!configs.no_resizable)this.makeResizable()
+        RefreshTaskbarIcons()
     }
     makeDraggable(){
         for (const eventName of ['mousedown', 'touchstart']) {
