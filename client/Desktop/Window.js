@@ -10,6 +10,7 @@ import { WindowManager,RefreshTaskbarIcons } from "./Desktop.js";
  * @property {!Boolean=} no_xbutton - ウィンドウの閉じるボタンの非表示
  * @property {!Boolean=} no_maxmizebutton - ウィンドウのフルスクリーンボタンの非表示
  * @property {!Boolean=} no_minimizebutton - ウィンドウの最小化ボタンの非表示
+ * @property {!String=} window_id - ウィンドウID
  */
 
 
@@ -27,7 +28,20 @@ export class Window{
         this.parent = WindowManager;
         /** @type {Config} */
         this.configs = configs;
-        this.window_id = "";
+        
+
+        if(configs && configs.window_id){
+            this.window_id = configs.window_id
+        }else{
+            this.window_id = this.title
+        }
+        if(WindowManager.windows[this.window_id]){
+            this.creationFailed = true
+            WindowManager.windows[this.window_id].BringToTop()
+            return
+        }else{
+            WindowManager.windows[this.window_id] =this
+        }
 
         let windowhtml = createElementFromHTML(`
             <div class="window active" style="${(this.configs != null && this.configs.style) ? this.configs.style : ""}">
@@ -103,24 +117,12 @@ export class Window{
             }
         }
 
-        //ウィンドウ以外をクリックしたら非アクティブ化
-        const desktop = document.getElementById("desktop")
-        const selectother = (e) => {
-            if (e.target.closest('.active') !== this.window) {
-                this.window.classList.remove("active");
-                desktop.removeEventListener('mousedown', selectother)
-            }
-        }
-        this.window.addEventListener('mousedown', (e) => {
-            if (!this.window.classList.contains("active")) desktop.addEventListener('mousedown', selectother)
-            this.window.classList.add("active");
-        })
-        desktop.addEventListener('mousedown', selectother)
 
         this.BringToTop()
 
         this.makeDraggable()
         if(!configs.no_resizable)this.makeResizable()
+        RefreshTaskbarIcons()
     }
     makeDraggable(){
         for (const eventName of ['mousedown', 'touchstart']) {
@@ -278,8 +280,6 @@ export class Window{
             this.window.style["z-index"] = ++this.parent.windowindex;
 
         //一旦すべてのウィンドウを非アクティブ化
-        this.parent.windows.forEach(window =>{
-        })
         for(let windowid in this.parent.windows){
             this.parent.windows[windowid].window.classList.remove("active");
         }
@@ -287,8 +287,30 @@ export class Window{
         //自分をアクティブ化
         this.window.classList.add("active");
         this.window.classList.remove("disabled");
+        
+        //ウィンドウ以外をクリックしたら非アクティブ化
+        const desktop = document.getElementById("desktop")
+        const selectother = (e) => {
+            if (e.target.closest('.active') !== this.window) {
+                this.window.classList.remove("active");
+                desktop.removeEventListener('mousedown', selectother)
+            }
+        }
+        this.window.addEventListener('mousedown', (e) => {
+            if (!this.window.classList.contains("active")) desktop.addEventListener('mousedown', selectother)
+            this.window.classList.add("active");
+        })
+        desktop.addEventListener('mousedown', selectother)
     }
-    destroy(){
+    destructor(){
+        return true
+    }
+    /** destroy(true)で強制終了
+     * @param {Boolean=} force */
+    destroy(force){
+        if(!force)//もし強制終了じゃなく
+            if(!this.destructor())//destructorがfalseを返したら
+                return
         if (this.parent.windows[this.window_id]){
             delete this.parent.windows[this.window_id]
         }
@@ -320,10 +342,12 @@ export class Window{
     }
 }
 
+/** @returns {HTMLElement} */
 export function createElementFromHTML(html) {
     let template = document.createElement('template');
     html = html.trim(); // Never return a text node of whitespace as the result
     template.innerHTML = html;
+    //@ts-ignore
     return template.content.firstElementChild;
 }
 

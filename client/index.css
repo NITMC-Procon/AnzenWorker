@@ -179,7 +179,7 @@ div.login-buttons{
 #notification_area{
   position:absolute;
   right:1em;bottom:2em;
-  z-index: 9999;
+  z-index: 2;
   display: flex;
   flex-direction: column;
 }
@@ -205,22 +205,45 @@ div.login-buttons{
   transform: translateX(0);
   visibility:visible;
 }
+#desktop{
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  overflow: hidden;
+}
 
-#desktop_icons>.desktop_icon{
+#desktop_taskbar{
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  z-index: 1;
+  height: 32px;
+  width: 100%;
+  background-color: #181818;
+  box-sizing: border-box;
+}
+.icon{
   display: inline-flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 80px;
+  height: 60px;
+  overflow: visible;
   padding: 10px;
   border:2px solid transparent;
 }
-#desktop_icons>.desktop_icon>.desktop_icon_image{
+.icon>.icon_image{
   object-fit: contain;
   width: 40px;
   height: 40px;
 }
-#desktop_icons>.desktop_icon>.desktop_icon_text{
+.icon>.icon_text{
   font-size: 0.9rem;
   padding: 1px 3px;
   word-wrap: break-word;
@@ -230,25 +253,20 @@ div.login-buttons{
   color: white;
   text-align: center;
   text-shadow: 1px 1px 2px #000000; 
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
-#desktop_icons>.desktop_icon.selected>.desktop_icon_image {
+.icon.selected>.icon_image {
   filter: brightness(0.5) contrast(1.2) sepia(100%) hue-rotate(180deg) saturate(20);
 }
-#desktop_icons>.desktop_icon.selected>.desktop_icon_text{
+.icon.selected>.icon_text{
   border-color: white;
   background-color: rgb(0, 81, 196);
-}
-#desktop_taskbar{
-  position: absolute;
-  bottom: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  z-index: 9998;
-  height: 32px;
-  width: 100%;
-  background-color: #181818;
-  box-sizing: border-box;
+  overflow: visible;
+  white-space: break-spaces;
+  z-index: 100;
 }
 #desktop_taskbar .desktop_icon_image{
   height: 80%;
@@ -279,13 +297,14 @@ div.login-buttons{
   background: linear-gradient(to bottom,rgb(0, 62, 196),rgb(0,110, 249),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(35, 147, 251),rgb(0, 62, 196));
   border-color: rgb(0, 62, 196) ;
   width: 25vw;
-  height: 60vh;
+  max-height: 100vh;
+  overflow: hidden;
   opacity: 1;
   visibility: visible;
   transition: all 0.2s;
 }
 #desktop_taskbar_menu>div.hidden{
-  height: 0;
+  max-height: 0;
 }
 
 ::-webkit-scrollbar {
@@ -361,4 +380,44 @@ div.login-buttons{
 #bootwindow.hidden{
   background-color:black !important;
   color: transparent !important;
+}
+
+#contextmenu {
+  position: absolute;
+}
+#contextmenu ul {
+  user-select: none;
+  z-index: 5;
+  background-color: white;
+  border: gray solid 1px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#contextmenu ul>li{
+  position: relative;
+  list-style: none;
+  padding: 2px 1.5em;
+  margin: 0;
+}
+#contextmenu ul>li>span::after{
+  content:">";
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%)
+}
+#contextmenu li>ul{
+  display: none;
+}
+#contextmenu li:hover>ul{
+  position: absolute;
+  left: 100%;
+  top: 0;
+  display: block;
+  background-color: white;
+  border: gray solid 1px;
+}
+#contextmenu hr{
+  margin: 0 1.5em;
 }

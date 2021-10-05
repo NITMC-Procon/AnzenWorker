@@ -1,10 +1,10 @@
 'use strict'
-import { Window } from "../Window.js"
-import { CallWindow } from "../Desktop.js"
-import { Socket } from '../../Functions/socket.js'
+import { Window,RandomData } from "../Window.js"
+
+const divid = RandomData()
 
 const html = `
-<div style="display: flex;justify-content: center;align-items: center;height:100%" class="rainbow">
+<div ${divid}>
 <h1 style="color:white;margin:0">LUCKY DAY</h1>
 </div>
 <style type="text/css">
@@ -49,18 +49,24 @@ const html = `
         background-color: #ff0000;
       }
     }
-    .rainbow {
+    div[${divid}] {
       animation: rainbow 0.7s infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height:100%;
+      user-select:none;
     }
   </style>
 `
 const style = "width: 20em;height: 15em;"
 export class Crusher extends Window {
     constructor() {
-        super(html, "You've done", {style:style ,no_xbutton: false,no_maxmizebutton:true,no_minimizebutton:true,no_resizable:true})
-        this.buttons.xbutton.addEventListener('click',()=>{
-            CallWindow("Crusher",Math.random())
-            CallWindow("Crusher",Math.random())
-        })
+        super(html, "You've done", {style:style ,no_xbutton: false,no_maxmizebutton:true,no_minimizebutton:true,no_resizable:true,window_id:"Crusher"+RandomData()})
+        if(this.creationFailed)return
+    }
+    destructor(){
+      new Crusher()
+      return false
     }
 }

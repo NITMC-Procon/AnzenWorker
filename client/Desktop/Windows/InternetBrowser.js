@@ -17,6 +17,8 @@ const style="width:40em;height:30em;"
 export class InternetBrowser extends Window{
     constructor(){
         super(html,"InternetBrowser",{style:style});
+        if(this.creationFailed)return
+
         /** @type {HTMLInputElement} *///@ts-ignore
         this.addressarea = this.bodyElem.firstElementChild.firstElementChild.firstElementChild.nextElementSibling
         /** @type {HTMLButtonElement} *///@ts-ignore

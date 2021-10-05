@@ -8,6 +8,7 @@ import { WindowManager,RefreshTaskbarIcons } from "./Desktop.js";
  * @property {!Boolean=} no_xbutton - ウィンドウの閉じるボタンの非表示
  * @property {!Boolean=} no_maxmizebutton - ウィンドウのフルスクリーンボタンの非表示
  * @property {!Boolean=} no_minimizebutton - ウィンドウの最小化ボタンの非表示
+ * @property {!String=} window_id - ウィンドウID
  */
 
 export class Dialog{
@@ -24,7 +25,20 @@ export class Dialog{
         this.parent = WindowManager;
         /** @type {Config} */
         this.configs = configs;
-        this.window_id = "";
+
+
+        if(configs && configs.window_id){
+            this.window_id = configs.window_id
+        }else{
+            this.window_id = this.title
+        }
+        if(WindowManager.windows[this.window_id]){
+            this.creationFailed = true
+            WindowManager.windows[this.window_id].BringToTop()
+            return
+        }else{
+            WindowManager.windows[this.window_id] =this
+        }
 
         // デフォルトで非表示
         if(this.configs.no_xbutton==undefined)this.configs.no_xbutton = true
@@ -90,6 +104,7 @@ export class Dialog{
                 },{passive:true});
             }
         }
+        RefreshTaskbarIcons()
     }
     reload(){
         this.bodyElem.innerHTML = this.html

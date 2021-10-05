@@ -13,6 +13,7 @@ class Item{
         
         if(parent !== null){
             if(!name) return
+            if(parent.children.has(name))return
             if(parent.isdir)parent.children.set(name,this)
         }
         this.Root()
@@ -51,7 +52,12 @@ class Item{
         this.root = parent
         return this.root
     }
-    Open(){
+    Open(...args){
+    }
+    Get(name){
+    }
+    Delete(){
+        this.parent.children.delete(this.name)
     }
 }
 
@@ -63,10 +69,11 @@ export class File extends Item{
     constructor(parent,name){
         super(parent,name,false)
         this.content = null
+        this.icon = "/images/file.svg"
     }
-    Open(){
+    Open(...args){
         if(typeof this.content == "function"){
-            this.content()
+            this.content(...args)
         }else{
             console.log("File isn't executable")
         }
@@ -82,8 +89,8 @@ export class Link extends Item{
         super(parent,name,false)
         this.target = target
     }
-    Open(){
-        if(this.target !== null)this.target.Open()
+    Open(...args){
+        if(this.target !== null)this.target.Open(...args)
     }
 }
 
@@ -161,11 +168,11 @@ export class Folder extends Item{
         return item
     }
     MoveFile(name,newname,newparent){
+        if(newparent == null){//child内で移動
+            newparent = this
+        }
         if(newparent.isdir){//ディレクトリなら
             if(this.children.has(name)){//指定した名前があれば
-                if(newparent == null){//child内で移動
-                    newparent = this
-                }
                 if(!newparent.children.has(newname)){
                     let item = this.children.get(name)
                     item.name = newname
@@ -178,6 +185,9 @@ export class Folder extends Item{
         }else{
             return -1
         }
+    }
+    Get(name){
+        return this.children.get(name)
     }
 }
 

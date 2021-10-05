@@ -100,6 +100,7 @@ const style = "width:800px;height:600px;"
 export class Installer extends Window {
   constructor() {
     super(html, "Installer", { style: style });
+    if(this.creationFailed)return
 
     let ibutton_exit = document.getElementById('bexit');
     

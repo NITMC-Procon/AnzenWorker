@@ -81,6 +81,8 @@ const html = `
 export class ResultWindow extends Window {
   constructor() {
     super(html, "Result",{style:"width:40em;height:20em;"})
+    if(this.creationFailed)return
+
     this.table = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling
 
     this.temp = {

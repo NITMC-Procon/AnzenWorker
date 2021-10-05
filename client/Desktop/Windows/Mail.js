@@ -76,6 +76,7 @@ export let maillist = []
 export class Mail extends Window{
     constructor(){
         super(html,"メール",{style:style});
+        if(this.creationFailed)return
         
         /** @type {HTMLElement} *///@ts-ignore
         this.maillist = this.bodyElem.firstElementChild.firstElementChild.lastElementChild
