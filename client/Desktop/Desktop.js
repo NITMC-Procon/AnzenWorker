@@ -234,7 +234,9 @@ export function RefreshDesktop() {
                 <span class="icon_text">${item.name}</span>
                 </div>`)
         temp.addEventListener('dblclick', () => {
-            item.Open()
+            //@ts-ignore
+            if(item.isdir) new Explorer(item)
+            else item.Open()
             temp.classList.remove("selected");
         })
         temp.addEventListener('mousedown', (e) => {
