@@ -1,8 +1,7 @@
 'use strict'
 import { Window, RandomData } from "../Window.js"
 import { CallWindow,Result,SystemConfigs, Task } from "../Desktop.js"
-import { Socket } from '../../Functions/socket.js'
-import { Advices } from "../../Functions/showAdvices.js"
+import { Advices,Flags } from "../../Functions/showAdvices.js"
 
 const RandData = RandomData()
 
@@ -94,6 +93,7 @@ export class ResultWindow extends Window {
     this.addRevenueAndScore()
     this.addSucceed()
     this.addFailed()
+    this.addFlags()
     
     this.table = this.bodyElem.firstElementChild.firstElementChild.insertAdjacentElement('beforeend',this.temp.table)
 
@@ -150,6 +150,29 @@ export class ResultWindow extends Window {
       <td>${Result.SecurityScore}</td>
     </tr>`)
     this.temp.table.insertAdjacentElement('beforeend',score)
+  }
+  addFlags(){
+    let flags = createElementFromHTML(`<tr>
+      <td>フラグ</td>
+      <td>${Result.Flag.length}</td>
+      <td>
+      </td>
+    </tr>`)
+    let list = flags.lastElementChild
+    Result.Flag.forEach(flag=>{
+      let temp = createElementFromHTML(`<span title="クリックして詳細をみる">${flag}</span>`)
+      list.insertAdjacentElement('beforeend',temp)
+
+      let adv = createElementFromHTML(`
+      <div class="advicediv">
+        <h1>${flag}</h1>
+        <p>${Flags[flag]}</p>
+      </div>`)
+
+      this.temp.advices.insertAdjacentElement('beforeend',adv)
+      temp.addEventListener('click',()=>{adv.scrollIntoView()})
+    })
+    this.temp.table.insertAdjacentElement('beforeend',flags)
   }
 }
 
