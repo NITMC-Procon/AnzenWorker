@@ -14,6 +14,8 @@ import { VirusScanner } from './Windows/VirusScanner.js'
 import { Excol } from './Windows/Excol.js'
 import { Installer } from './Windows/Installer.js'
 import { Explorer } from './Windows/Explorer.js'
+import { TextInputWindow, YesNoButtonWindow } from '../Functions/InputWindow.js'
+import { AddContextMenu } from '../Functions/contextmenu.js'
 
 const UserName = "ANZEN"
 
@@ -287,17 +289,67 @@ export function RefreshDesktop() {
             temp.style.borderBottom = '';
             elm_drag = null
         });
+        let menu = createElementFromHTML(`
+            <ul>
+                <li>Delete</li>
+                <li>Rename</li>
+            </ul>
+            `)
+        menu.firstElementChild.addEventListener("click",()=>{
+            new YesNoButtonWindow("削除","ファイルを削除しますか?",(del)=>{
+                if(!del)return
+                item.Delete()
+                RefreshDesktop()
+            })
+        })
+        menu.firstElementChild.nextElementSibling.addEventListener("click",()=>{
+            let itemname
+            if(item.isdir)itemname = "フォルダ名"
+            else itemname = "ファイル名"
+            new TextInputWindow(itemname,`${itemname}を入力してください`,(text)=>{
+                if(!text)return
+                item.Rename(text)
+                RefreshDesktop()
+            })
+        })
+        AddContextMenu(temp,menu)
     })
-    desktop_icons.addEventListener('drop', (e) => {
+    desktop_icons.ondrop = (e) => {
         if (!elm_drag) return;
         e.preventDefault();
         desktop_icons.insertBefore(elm_drag, desktop_icons.lastChild.nextSibling);
         elm_drag = null
-    });
-    desktop_icons.addEventListener('dragover', (e) => {
+    }
+    desktop_icons.ondragover = (e) => {
         if (!elm_drag) return
         e.preventDefault();
-    });
+    }
+    let menu = createElementFromHTML(`
+        <ul>
+            <li>Create New Folder</li>
+            <li>Create New File</li>
+            <hr>
+            <li>Refresh</li>
+        </ul>
+        `)
+    menu.firstElementChild.addEventListener("click",()=>{
+        new TextInputWindow("フォルダ名","フォルダ名を入力してください",(text)=>{
+            if(!text)return
+            desktopfolder.Mkdir(text)
+            RefreshDesktop()
+        })
+    })
+    menu.firstElementChild.nextElementSibling.addEventListener("click",()=>{
+        new TextInputWindow("ファイル名","ファイル名を入力してください",(text)=>{
+            if(!text)return
+            desktopfolder.Touch(text)
+            RefreshDesktop()
+        })
+    })
+    menu.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.addEventListener("click",()=>{
+        RefreshDesktop()
+    })
+    AddContextMenu(desktop_icons,menu)
 }
 
 
@@ -407,10 +459,12 @@ export function RefreshTaskbarIcons(){
     }
 }
 
+/** @returns {HTMLElement} */
 function createElementFromHTML(html) {
     let template = document.createElement('template');
     html = html.trim();
     template.innerHTML = html;
+    //@ts-ignore
     return template.content.firstElementChild;
 }
 
