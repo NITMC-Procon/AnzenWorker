@@ -8,16 +8,12 @@ const RoomClass = require("./Room.js");
 
 const SocketIO = require("socket.io")
 
-// Redis adapter and emitter
 // For Load balanser
-const { RedisAdapter } = require("@socket.io/redis-adapter");
-const { RedisEmitter } = require("@socket.io/redis-emitter");
-const { RedisClient } = require("redis");
-
 const cluster = require("cluster");
-const os = require("os");
 const sticy = require('sticky-session');
+const os = require("os");
 
+const redis = require("socket.io-redis");
 
 /**コンストラクタ用コンフィグ
  * @typedef {Object} Config - Room型
@@ -32,30 +28,17 @@ class Games{
     /** @param {Config} Config */
     constructor(Config, redisConf){
         /** @type {SocketIO.Server} - socketio */
-        //this.io = new SocketIO.Server(Config.server,{serveClient: true});
+        this.io = new SocketIO.Server(Config.server,{serveClient: true});
+        this.io.adapter(redis({host: '127.0.0.1', port: 6379}));
 
- //      this.connectRedisAdapter(this.io, redisConf.hostname, redisConf.port);
-
-        // Cluster
-/*        if(cluster.isMaster){
-            os.cpus().forEach(() => {
-                const worker = cluster.fork();
-                console.log("[CLUSTER] Worker %d started", worker.id);
-            });
-
-            cluster.on('exit', () => {
-                const worker = cluster.fork();
-                console.log("[CLUSTER] Worker exited");
-                console.log("[CLUSTER] Worker %d started", worker.id);
-            });
-        }else{*/
 
         /** @type {Map.<String,Room>} - ルームのリスト(MAP) */
-        this.io = new SocketIO.Server(Config.server,{serveClient: true});
         let isWorker = sticy.listen(Config.server, 8080);
         console.log("Listening port is 8080");
+
         if(isWorker){
-            console.log("[CLUSTER] I'm Worker");
+
+        console.log("[CLUSTER] I'm Worker");
         this.rooms = new Map();
         this.io.on("connection", socket => {
             socket.on("createRoom", (req, ack) => {
@@ -145,7 +128,7 @@ class Games{
         //もしルームに入ってなければ(roomid==undefined)、socket.idを返すようにした
     }
 
-    connectRedisAdapter(io,hostname, port){
+/*    connectRedisAdapter(io,hostname, port){
         const pubClient = RedisClient({host: hostname, port: port});
         const subClient = pubClient.duplicate();
 
@@ -155,7 +138,7 @@ class Games{
         }, 5000);
 
         io.adapter(RedisAdapter(pubClient,subClient));
-    }
+    }*/
 }
 
 exports.Games = Games
