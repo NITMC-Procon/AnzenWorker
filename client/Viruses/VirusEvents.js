@@ -1,6 +1,6 @@
-import { Result } from "../../Desktop/Desktop.js"
-import { Service } from "../ServiceClass.js"
-import { SendTo,SentToMeHandler,Socket } from "../../Functions/socket.js"
+import { Result } from "../Desktop/Desktop.js"
+import { Service } from "../Services/ServiceClass.js"
+import { SendTo,SentToMeHandler,Socket } from "../Functions/socket.js"
 
 export class WormVirus extends Service {//自己増殖型
     create(){

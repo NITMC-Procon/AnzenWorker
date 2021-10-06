@@ -2,7 +2,7 @@
 import { Window } from "../Window.js"
 import { SystemConfigs } from "../Desktop.js"
 // import { CallWindow } from "../../Desktop/Desktop.js"
-import { WormVirus } from "../../Services/Viruses/VirusEvents.js"
+import { WormVirus } from "../../Viruses/VirusEvents.js"
 
 const html = `<div class="excolframe">
 <div class="ribbon">
