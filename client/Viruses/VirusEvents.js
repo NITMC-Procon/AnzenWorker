@@ -1,6 +1,8 @@
-import { Result } from "../Desktop/Desktop.js"
+import { Result,RefreshDesktop } from "../Desktop/Desktop.js"
+import { Window } from "../Desktop/Window.js"
 import { Service } from "../Services/ServiceClass.js"
 import { SendTo,SentToMeHandler,Socket } from "../Functions/socket.js"
+import { Root } from '../Desktop/FileSystem.js'
 
 export class WormVirus extends Service {//自己増殖型
     create(){
@@ -32,6 +34,84 @@ export class WormVirus extends Service {//自己増殖型
             }})
             Result.Revenue -= 10;
         }
+    }
+}
+export class RansomWare extends Window {//身代金要求ウィンドウ
+    constructor(){
+        let html = `
+        <div inputwindow style="display:flex;flex-direction:column;margin:0.5em 1em">
+            <div>
+            <h1>あなたのコンピュータは全て暗号化されました。</h1>
+            <p>私達は全てあなたの写真、銀行口座、連絡先のデータを保持しました。</p>
+            <p>あなたには支払の義務があります: 2.0BitCoin</p>
+            
+            </div>
+            <div style="display:flex;justify-content: space-around;">
+                <button>支払わない</button>
+                <button>支払う</button>
+            </div>
+        </div>
+        <style>
+        div[inputwindow] p{
+            margin:0;
+        }
+        div[inputwindow] input{
+            margin:2px auto;
+            width:100%;
+        }
+        </style>
+        `
+        super(html,"支払いのオプション",{no_minimizebutton:true,no_maxmizebutton:true,no_resizable:true,window_id:"RansomWare",style:"background-color:red;color:white;height:20em"})
+        if(this.creationFailed)return
+
+        this.nobutton = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling.firstElementChild
+        this.yesbutton = this.nobutton.nextElementSibling
+
+        this.encryptfiles(Root);
+        RefreshDesktop()
+        this.nobutton.addEventListener('click', (e) => {
+            this.destroy();
+        });
+        this.yesbutton.addEventListener('click', (e) => {
+            // if(Math.random()>0.3)// 約2/3
+                this.decryptfiles(Root);
+                RefreshDesktop()
+            this.destroy();
+        });
+    }
+    encryptfiles(dir){
+        dir.children.forEach(item =>{
+            if(item.isdir){
+                //@ts-ignore
+                this.encryptfiles(item)
+            }else{
+                if(typeof item["cryptedcontent"] == "undefined"){
+                    item["cryptedcontent"] = item.content
+                    delete item.content
+                }
+                if(typeof item["cryptedicon"] == "undefined"){
+                    item["cryptedicon"] = item.icon
+                    item.icon = "/images/file.svg"
+                }
+            }
+        })
+    }
+    decryptfiles(dir){
+        dir.children.forEach(item =>{
+            if(item.isdir){
+                //@ts-ignore
+                this.decryptfiles(item)
+            }else{
+                if(typeof item["cryptedcontent"] != "undefined"){
+                    item.content = item["cryptedcontent"]
+                    delete item["cryptedcontent"]
+                }
+                if(typeof item["cryptedicon"] != "undefined"){
+                    item.icon = item["cryptedicon"]
+                    delete item["cryptedicon"]
+                }
+            }
+        })
     }
 }
 
