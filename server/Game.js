@@ -8,29 +8,30 @@ const RoomClass = require("./Room.js");
 
 const SocketIO = require("socket.io")
 
-// Redis adapter and emitter
 // For Load balanser
-const { RedisAdapter } = require("@socket.io/redis-adapter");
-const { RedisEmitter } = require("@socket.io/redis-emitter");
-const { RedisClient } = require("redis");
+const cluster = require("cluster");
+const sticy = require('sticky-session');
+const os = require("os");
 
+const redis = require("socket.io-redis");
 
 /**コンストラクタ用コンフィグ
  * @typedef {Object} Config - Room型
  * @property {http.Server} server
- *
- * @typedef {Object} redisConf -Json
- * @property {redisConf.hostname} - Redis's host name
- * @property {redisConf.redisPort} - Redis's port
  */
 
 class Games{
     /** @param {Config} Config */
-    constructor(Config, redisConf){
+    constructor(Config){
         /** @type {SocketIO.Server} - socketio */
         this.io = new SocketIO.Server(Config.server,{serveClient: true});
+        this.io.adapter(redis({host: Config.redisIP, port: Config.redisPort}));
 
-        this.connectRedisAdapter(this.io, redisConf.hostname, redisConf.port);
+        console.log("Listening port is %d", Config.port);
+        const isWorker = sticy.listen(Config.server, Config.port);
+
+        if(isWorker){
+        console.log("[CLUSTER] Worker started");
 
         /** @type {Map.<String,Room>} - ルームのリスト(MAP) */
         this.rooms = new Map();
@@ -82,6 +83,7 @@ class Games{
                 }
             });
         });
+        }
     }
 
     /** 
@@ -119,13 +121,6 @@ class Games{
         //1つ目のデータは自分のsocket.idなので、2つ目を取得
         return roomid?roomid:socket.id
         //もしルームに入ってなければ(roomid==undefined)、socket.idを返すようにした
-    }
-
-    connectRedisAdapter(io,hostname, port){
-        const pubClient = RedisClient({host: hostname, port: port});
-        const subClient = pubClient.duplicate();
-
-        io.adapter(createAdapter(pubClient,subClient));
     }
 }
 
