@@ -3,6 +3,7 @@
 import { CallWindow } from "../../Desktop/Desktop.js"
 import { maillist } from "../../Desktop/Windows/Mail.js"
 import { Service } from "../ServiceClass.js"
+import { RansomWare } from "../../Viruses/VirusEvents.js"
 
 let allmails = [
     {
@@ -11,7 +12,7 @@ let allmails = [
         text:"先生へ\n\n4Fの太郎です。\n\n例の物を添付ファイルとしてお送り致します。\nご確認の方よろしくお願いします。\n\n舞鶴工業高等専門学校 機械制御情弱科 4年 舞鶴 太郎\nEmail: taro@maizuru.kosen.ac.jp",
         file:{
             name:"file.exe",
-            func:()=>{ CallWindow("Crusher",Math.random())}
+            func:()=>{ new RansomWare() }
         },
         type:"virus",
         read:true
