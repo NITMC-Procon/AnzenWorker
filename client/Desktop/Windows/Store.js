@@ -1,6 +1,6 @@
 'use strict'
 import { Window } from "../Window.js"
-import { SystemConfigs, DesktopIconList, CallWindow, RefreshDesktop } from "../Desktop.js"
+import { SystemConfigs, Task, CallWindow, RefreshDesktop } from "../Desktop.js"
 import { VirusScanner } from "./VirusScanner.js"
 
 const html = `
@@ -229,7 +229,7 @@ export let apps = [
 export class Store extends Window {
     constructor() {
         super(html, "Store", { style: style });
-        if(this.creationFailed)return
+        if (this.creationFailed) return
 
         this.list_container = this.bodyElem.firstElementChild.firstElementChild
         let allapp = ''
@@ -374,10 +374,11 @@ export class Store extends Window {
                 }
                 else {  // 怪しいソフトをインストールしたら、
                     SystemConfigs.Result.SecurityScore -= 200
+                    Task.Complete("Store", true);//失敗
                 }
 
                 // インストール
-                SystemConfigs.Packages.Install(apps[this.selectapp].name,"/images/apps/AntiVirus.png",()=>{CallWindow(VirusScanner, "Window_" + apps[this.selectapp].name)})
+                SystemConfigs.Packages.Install(apps[this.selectapp].name, "/images/apps/AntiVirus.png", () => { CallWindow(VirusScanner, "Window_" + apps[this.selectapp].name) })
                 RefreshDesktop()
             }
             else {
