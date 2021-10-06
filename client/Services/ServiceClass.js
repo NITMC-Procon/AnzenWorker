@@ -4,6 +4,14 @@ import { WindowManager } from "../Desktop/Desktop.js";
 export class Service{
     constructor() {
         this.parent = WindowManager
+
+        if(WindowManager.services[this.constructor.name]) {
+            this.creationFailed = true
+            return
+        }else{
+            WindowManager.services[this.constructor.name] = this
+        }
+
         this.create()
     }
     destuctor(){
