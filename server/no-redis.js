@@ -1,3 +1,4 @@
+//This is for test only
 'use strict';
 
 /**
@@ -259,4 +260,16 @@ class Games{
     }
 }
 
-exports.Games = Games
+const port = 8080
+
+const httpa = require('http');
+const express = require('express');//サーバー
+const app = express();
+app.use("/", express.static('client'));//clientを返す
+
+const httpServer = httpa.createServer(app);
+new Games({server:httpServer})
+
+httpServer.listen(port, () => {
+    console.log(`listening on ${port}`)
+})

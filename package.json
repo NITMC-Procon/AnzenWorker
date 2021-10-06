@@ -1,11 +1,12 @@
 {
   "scripts": {
-    "start": "node server/index.js"
+    "start": "node server/index.js",
+    "noredis": "node server/no-redis.js"
   },
-  "name": "AnzenWorker",
+  "name": "anzen_worker",
   "description": "/typings/phaser に [https://github.com/photonstorm/phaser/tree/master/types](https://github.com/photonstorm/phaser/tree/master/types) を入れておくとIntelliSenseが効いて開発しやすいと思います。",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NITMC-Procon/AnzenWorker.git"
