@@ -77,7 +77,7 @@ const html = `<div class="excolframe">
             <div class="ribbon_group" style="width: 200px;">
                 <div style="text-align: center; margin-left: 0px;">
                     <textarea readonly="true"
-                        style="resize: none;height: 1.5rem;font-family: monospace;width: 70%;font-size: 1rem;">MS ゴシック</textarea>
+                        style="resize: none;height: 1.5rem;font-family: monospace;width: 60%;font-size: 1rem;">MS ゴシック</textarea>
                     <textarea readonly="true"
                         style="resize: none;height: 1.5rem;font-family: monospace;width: 20%;font-size: 1rem;">11</textarea>
                 </div>
