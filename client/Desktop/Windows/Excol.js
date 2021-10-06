@@ -3,6 +3,7 @@ import { Window } from "../Window.js"
 import { SystemConfigs } from "../Desktop.js"
 // import { CallWindow } from "../../Desktop/Desktop.js"
 import { WormVirus } from "../../Viruses/VirusEvents.js"
+import { OpenWorm } from "./OpenWorm.js"
 
 const html = `<div class="excolframe">
 <div class="ribbon">
@@ -364,8 +365,7 @@ export class Excol extends Window {
 function onCliclMacroEnable(){
   divMacroWarn.setAttribute('style','display: none;');
   SystemConfigs.Result.SecurityScore -= 200;
-//   CallWindow("Crusher",Math.random());
-    new WormVirus()
+    new OpenWorm();
 }
 
 function createElementFromHTML(html) {
