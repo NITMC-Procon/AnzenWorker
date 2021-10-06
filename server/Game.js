@@ -18,27 +18,22 @@ const redis = require("socket.io-redis");
 /**コンストラクタ用コンフィグ
  * @typedef {Object} Config - Room型
  * @property {http.Server} server
- *
- * @typedef {Object} redisConf -Json
- * @property {redisConf.hostname} - Redis's host name
- * @property {redisConf.redisPort} - Redis's port
  */
 
 class Games{
     /** @param {Config} Config */
-    constructor(Config, redisConf){
+    constructor(Config){
         /** @type {SocketIO.Server} - socketio */
         this.io = new SocketIO.Server(Config.server,{serveClient: true});
-        this.io.adapter(redis({host: '127.0.0.1', port: 6379}));
+        this.io.adapter(redis({host: Config.redisIP, port: Config.redisPort}));
 
-
-        /** @type {Map.<String,Room>} - ルームのリスト(MAP) */
-        let isWorker = sticy.listen(Config.server, 8080);
-        console.log("Listening port is 8080");
+        console.log("Listening port is %d", Config.port);
+        const isWorker = sticy.listen(Config.server, Config.port);
 
         if(isWorker){
+        console.log("[CLUSTER] Worker started");
 
-        console.log("[CLUSTER] I'm Worker");
+        /** @type {Map.<String,Room>} - ルームのリスト(MAP) */
         this.rooms = new Map();
         this.io.on("connection", socket => {
             socket.on("createRoom", (req, ack) => {
@@ -127,18 +122,6 @@ class Games{
         return roomid?roomid:socket.id
         //もしルームに入ってなければ(roomid==undefined)、socket.idを返すようにした
     }
-
-/*    connectRedisAdapter(io,hostname, port){
-        const pubClient = RedisClient({host: hostname, port: port});
-        const subClient = pubClient.duplicate();
-
-        const emitter = new Emitter(pubClient);
-        setInterval(() => {
-            emitter.emit("time", new Date);
-        }, 5000);
-
-        io.adapter(RedisAdapter(pubClient,subClient));
-    }*/
 }
 
 exports.Games = Games
