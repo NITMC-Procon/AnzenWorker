@@ -35,7 +35,7 @@ window.addEventListener("load", () => {
         if(index >= backgrounds.length)index = 0
 
         setbackground(backgrounds[index])
-    }, 1000*10);
+    }, 1000*60);
 });
 
 function setbackground(str){
