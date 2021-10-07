@@ -2,6 +2,7 @@
 import { Window } from "../Window.js"
 import { SystemConfigs, Task, CallWindow, RefreshDesktop } from "../Desktop.js"
 import { VirusScanner } from "./VirusScanner.js"
+import { Notify } from "../../Functions/notify.js"
 
 const html = `
 <div style="display: flex;flex-direction: column;justify-content: space-between;height: 100%;">
@@ -204,7 +205,9 @@ export let apps = [
         func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
         corporation: "©Anti Virus Corporation",
         safety: "safe",
-        type: "security"
+        type: "security",
+        icon: "../images/apps/AntiVirus.png",
+        window: VirusScanner
     }, {
         name: "EasyVirusScanner",
         star: 1,
@@ -213,7 +216,9 @@ export let apps = [
         func: "・Virusがみつかる.\n・コンピュータを防衛する",
         corporation: "不明",
         safety: "danger",
-        type: "security"
+        type: "security",
+        icon: "../images/apps/AntiVirus.png",
+        window: VirusScanner
     }, {
         name: "AntiVirusPro",
         star: 3,
@@ -222,7 +227,20 @@ export let apps = [
         func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
         corporation: "©Anti Virus Corporation",
         safety: "safe",
-        type: "security"
+        type: "security",
+        icon: "../images/apps/AntiVirus.png",
+        window: VirusScanner
+    }, {
+        name: "PC-Cleaner",
+        star: 1,
+        price: 0,
+        introduction: "あなたのパソコンをお掃除します！\n不要なキャッシュを削除して動作を向上させます",
+        func: "・キャッシュの削除\n・不要なファイルの削除",
+        corporation: "不明",
+        safety: "danger",
+        type: "app",
+        icon: "../images/apps/PC-Cleaner.png",
+        window: VirusScanner
     }
 ]
 
@@ -243,7 +261,7 @@ export class Store extends Window {
             let container = `
             <div class="list_container">
                 <div class = "app_icon">
-                    <img src = '../images/apps/AntiVirus.png' width="110px" height="110px">
+                    <img src = ${app.icon} width="110px" height="110px">
                 </div>
 
                 <h2 style="margin:0.2em 0.5em;font-size:1.2em;">${this.fix_app(app.name)}</h2>
@@ -339,7 +357,6 @@ export class Store extends Window {
         this.list_container.children[this.list_container.childElementCount - 1].children[5].addEventListener('click', () => {
             // アプリを入れれるかどうか
             let can = true
-            let apppos
             // 自分がセキュリティソフトの時
             if (apps[this.selectapp].type == "security") {
                 // 既にセキュリティソフトが入っていたら
@@ -347,7 +364,6 @@ export class Store extends Window {
                     if (SystemConfigs.installed_software[k][2] == "security") {
                         // セキュリティソフトをこれ以上入れられないようにする
                         can = false
-                        apppos = SystemConfigs.installed_software[k][0]
                     }
                 }
             }
@@ -375,26 +391,25 @@ export class Store extends Window {
                 else {  // 怪しいソフトをインストールしたら、
                     SystemConfigs.Result.SecurityScore -= 200
                     Task.Complete("Store", true);//失敗
+                    CallWindow(VirusScanner, "Window_VirusScanner");
                 }
 
                 // インストール
-                SystemConfigs.Packages.Install(apps[this.selectapp].name, "/images/apps/AntiVirus.png", () => { CallWindow(VirusScanner, "Window_" + apps[this.selectapp].name) })
+                SystemConfigs.Packages.Install(apps[this.selectapp].name, "/images/apps/AntiVirus.png", () => { CallWindow(apps[this.selectapp].window, "Window_" + apps[this.selectapp].name) })
                 RefreshDesktop()
             }
             else {
-                if (apppos == apps[this.selectapp].name) {
-                    document.getElementById("install_btn").innerText = "インストール"
+                document.getElementById("install_btn").innerText = "インストール"
 
-                    //　保存されている配列の位置を検索
-                    var loc = SystemConfigs.installed_software.indexOf([apps[this.selectapp].name, apps[this.selectapp].safety])
-                    //　Configのinstalled_softwareからアプリを削除
-                    SystemConfigs.installed_software.splice(loc, 1)
+                //　保存されている配列の位置を検索
+                var loc = SystemConfigs.installed_software.indexOf([apps[this.selectapp].name])
+                //　Configのinstalled_softwareからアプリを削除
+                SystemConfigs.installed_software.splice(loc, 1)
 
-                    // デスクトップからアイコンを削除
-                    SystemConfigs.Packages.Uninstall(apps[this.selectapp].name)
-                    this.destroy()
-                    RefreshDesktop()
-                }
+                // デスクトップからアイコンを削除
+                SystemConfigs.Packages.Uninstall(apps[this.selectapp].name)
+                this.destroy()
+                RefreshDesktop()
             }
         })
 

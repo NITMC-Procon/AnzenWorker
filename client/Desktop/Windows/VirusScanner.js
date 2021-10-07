@@ -1,6 +1,7 @@
 'use strict'
 import { Window } from "../Window.js"
 import { SystemConfigs } from "../Desktop.js"
+import { Notify } from "../../Functions/notify.js"
 
 const html = `
 <div style="display: block;width: 100%;height: 100%;user-select:none;background-color:#3399cc">
@@ -159,7 +160,7 @@ const style = "width:40em;height:27em;"
 export class VirusScanner extends Window {
   constructor() {
     super(html, "VirusScanner", { style: style });
-    if(this.creationFailed)return
+    if (this.creationFailed) return
 
 
     /** @type {HTMLElement} *///@ts-ignore
@@ -186,6 +187,16 @@ export class VirusScanner extends Window {
     this.supervise_check.hidden = true
     this.bad1.hidden = false
 
+    // wifi切断
+    SystemConfigs.connected_wifi.length = 0;
+    Notify("ウイルスを検出したため、Wi-Fiを切断しました")
+  }
+
+  inform_safe() {
+    this.condition_var.style.backgroundColor = "#008000"
+    this.condition_var.innerText = "コンピュータステータス - 保護済み"
+    this.supervise_check.hidden = false
+    this.bad1.hidden = true
   }
 }
 
