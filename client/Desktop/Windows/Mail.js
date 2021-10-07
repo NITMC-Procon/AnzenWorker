@@ -1,6 +1,6 @@
 'use strict'
 import { Window, RandomData } from "../Window.js"
-import { SystemConfigs,CallWindow, Task } from "../Desktop.js"
+import { SystemConfigs, Task } from "../Desktop.js"
 import { SendTo,SentToMeHandler,Socket } from "../../Functions/socket.js"
 import { Notify } from "../../Functions/notify.js"
 
@@ -203,22 +203,32 @@ export class Mail extends Window{
         this.refreshMails()
     }
     refreshMails(){
-        this.maillist.innerHTML=""
-        maillist.forEach((mail) =>{
-            let temp = createElementFromHTML(`<div class="mailbox">
-                    <p>${mail.from}</p>
-                    <p>${mail.sub}</p>
-                    <p style="color:gray">${mail.text}</p>
-                </div>`)
-            temp.addEventListener('click',()=>{
-                this.select(mail)
-                if(!mail.read){ //未読メール
-                    mail.read = true;
-                    SystemConfigs.Result.Revenue += 100;
-                }
+        if(JSON.stringify(SystemConfigs.connected_wifi) != "[]"){
+            this.select([])
+            this.maillist.innerHTML=""
+            maillist.forEach((mail) =>{
+                let temp = createElementFromHTML(`<div class="mailbox">
+                        <p>${mail.from}</p>
+                        <p>${mail.sub}</p>
+                        <p style="color:gray">${mail.text}</p>
+                    </div>`)
+                temp.addEventListener('click',()=>{
+                    this.select(mail)
+                    if(!mail.read){ //未読メール
+                        mail.read = true;
+                        SystemConfigs.Result.Revenue += 100;
+                    }
+                })
+                this.maillist.insertAdjacentElement('beforeend',temp)
             })
-            this.maillist.insertAdjacentElement('beforeend',temp)
-        })
+        }else{
+            this.select({
+                sub: "ネットワークに接続出来ませんでした",
+                from:"SystemMessage",
+                text: "ネットワークに接続出来ませんでした。\nWi-Fiに接続しているか、確認してください。"
+            })
+            this.maildelbutton.style.display="none"
+        }
     }
 }
 
