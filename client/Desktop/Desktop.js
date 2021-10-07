@@ -17,6 +17,7 @@ import { Explorer } from './Windows/Explorer.js'
 import { TextInputWindow, YesNoButtonWindow } from '../Functions/InputWindow.js'
 import { AddContextMenu } from '../Functions/contextmenu.js'
 import { AdVirusService1 } from '../Services/Service/AdVirusService1.js'
+import { Browser } from './Windows/Browser.js'
 
 const UserName = "ANZEN"
 
@@ -204,6 +205,7 @@ export let DesktopIconList = [
     { Name: "Explorer", Iconurl: "/images/folder.svg", Clickfunc: () => { CallWindow("Explorer", Math.random()) } },
     { Name: "インストーラー(暫定)", Iconurl: "/images/excol/logo.svg", Clickfunc: () => { CallWindow("Installer", "Window_Installer") } },
     { Name: "StartAdVirusService(暫定)", Iconurl: "/images/excol/logo.svg", Clickfunc: () => { CallService(AdVirusService1) } },
+    { Name: "browser(暫定)", Iconurl: "/images/excol/logo.svg", Clickfunc: () => { new Browser("") } },
 
 
 ]
