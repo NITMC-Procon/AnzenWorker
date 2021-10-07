@@ -1,4 +1,4 @@
-import { Folder,File,Link,Root} from '../Desktop/FileSystem.js'
+import { Folder, File, Link, Root } from '../Desktop/FileSystem.js'
 import { GameManager } from './Windows/GameManager.js'
 import { LoginWindow } from './Windows/LoginWindow.js'
 import { WiFi } from './Windows/WiFi.js'
@@ -33,7 +33,7 @@ const windowList = {
     "JobManager": JobManager,
     "VirusScanner": VirusScanner,
     "Excol": Excol,
-    "Explorer":Explorer,
+    "Explorer": Explorer,
     "Installer": Installer
 }
 
@@ -118,28 +118,28 @@ export let SystemConfigs = {
     Task: Task,
     Result: Result,
 
-    Packages:{
-        List:[],
-        Install:package_Install,
-        Uninstall:package_Uninstall
+    Packages: {
+        List: [],
+        Install: package_Install,
+        Uninstall: package_Uninstall
     }
 }
 
-function package_Install(name,iconurl,func){
+function package_Install(name, iconurl, func) {
     SystemConfigs.Packages.List.push(name)
     /**@type {Folder} *///@ts-ignore
     let desktopfolder = Root.GetPath(`/Users/${UserName}/Desktop/`)
     /**@type {Folder} *///@ts-ignore
     let progfolder = Root.GetPath(`/Programs/`)
 
-    let tmp = new File(progfolder,name)
+    let tmp = new File(progfolder, name)
     tmp.icon = iconurl
     tmp.content = func
-    new Link(desktopfolder,name,tmp).icon=iconurl
+    new Link(desktopfolder, name, tmp).icon = iconurl
 
 }
-function package_Uninstall(name){
-    SystemConfigs.Packages.List.filter((item)=>{
+function package_Uninstall(name) {
+    SystemConfigs.Packages.List.filter((item) => {
         return item !== name
     })
     /**@type {Folder} *///@ts-ignore
@@ -201,7 +201,7 @@ export let DesktopIconList = [
     { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { CallWindow("LoginWindow", "Window_LoginWindow") } },
     { Name: "リザルト 画面", Iconurl: "/images/result.svg", Clickfunc: () => { CallWindow("ResultWindow", "Window_ResultWindow") } },
     { Name: "Micrasoft Excol", Iconurl: "/images/excol/logo.svg", Clickfunc: () => { CallWindow("Excol", "Window_Excol") } },
-    { Name: "Explorer", Iconurl: "/images/folder.svg", Clickfunc: () => { CallWindow("Explorer",Math.random()) } },
+    { Name: "Explorer", Iconurl: "/images/folder.svg", Clickfunc: () => { CallWindow("Explorer", Math.random()) } },
     { Name: "インストーラー(暫定)", Iconurl: "/images/excol/logo.svg", Clickfunc: () => { CallWindow("Installer", "Window_Installer") } },
     { Name: "StartAdVirusService(暫定)", Iconurl: "/images/excol/logo.svg", Clickfunc: () => { CallService(AdVirusService1) } },
 
@@ -220,10 +220,10 @@ export let MenuIconList_L = [
     { Name: "Game Manager", Iconurl: "/images/manager.svg", Clickfunc: () => { CallWindow("GameManager", "Window_GameManager") } },
 ]
 export let MenuIconList_R = [
-    { Name: "マイドキュメント", Iconurl: "/images/directory.png" },
-    { Name: "マイピクチャ", Iconurl: "/images/directory.png" },
-    { Name: "マイミュージック", Iconurl: "/images/directory.png" },
-    { Name: "マイコンピュータ", Iconurl: "/images/directory.png" },
+    { Name: "マイドキュメント", Iconurl: "/images/directory.png", Clickfunc: () => { CallWindow("Explorer", Math.random()) } },
+    { Name: "マイピクチャ", Iconurl: "/images/directory.png", Clickfunc: () => { CallWindow("Explorer", Math.random()) } },
+    { Name: "マイミュージック", Iconurl: "/images/directory.png", Clickfunc: () => { CallWindow("Explorer", Math.random()) } },
+    { Name: "ダウンロード", Iconurl: "/images/directory.png", Clickfunc: () => { CallWindow("Explorer", Math.random()) } },
     { Name: "Wi-Fi", Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("WiFi", "Window_WiFi") } },
 ]
 export function RefreshDesktop() {
@@ -232,7 +232,7 @@ export function RefreshDesktop() {
     let desktopfolder = Root.GetPath(`/Users/${UserName}/Desktop/`)
     desktop_icons.innerHTML = "";
     let elm_drag
-    desktopfolder.children.forEach(item=>{
+    desktopfolder.children.forEach(item => {
         /** @type {HTMLElement} *///@ts-ignore
         let temp = createElementFromHTML(`<div class="icon" draggable="true">
                 <img src="${item.icon}" class="icon_image"></img>
@@ -240,7 +240,7 @@ export function RefreshDesktop() {
                 </div>`)
         temp.addEventListener('dblclick', () => {
             //@ts-ignore
-            if(item.isdir) new Explorer(item)
+            if (item.isdir) new Explorer(item)
             else item.Open()
             temp.classList.remove("selected");
         })
@@ -302,24 +302,24 @@ export function RefreshDesktop() {
                 <li>Rename</li>
             </ul>
             `)
-        menu.firstElementChild.addEventListener("click",()=>{
-            new YesNoButtonWindow("削除","ファイルを削除しますか?",(del)=>{
-                if(!del)return
+        menu.firstElementChild.addEventListener("click", () => {
+            new YesNoButtonWindow("削除", "ファイルを削除しますか?", (del) => {
+                if (!del) return
                 item.Delete()
                 RefreshDesktop()
             })
         })
-        menu.firstElementChild.nextElementSibling.addEventListener("click",()=>{
+        menu.firstElementChild.nextElementSibling.addEventListener("click", () => {
             let itemname
-            if(item.isdir)itemname = "フォルダ名"
+            if (item.isdir) itemname = "フォルダ名"
             else itemname = "ファイル名"
-            new TextInputWindow(itemname,`${itemname}を入力してください`,(text)=>{
-                if(!text)return
+            new TextInputWindow(itemname, `${itemname}を入力してください`, (text) => {
+                if (!text) return
                 item.Rename(text)
                 RefreshDesktop()
             })
         })
-        AddContextMenu(temp,menu)
+        AddContextMenu(temp, menu)
     })
     desktop_icons.ondrop = (e) => {
         if (!elm_drag) return;
@@ -339,24 +339,24 @@ export function RefreshDesktop() {
             <li>Refresh</li>
         </ul>
         `)
-    menu.firstElementChild.addEventListener("click",()=>{
-        new TextInputWindow("フォルダ名","フォルダ名を入力してください",(text)=>{
-            if(!text)return
+    menu.firstElementChild.addEventListener("click", () => {
+        new TextInputWindow("フォルダ名", "フォルダ名を入力してください", (text) => {
+            if (!text) return
             desktopfolder.Mkdir(text)
             RefreshDesktop()
         })
     })
-    menu.firstElementChild.nextElementSibling.addEventListener("click",()=>{
-        new TextInputWindow("ファイル名","ファイル名を入力してください",(text)=>{
-            if(!text)return
+    menu.firstElementChild.nextElementSibling.addEventListener("click", () => {
+        new TextInputWindow("ファイル名", "ファイル名を入力してください", (text) => {
+            if (!text) return
             desktopfolder.Touch(text)
             RefreshDesktop()
         })
     })
-    menu.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.addEventListener("click",()=>{
+    menu.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.addEventListener("click", () => {
         RefreshDesktop()
     })
-    AddContextMenu(desktop_icons,menu)
+    AddContextMenu(desktop_icons, menu)
 }
 
 
@@ -376,7 +376,7 @@ export function RefreshTaskbar() {
     menu.innerHTML = "";
     let user = createElementFromHTML(`<div style = "display:flex;padding-bottom:0.5vw;">
             <img src="/images/usericon.png" style="display:flex;width:4vw; height:4vw; margin-left:2vw;margin-top:0.5vw;"></img>
-            <div style = "color:white;padding-top:1.5vw;padding-left:3vw;font-size:2vw;">User</div>
+            <div style = "color:white;padding-top:1.5vw;padding-left:3vw;font-size:2vw;">${UserName}</div>
             </div>`);
     menu.insertAdjacentElement('beforeend', user)
 
@@ -448,21 +448,21 @@ export function RefreshTaskbar() {
     }
 }
 
-export function RefreshTaskbarIcons(){
+export function RefreshTaskbarIcons() {
     const icons = document.getElementById("desktop_taskbar_l");
     icons.innerHTML = "";
     for (let windowid in WindowManager.windows) {
         let temp = createElementFromHTML(`<div style="height:100%;width:6em;overflow: hidden;display: flex;flex-direction: row;align-items: center;user-select:none;border-top:white solid 2px;margin-right: 2px;box-sizing:border-box;">
         <span style="color:white;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;flex-shrink: 1;">${WindowManager.windows[windowid].title}</span>
         </div>`)
-        temp.addEventListener("click",()=>{
-            if(WindowManager.windows[windowid].window.classList.contains("disabled") || !WindowManager.windows[windowid].window.classList.contains("active")){
+        temp.addEventListener("click", () => {
+            if (WindowManager.windows[windowid].window.classList.contains("disabled") || !WindowManager.windows[windowid].window.classList.contains("active")) {
                 WindowManager.windows[windowid].BringToTop()
-            }else{
+            } else {
                 WindowManager.windows[windowid].Minimize()
             }
         })
-        icons.insertAdjacentElement("beforeend",temp)
+        icons.insertAdjacentElement("beforeend", temp)
     }
 }
 
@@ -507,32 +507,36 @@ export function StopGame() {//サービス等停止用
     }
 }
 
-function initFileSystem(){
+function initFileSystem() {
     Root.children.clear()
     /**@type {Folder} *///@ts-ignore
     let desktop = Root.NewItem(`/Users/${UserName}/Desktop/`)
+    let document = Root.NewItem(`/Users/${UserName}/Document/`)
+    let picture = Root.NewItem(`/Users/${UserName}/Picture/`)
+    let music = Root.NewItem(`/Users/${UserName}/Music/`)
+    let download = Root.NewItem(`/Users/${UserName}/Download/`)
     let progfolder = Root.Mkdir("Programs")
 
 
-    DesktopIconList.forEach(icon=>{
-        let tmp = new File(progfolder,icon.Name)
+    DesktopIconList.forEach(icon => {
+        let tmp = new File(progfolder, icon.Name)
         tmp.icon = icon.Iconurl
         tmp.content = icon.Clickfunc
-        new Link(desktop,icon.Name,tmp).icon=icon.Iconurl
+        new Link(desktop, icon.Name, tmp).icon = icon.Iconurl
     })
     RefreshDesktop()
 }
 
-function lsall(dir){
+function lsall(dir) {
     /** @type {Folder} *///@ts-ignore
-    if(typeof dir == "string") dir = Root.GetPath(dir).children
-    else if(!dir) dir = Root.children
+    if (typeof dir == "string") dir = Root.GetPath(dir).children
+    else if (!dir) dir = Root.children
     dir.forEach(element => {
         console.log(element.Pwd())
-        if(element.isdir){
+        if (element.isdir) {
             lsall(element.children)
         }
     });
 }
 window["lsall"] = lsall
-window["getpath"] = (path)=>{return Root.GetPath(path)}
+window["getpath"] = (path) => { return Root.GetPath(path) }
