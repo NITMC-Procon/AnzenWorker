@@ -23,8 +23,25 @@ window.addEventListener("load", () => {
             }
         };
     }, 1000);
+    
+    const backgrounds = [
+        "/images/backgrounds/hill.svg",
+        "/images/backgrounds/blue.svg",
+        "/images/backgrounds/orange.svg",
+    ]
+    let index = 0
+    setInterval(() => {//壁紙変更
+        index++
+        if(index >= backgrounds.length)index = 0
+
+        setbackground(backgrounds[index])
+    }, 1000*10);
 });
 
+function setbackground(str){
+    const desktop = document.getElementById("desktop")
+    desktop.style.backgroundImage="url("+ str +")"
+}
 
 let stoptimer
 function gamestart(msg){
