@@ -424,7 +424,7 @@ export function RefreshTaskbar() {
         CallWindow("LoginWindow", "Window_LoginWindow");
     })
     logoff_shutdown.firstElementChild.nextElementSibling.nextElementSibling.addEventListener('click', () => {
-        CallWindow("GameManager", "Window_GameManager");
+        Reboot()
     })
 
     menu.classList.add("hidden")
@@ -479,6 +479,21 @@ export function Boot() {
     initFileSystem()
     RefreshDesktop()
     RefreshTaskbar()
+}
+
+export function Reboot() {
+    for (let windowid in WindowManager.windows) {//すべてのウィンドウを削除
+        WindowManager.windows[windowid].destroy(true);
+    }
+    const bootwindow = document.getElementById("bootwindow")
+    bootwindow.classList.remove("hidden")
+    bootwindow.firstElementChild.innerHTML = "シャットダウンしています…"
+    setTimeout(() => {
+        bootwindow.firstElementChild.innerHTML = "ようこそ"
+        setTimeout(() => {
+            bootwindow.classList.add("hidden")
+        }, 2000);
+    }, 3000);
 }
 
 export function InitGame() {//リザルトとかを初期化
