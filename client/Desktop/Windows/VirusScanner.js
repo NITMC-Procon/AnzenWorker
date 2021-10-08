@@ -186,10 +186,6 @@ export class VirusScanner extends Window {
     this.condition_var.innerText = "コンピュータステータス - 危険な状態にあります"
     this.supervise_check.hidden = true
     this.bad1.hidden = false
-
-    // wifi切断
-    SystemConfigs.connected_wifi.length = 0;
-    Notify("ウイルスを検出したため、Wi-Fiを切断しました")
   }
 
   inform_safe() {
