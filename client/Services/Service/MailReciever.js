@@ -4,30 +4,15 @@ import { CallWindow } from "../../Desktop/Desktop.js"
 import { maillist } from "../../Desktop/Windows/Mail.js"
 import { Service } from "../ServiceClass.js"
 import { RansomWare } from "../../Viruses/VirusEvents.js"
+import { Browser } from "../../Desktop/Windows/Browser.js"
+import { Excol } from "../../Desktop/Windows/Excol.js"
+import { Crusher } from "../../Desktop/Windows/Crusher.js"
 
-let allmails = [
+let normalmails = [
     {
-        sub:"テストメール",
-        from:"asdiuq@fuckdns.omg",
-        text:"先生へ\n\n4Fの太郎です。\n\n例の物を添付ファイルとしてお送り致します。\nご確認の方よろしくお願いします。\n\n舞鶴工業高等専門学校 機械制御情弱科 4年 舞鶴 太郎\nEmail: taro@maizuru.kosen.ac.jp",
-        file:{
-            name:"file.exe",
-            func:()=>{ new RansomWare() }
-        },
-        type:"virus",
-        read:true
-    }, {
         sub: "アンバサダープログラムへの勧誘",
         from:"asdvbsdfwaq@fuckdns.omg",
         text: "いつもお世話になっております。\nOO商業です。\nこの度あなたは特別なプログラムの参加可能メンバーに選ばれました。\nぜひ参加をご検討ください。"
-    },{
-        sub: "【重要】納品書確認のお願い",
-        from:"eigyou@nitmccorp.co.jp.duwhjfvw.xyz",
-        text: "いつもお世話になっております。\nこの度、ご依頼いただいておりました案件の納品準備が整いましたので、再度納品書のご確認をお願いいたします。",
-        file:{
-            name:"納品書20210930.xlsm",
-            func:()=>{ CallWindow("Excol","Window_Excol")}
-        }
     }, {
         sub: "限りある資源を大切に使う、やさしい生活　サステナブルなお買いもの特集",
         from:"eco@echo.eco",
@@ -98,22 +83,77 @@ let allmails = [
         text: "株式会社〇〇　〇〇様\n\nいつも大変お世話になっております。\n株式会社〇〇の山田です。\n\n先日メールにてお願いしておりました△△の商品サンプルの件についてですが、\nその後の進捗は、いかがでしょうか。\n当サンプルが必要となる会議が今週金曜日と迫っているため、本日15時までにご送付をお願いできますでしょうか。\n\nまた、本メールと行き違いでご連絡をいただいておりましたら申し訳ありません。\nお忙しいところ大変恐れ入りますが、お取り計らいの程、何卒よろしくお願いいたします。\n----------------------------------------------------\n株式会社△△　◎◎部 ○○太郎\n住所：〒111-1111　東京都◎◎区◎◎町1-2-3\nTEL：03-****-****　／　FAX：03-****-****\nMail:◎◎@***.co.jp\n----------------------------------------------------\n"
     }]
 
+
+    let dangermails = [
+        {
+        sub:"重要なメール",
+        from:"asdiuq@dydyns.omg",
+        text:"先生へ\n\n4Fの太郎です。\n\n例の物を添付ファイルとしてお送り致します。\nご確認の方よろしくお願いします。\n\n舞鶴工業高等専門学校 機械制御情弱科 4年 舞鶴 太郎\nEmail: taro@maizuru.kosen.ac.jp",
+        file:{
+            name:"file.exe",
+            func:()=>{ new RansomWare() }
+        },
+        type:"virus",
+        read:true
+    },{
+        sub: "【重要】納品書確認のお願い",
+        from:"eigyou@nitmccorp.co.jp.duwhjfvw.xyz",
+        text: "いつもお世話になっております。\nこの度、ご依頼いただいておりました案件の納品準備が整いましたので、再度納品書のご確認をお願いいたします。",
+        file:{
+            name:"納品書20210930.xlsm",
+            func:()=>{ new Excol() }
+        }
+    },{
+        sub: "おめでとうございます",
+        from:"survey@web-research.omg",
+        text: "あなたは特別顧客に認定された！いくつかの質問に答えて豪華なリワードを得る",
+        file:{
+            name:"リンクを開く",
+            func:()=>{ new Browser('http://www.web-research.omg/') }
+        }
+    },
+    {
+        sub: "Happy New Year 2021",
+        from:"haru@haru3.me",
+        text: "",
+        file:{
+            name:"Happy21.exe",
+            func:()=>{ new Crusher() }
+        }
+    }
+]
 export class MailReciever extends Service {
     create(){
-        this.mails = allmails.slice();//.slice()でコピーしてる(そのままだと参照コピー)
-        this.timer = setInterval(this.reciever.bind(this), 1000*20);//20秒ごとに呼ぶ
-        for(let i = 0;i<6;i++){
-            this.reciever()
+        this.nmails = normalmails.slice();//.slice()でコピーしてる(そのままだと参照コピー)
+        this.dmails = dangermails.slice();
+        this.ntimer = setInterval(this.nreciever.bind(this), 1000*8);//20秒ごとに呼ぶ
+        for(let i = 0;i<4;i++){
+            this.nreciever()
+        }
+        this.dtimer = setInterval(this.nreciever.bind(this), 1000*4);
+        for(let i = 0;i<5;i++){
+            this.dreciever()
         }
     }
     destroy(){
-        clearInterval(this.timer)
+        clearInterval(this.ntimer)
     }
-    reciever(){
+    nreciever(){
         if(Math.random()>0.6){//約1/3
-            let index = Math.floor(Math.random() * this.mails.length)
-            maillist.push(this.mails[index])
-            this.mails.splice(index,1)//要素を削除(deleteは使えない)
+            let index = Math.floor(Math.random() * this.nmails.length)
+            maillist.push(this.nmails[index])
+            this.nmails.splice(index,1)//要素を削除(deleteは使えない)
+            if(this.parent.windows["Window_Mail"]){
+                if(this.parent.windows["Window_Mail"].refreshMails)this.parent.windows["Window_Mail"].refreshMails.bind(this.parent.windows["Window_Mail"])()
+            }
+        }
+    }
+
+    dreciever(){
+        if(Math.random()>0.4){//約1/3
+            let index = Math.floor(Math.random() * this.dmails.length)
+            maillist.push(this.dmails[index])
+            this.dmails.splice(index,1)//要素を削除(deleteは使えない)
             if(this.parent.windows["Window_Mail"]){
                 if(this.parent.windows["Window_Mail"].refreshMails)this.parent.windows["Window_Mail"].refreshMails.bind(this.parent.windows["Window_Mail"])()
             }

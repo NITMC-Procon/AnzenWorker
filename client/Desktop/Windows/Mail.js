@@ -22,7 +22,7 @@ const html = `
         <span>from: </span><span></span>
         <hr>
     </div>
-    <div class="file" style="display:none;"></div>
+    <div class="file file2" style="display:none;"></div>
     <p style="margin:2px 0 0 0"></p>
     <div class="file" style="display:none;">削除</div>
   </div>
@@ -64,9 +64,13 @@ const html = `
   div[${RandData}] .file {
     display: inline-block;
     padding: 0.5em 1em;
-    background-color: rgb(104, 104, 104);
-    color: white;
+    background-color: lightblue;
+    color: black;
     margin: 2px;
+  }
+
+  div[${RandData}] .file2::before {
+    content:  "📎 ";
   }
 </style>`
 const style="width:40em;height:20em;"

@@ -37,9 +37,11 @@ const style = "width:80em;height: calc(36em + 32px);"
 
 export class Browser extends Window {
     constructor(address) {
-        super(html, "InternetBrowser", { style: style });
+        super(html, "Browser", { style: style });
         if (this.creationFailed) return
 
+        // @ts-ignore
+        document.getElementById('urlarea').value = address;
         document.getElementById('go').onclick = onClickGo;
         navigate(address);
     }

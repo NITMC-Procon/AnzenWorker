@@ -30,7 +30,7 @@ const html = `<div class="installerframe" style="width: 800px;height: 600px;back
         <div style="padding: 40px;">
             <span>Hyper Video Downloaderのインストール先</span>
             <div style="display: flex;margin-top: 20px;height: 2rem;">
-                <textarea style="resize: none;width: 400px;">C:\Program Files\Hyper Video Downloader\</textarea>
+                <textarea style="resize: none;width: 400px;">C:\\Program Files\\Hyper Video Downloader\\</textarea>
                 <div style="width: 30px;"></div>
                 <button> 参照</button>
             </div>
@@ -161,6 +161,7 @@ export class Installer extends Window {
         button_next.disabled = false;
         // button_exit.disabled = false;
         SystemConfigs.Result.SecurityScore -= 1000;
+        SystemConfigs.Result.Flag.push('unwantedSoftware');
     }
 
     setPage(1);
