@@ -5,16 +5,16 @@ import { Window } from "../Window.js"
 import { Installer } from "./Installer.js";
 
 const html = `
-<div id="browserframe">
-<div style="width: 100%;height: 2em;background-color: whitesmoke;">
-    <div style="display: flex;margin-top: 1vh;">
+<div id="browserframe" style="display: flex;flex-direction: column;height: 100%;">
+<div style="width: 100%;background-color: whitesmoke;flex-shrink:0;margin: 1vh 0;">
+    <div style="display: flex;">
         <textarea id="urlarea" style="width: 87%;height: 1.2em;font-size: 1rem;resize: none;margin-left: 1%"></textarea>
         <button id="go" style="width: 8%;margin-left: 1%">Go</button>
     </div>
 </div>
-<div id="contentFrame" style="height: 30em;overflow-y: scroll;">
+<div id="contentFrame" style="overflow-y: auto;display:flex;flex-direction:column;flex-grow: 1;">
 </div>
-<div id="downloadFrame" style="background-color: whitesmoke;height:4em; display:flex">
+<div id="downloadFrame" style="background-color: whitesmoke;max-height:4em; display:flex;flex-shrink:0">
 </div>
 </div>
 <style>
@@ -83,7 +83,7 @@ function notfound() {
 
 function phishing1() {
     let ihtml = `
-    <div id="mainframe1" style="background-color: steelblue;color: white;">
+    <div id="mainframe1" style="background-color: steelblue;color: white;height: 100%;">
     <h1>ウェブリサーチサーベイ</h1>
     <h2>おめでとうございます</h2>
     <p>あなたは今期<span id="sdate"></span>の特別カスタマーに認定されました！簡単な質問に答えて最新Samsung Galaxyデバイスを獲得する！</p>
@@ -93,7 +93,7 @@ function phishing1() {
     </div>
     <div style="height: 20px;"></div>
 </div>
-<div id="mainframe2" style="background-color: steelblue;color: white; display: none;">
+<div id="mainframe2" style="background-color: steelblue;color: white; display: none;height: 100%;">
     <p>簡単な質問に回答する！</p>
     <div style="border: solid 0.1px gray; border-radius: 5px;background-color: white;color: black;">
         <h2>質問1</h2>
@@ -134,7 +134,7 @@ function phishing1() {
     <div style="height: 20px;"></div>
 </div>
 
-<div id="mainframe3" style="background-color: steelblue;color: white; display: none;">
+<div id="mainframe3" style="background-color: steelblue;color: white; display: none;height: 100%;">
     <h2>最期のステップです！</h2>
     続行する為に登録プログラムをインストールしてください
     <div style="text-align: center;">
