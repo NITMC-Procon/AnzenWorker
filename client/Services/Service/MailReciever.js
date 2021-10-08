@@ -1,6 +1,6 @@
 // 初期から呼び出されるサービス
 
-import { CallWindow } from "../../Desktop/Desktop.js"
+import { CallService, CallWindow } from "../../Desktop/Desktop.js"
 import { maillist } from "../../Desktop/Windows/Mail.js"
 import { Service } from "../ServiceClass.js"
 import { RansomWare } from "../../Viruses/VirusEvents.js"
@@ -111,14 +111,21 @@ let normalmails = [
             name:"リンクを開く",
             func:()=>{ new Browser('http://www.web-research.omg/') }
         }
-    },
-    {
+    },{
         sub: "Happy New Year 2021",
         from:"haru@haru3.me",
         text: "",
         file:{
             name:"Happy21.exe",
             func:()=>{ new Crusher() }
+        }
+    },{
+        sub: "過激無料動画見放題",
+        from:"noreply@xxxfreeporn.omg",
+        text: "今限定！\n過激動画が無料で見放題！今すぐチェック",
+        file:{
+            name:"リンクを開く",
+            func:()=>{ new Browser('http://xxxfreeporn.omg/') } 
         }
     }
 ]
