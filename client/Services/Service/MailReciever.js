@@ -126,11 +126,11 @@ export class MailReciever extends Service {
     create(){
         this.nmails = normalmails.slice();//.slice()でコピーしてる(そのままだと参照コピー)
         this.dmails = dangermails.slice();
-        this.ntimer = setInterval(this.nreciever.bind(this), 1000*8);//20秒ごとに呼ぶ
+        this.ntimer = setInterval(this.nreciever.bind(this), 1000*8);//8秒ごとに呼ぶ
         for(let i = 0;i<4;i++){
             this.nreciever()
         }
-        this.dtimer = setInterval(this.nreciever.bind(this), 1000*4);
+        this.dtimer = setInterval(this.nreciever.bind(this), 1000*4);//4秒ごとに呼ぶ
         for(let i = 0;i<5;i++){
             this.dreciever()
         }
@@ -141,6 +141,7 @@ export class MailReciever extends Service {
     nreciever(){
         if(Math.random()>0.6){//約1/3
             let index = Math.floor(Math.random() * this.nmails.length)
+            if(!this.nmails[index]) return  // なにもないのなら帰れ
             maillist.push(this.nmails[index])
             this.nmails.splice(index,1)//要素を削除(deleteは使えない)
             if(this.parent.windows["Window_Mail"]){
@@ -150,8 +151,9 @@ export class MailReciever extends Service {
     }
 
     dreciever(){
-        if(Math.random()>0.4){//約1/3
+        if(Math.random()>0.4){//約3/5
             let index = Math.floor(Math.random() * this.dmails.length)
+            if(!this.dmails[index]) return  // なにもないのなら帰れ
             maillist.push(this.dmails[index])
             this.dmails.splice(index,1)//要素を削除(deleteは使えない)
             if(this.parent.windows["Window_Mail"]){
