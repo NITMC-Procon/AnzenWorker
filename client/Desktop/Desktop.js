@@ -201,13 +201,7 @@ export let DesktopIconList = [
     { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { CallWindow("Store", "Window_Store") } },
     { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { CallWindow("LoginWindow", "Window_LoginWindow") } },
     { Name: "リザルト 画面", Iconurl: "/images/result.svg", Clickfunc: () => { CallWindow("ResultWindow", "Window_ResultWindow") } },
-    { Name: "Micrasoft Excol", Iconurl: "/images/excol/logo.svg", Clickfunc: () => { CallWindow("Excol", "Window_Excol") } },
     { Name: "Explorer", Iconurl: "/images/folder.svg", Clickfunc: () => { CallWindow("Explorer", Math.random()) } },
-    { Name: "インストーラー(暫定)", Iconurl: "/images/excol/logo.svg", Clickfunc: () => { CallWindow("Installer", "Window_Installer") } },
-    { Name: "StartAdVirusService(暫定)", Iconurl: "/images/excol/logo.svg", Clickfunc: () => { CallService(AdVirusService1) } },
-    { Name: "browser(暫定)", Iconurl: "/images/excol/logo.svg", Clickfunc: () => { new Browser("") } },
-
-
 ]
 
 export let TaskbarIconList_R = [
