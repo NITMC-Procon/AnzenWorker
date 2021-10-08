@@ -6,6 +6,7 @@ import { RansomWare } from "../../Viruses/VirusEvents.js"
 import { Browser } from "../../Desktop/Windows/Browser.js"
 import { Excol } from "../../Desktop/Windows/Excol.js"
 import { Crusher } from "../../Desktop/Windows/Crusher.js"
+import { Installer } from "../../Desktop/Windows/Installer.js"
 
 let normalmails = [
     {
@@ -83,17 +84,16 @@ let normalmails = [
     }]
 
 
-    let dangermails = [
-        {
-        sub:"重要なメール",
-        from:"asdiuq@dydyns.omg",
-        text:"先生へ\n\n4Fの太郎です。\n\n例の物を添付ファイルとしてお送り致します。\nご確認の方よろしくお願いします。\n\n舞鶴工業高等専門学校 機械制御情弱科 4年 舞鶴 太郎\nEmail: taro@maizuru.kosen.ac.jp",
-        file:{
-            name:"file.exe",
-            func:()=>{ new RansomWare() }
-        },
-        type:"virus",
-        read:true
+let dangermails = [
+    {
+    sub:"重要なメール",
+    from:"asdiuq@dydyns.omg",
+    text:"先生へ\n\n4Fの太郎です。\n\n例の物を添付ファイルとしてお送り致します。\nご確認の方よろしくお願いします。\n\n舞鶴工業高等専門学校 機械制御情弱科 4年 舞鶴 太郎\nEmail: taro@maizuru.kosen.ac.jp",
+    file:{
+        name:"file.exe",
+        func:()=>{ new RansomWare() }
+    },
+    type:"virus",
     },{
         sub: "【重要】納品書確認のお願い",
         from:"eigyou@nitmccorp.co.jp.duwhjfvw.xyz",
@@ -133,12 +133,16 @@ export class MailReciever extends Service {
         this.nmails = normalmails.slice();//.slice()でコピーしてる(そのままだと参照コピー)
         this.dmails = dangermails.slice();
         this.ntimer = setInterval(this.nreciever.bind(this), 1000*8);//8秒ごとに呼ぶ
+        this.dtimer = setInterval(this.nreciever.bind(this), 1000*4);//4秒ごとに呼ぶ
+        // for(let i = 0;i<20;i++){
+        //     this.dreciever()
+        // }
+        this.dmails.forEach((mail,i)=>{
+            maillist.push(mail)
+        })
+        this.dmails = []
         for(let i = 0;i<4;i++){
             this.nreciever()
-        }
-        this.dtimer = setInterval(this.nreciever.bind(this), 1000*4);//4秒ごとに呼ぶ
-        for(let i = 0;i<5;i++){
-            this.dreciever()
         }
     }
     destroy(){

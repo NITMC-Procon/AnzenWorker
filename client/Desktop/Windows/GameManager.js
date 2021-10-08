@@ -6,7 +6,7 @@ import { Notify } from "../../Functions/notify.js"
 
 const html = `<br>
 <div style="text-align: center;">
-    <span>ゲーム時間(秒)</span><input type="number" value="600" min="30" max="1200">
+    <span>ゲーム時間(秒)</span><input type="number" value="150" min="30" max="1200">
     <br><br>
 </div>
 <div style="display: flex;align-items: center;justify-content: space-evenly;">

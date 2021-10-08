@@ -436,7 +436,7 @@ export function RefreshTaskbar() {
             document.addEventListener('mousedown', selectother)
         } else {//メニューが表示されているとき
             //@ts-ignore
-            if (!e.target.closest('#menu')) {//メニューボタンを押していたなら
+            if (e.target != menu) {//メニューボタンを押していたなら
                 menu.classList.add("hidden")
                 document.removeEventListener('mousedown', selectother)
             }
@@ -485,11 +485,17 @@ export function Reboot() {
     bootwindow.classList.remove("hidden")
     bootwindow.firstElementChild.innerHTML = "シャットダウンしています…"
     setTimeout(() => {
-        bootwindow.firstElementChild.innerHTML = "ようこそ"
+        bootwindow.style.background = "black"
+        bootwindow.firstElementChild.innerHTML = ""
+        initFileSystem()
         setTimeout(() => {
-            bootwindow.classList.add("hidden")
-        }, 2000);
-    }, 3000);
+            bootwindow.style.background = ""
+            bootwindow.firstElementChild.innerHTML = "ようこそ"
+            setTimeout(() => {
+                bootwindow.classList.add("hidden")
+            }, 2000);
+        }, 1000);
+    }, 2000);
 }
 
 export function InitGame() {//リザルトとかを初期化
@@ -501,9 +507,9 @@ export function InitGame() {//リザルトとかを初期化
     Task.FailedTask = []
     Task.SucceedTask = []
 
-    for (let windowid in WindowManager.windows) {//すべてのウィンドウを削除
-        WindowManager.windows[windowid].destroy(true);
-    }
+    // for (let windowid in WindowManager.windows) {//すべてのウィンドウを削除
+    //     WindowManager.windows[windowid].destroy(true);
+    // }
     for (let serviceid in WindowManager.services) {//すべてのサービスを停止
         WindowManager.services[serviceid].destuctor();
     }

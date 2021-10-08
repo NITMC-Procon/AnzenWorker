@@ -1,6 +1,6 @@
 'use strict'
 import { Window } from "../Window.js"
-import { CallWindow } from "../Desktop.js"
+import { CallWindow,SystemConfigs } from "../Desktop.js"
 import { Mail } from "./Mail.js"
 import { WiFi } from "./WiFi.js"
 
@@ -96,6 +96,7 @@ export class JobManager extends Window {
         this.taskacceptbutton.style.display = (task ? "" : "none")
     }
     refreshtasks() {
+      if(SystemConfigs.room.status){
         this.tasklist.innerHTML = ""
         tasklist.forEach((task) => {
             let temp = createElementFromHTML(`<div class="taskbox">
@@ -106,11 +107,18 @@ export class JobManager extends Window {
             })
             this.tasklist.insertAdjacentElement('beforeend', temp)
         })
+      }else{
+        this.select({
+            title: "ゲームが開始されていません",
+            text: "ゲームがまだ開始されていません。GameManagerからゲームを開始できます。"
+        })
+        this.taskacceptbutton.style.display="none"
+      }
     }
     accpettask() {
         let windowName = "Window_" + this.keep.class
         CallWindow(this.keep.class, windowName)
-        this.destroy()
+        // this.destroy()
     }
 }
 

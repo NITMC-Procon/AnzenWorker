@@ -1,6 +1,5 @@
 'use strict'
-import { AdVirusService1 } from "../../Services/Service/AdVirusService1.js";
-import { CallService, SystemConfigs } from "../Desktop.js";
+import { SystemConfigs } from "../Desktop.js";
 import { Window } from "../Window.js"
 import { Installer } from "./Installer.js";
 
@@ -34,7 +33,7 @@ div.download{
 }
 </style>
 `
-const style = "width:80em;height: calc(36em + 32px);"
+const style="width:40em;height:30em;"
 
 export class Browser extends Window {
     constructor(address) {
@@ -173,12 +172,12 @@ function phishing1() {
 
     function final(){
         createdownload({ Name: "install.exe", Clickfunc: () => { new Installer() } })
-        SystemConfigs.Result.Flag.push("phishing");
+        if(!SystemConfigs.Result.Flag.includes("phishing"))SystemConfigs.Result.Flag.push("phishing");
     }
 }
 
 function porn1() {
-    let ihtml = `<div style="width: 100%;height: 60em;background-color: black;color: pink;">
+    let ihtml = `<div style="width: 100%;height: 100%;background-color: black;color: pink;">
     <h1>過激無料動画</h1>
     <img src="/images/virus/mosaic_porn.png" width="100%">
     <h2>※お楽しみいただくには専用プレイヤーをダウンロードしてください</h2>
@@ -190,7 +189,7 @@ function porn1() {
 
     document.getElementById('dlplayer').onclick = onClickDownload;
     function onClickDownload() {
-        createdownload({ Name: "player.exe", Clickfunc: () => { CallService(AdVirusService1) } })
+        createdownload({ Name: "player.exe", Clickfunc: () => { new Installer() } })
     }
     
 }
