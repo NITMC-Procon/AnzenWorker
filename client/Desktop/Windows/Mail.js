@@ -1,8 +1,9 @@
 'use strict'
-import { Window, RandomData } from "../Window.js"
+import { Window, RandomData, createElementFromHTML } from "../Window.js"
 import { SystemConfigs, Task } from "../Desktop.js"
 import { SendTo,SentToMeHandler,Socket } from "../../Functions/socket.js"
 import { Notify } from "../../Functions/notify.js"
+import { AddContextMenu } from '../../Functions/contextmenu.js'
 
 const RandData = RandomData()
 
@@ -224,6 +225,17 @@ export class Mail extends Window{
                     }
                 })
                 this.maillist.insertAdjacentElement('beforeend',temp)
+
+                let menu = createElementFromHTML(`
+                <ul>
+                    <li>削除</li>
+                </ul>
+                `)
+                menu.firstElementChild.addEventListener("click", () => {
+                    this.keep = mail
+                    this.deleteMail()
+                })
+                AddContextMenu(temp, menu)
             })
         }else{
             this.select({
@@ -234,13 +246,6 @@ export class Mail extends Window{
             this.maildelbutton.style.display="none"
         }
     }
-}
-
-function createElementFromHTML(html) {
-    let template = document.createElement('template');
-    html = html.trim(); // Never return a text node of whitespace as the result
-    template.innerHTML = html;
-    return template.content.firstElementChild;
 }
 
 SentToMeHandler["newMail"] = (mail)=>{
