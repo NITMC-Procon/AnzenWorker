@@ -2,6 +2,7 @@
 import { Window } from "../Window.js"
 import { SystemConfigs, Task, CallWindow, RefreshDesktop } from "../Desktop.js"
 import { VirusScanner } from "./VirusScanner.js"
+import { RansomWare } from "../../Viruses/VirusEvents.js"
 import { Notify } from "../../Functions/notify.js"
 
 const html = `
@@ -240,7 +241,7 @@ export let apps = [
         safety: "danger",
         type: "app",
         icon: "../images/apps/PC-Cleaner.png",
-        window: VirusScanner
+        window: RansomWare
     }
 ]
 
@@ -280,7 +281,7 @@ export class Store extends Window {
             <div class="store_container">
                 <div class = "store_background">  </div>
                 <div class = "app_icon2">
-                    <img src = '../images/apps/AntiVirus.png' width="140px" height="140px">
+                    <img src = '../images/apps/AntiVirus.png' id = "icon2" width="140px" height="140px">
                 </div>
 
                 <div class = "title2" id = "title2">AntiVirus</div>
@@ -357,12 +358,21 @@ export class Store extends Window {
         this.list_container.children[this.list_container.childElementCount - 1].children[5].addEventListener('click', () => {
             // アプリを入れれるかどうか
             let can = true
-            // 自分がセキュリティソフトの時
+            // 自分がセキュリティソフトの時 or 既にインストールされている時
             if (apps[this.selectapp].type == "security") {
                 // 既にセキュリティソフトが入っていたら
                 for (var k = 0; k < SystemConfigs.installed_software.length; k++) {
                     if (SystemConfigs.installed_software[k][2] == "security") {
                         // セキュリティソフトをこれ以上入れられないようにする
+                        can = false
+                    }
+                }
+
+            }
+
+            if (apps[this.selectapp].type == "app") {
+                for (var k = 0; k < SystemConfigs.installed_software.length; k++) {
+                    if (SystemConfigs.installed_software[k][2] == "app") {
                         can = false
                     }
                 }
@@ -391,11 +401,25 @@ export class Store extends Window {
                 else {  // 怪しいソフトをインストールしたら、
                     SystemConfigs.Result.SecurityScore -= 200
                     Task.Complete("Store", true);//失敗
-                    CallWindow(VirusScanner, "Window_VirusScanner");
+
+                    for (var j = 0; j < SystemConfigs.installed_software.length; j++) {
+                        if (SystemConfigs.installed_software[j][0] == apps[0].name || SystemConfigs.installed_software[j][0] == apps[2].name) {
+                            // wifi切断
+                            SystemConfigs.connected_wifi.length = 0;
+                            Notify("ウイルスを検出したため、Wi-Fiを切断しました")
+                        }
+                    }
+
                 }
 
+                if (apps[this.selectapp].name != apps[3].name) {
+
+                }
+                else {
+                    func: () => { new RansomWare() }
+                }
                 // インストール
-                SystemConfigs.Packages.Install(apps[this.selectapp].name, "/images/apps/AntiVirus.png", () => { CallWindow(apps[this.selectapp].window, "Window_" + apps[this.selectapp].name) })
+                SystemConfigs.Packages.Install(apps[this.selectapp].name, apps[this.selectapp].icon, () => { CallWindow(apps[this.selectapp].window, "Window_" + apps[this.selectapp].name) })
                 RefreshDesktop()
             }
             else {
@@ -434,13 +458,14 @@ export class Store extends Window {
         document.getElementById("author").innerText = app.corporation
         document.getElementById("function").innerText = app.func
 
+        document.getElementById("icon2").setAttribute('src', app.icon);
+
         if (app.price == 0) {
             document.getElementById("price").innerText = "無料"
         }
         else {
             document.getElementById("price").innerText = "￥" + app.price
         }
-
 
         for (var i = 0; i < SystemConfigs.installed_software.length; i++) {
             if (SystemConfigs.installed_software[i][0] == apps[this.selectapp].name) {
