@@ -1,6 +1,7 @@
 'use strict'
+import { SystemConfigs } from "../Desktop.js";
 import { Window } from "../Window.js"
-import { Crusher } from "./Crusher.js";
+import { Installer } from "./Installer.js";
 
 const html = `
 <div id="browserframe">
@@ -165,6 +166,7 @@ function phishing1() {
     }
 
     function final(){
-        createdownload({ Name: "yabai.exe", Clickfunc: () => { new Crusher() } })
+        createdownload({ Name: "install.exe", Clickfunc: () => { new Installer() } })
+        SystemConfigs.Result.Flag.push("phishing");
     }
 }
