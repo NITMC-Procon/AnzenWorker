@@ -1,6 +1,6 @@
 'use strict'
 import { Window, RandomData } from "../Window.js"
-import { CallWindow,Result,SystemConfigs, Task } from "../Desktop.js"
+import { Result, Task } from "../Desktop.js"
 import { Advices,Flags } from "../../Functions/showAdvices.js"
 
 const RandData = RandomData()

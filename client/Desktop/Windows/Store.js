@@ -419,7 +419,7 @@ export class Store extends Window {
                     func: () => { new RansomWare() }
                 }
                 // インストール
-                SystemConfigs.Packages.Install(apps[this.selectapp].name, apps[this.selectapp].icon, () => { CallWindow(apps[this.selectapp].window, "Window_" + apps[this.selectapp].name) })
+                SystemConfigs.Packages.Install(apps[this.selectapp].name, apps[this.selectapp].icon, () => { CallWindow(apps[this.selectapp].window) })
                 RefreshDesktop()
             }
             else {

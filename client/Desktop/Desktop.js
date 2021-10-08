@@ -56,7 +56,7 @@ WindowManager.windowarea = document.getElementById("desktop_windows")
 
 /** ウィンドウを呼ぶ
  * @param {String|Object} classfunc
- * @param {String|Number} window_id
+ * @param {String|Number=} window_id
  */
 export function CallWindow(classfunc, window_id) {
     if (!window_id && typeof classfunc == 'string') {
@@ -194,33 +194,33 @@ function Task_EmitResult(data) {
 }
 
 export let DesktopIconList = [
-    { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Clickfunc: () => { CallWindow("JobManager", "Window_JobManager") } },
-    { Name: "Internet Browser", Iconurl: "/images/earth.svg", Clickfunc: () => { CallWindow("InternetBrowser", "Window_InternetBrowser") } },
-    { Name: "Game Manager", Iconurl: "/images/manager.svg", Clickfunc: () => { CallWindow("GameManager", "Window_GameManager") } },
-    { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { CallWindow("Mail", "Window_Mail") } },
-    { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { CallWindow("Store", "Window_Store") } },
-    { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { CallWindow("LoginWindow", "Window_LoginWindow") } },
-    { Name: "リザルト 画面", Iconurl: "/images/result.svg", Clickfunc: () => { CallWindow("ResultWindow", "Window_ResultWindow") } },
-    { Name: "Explorer", Iconurl: "/images/folder.svg", Clickfunc: () => { CallWindow("Explorer", Math.random()) } },
+    { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Clickfunc: () => { new JobManager() } },
+    { Name: "Internet Browser", Iconurl: "/images/earth.svg", Clickfunc: () => { new InternetBrowser() } },
+    { Name: "Game Manager", Iconurl: "/images/manager.svg", Clickfunc: () => { new GameManager() } },
+    { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { new Mail() } },
+    { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { new Store() } },
+    { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { new LoginWindow() } },
+    { Name: "リザルト 画面", Iconurl: "/images/result.svg", Clickfunc: () => { new ResultWindow() } },
+    { Name: "Explorer", Iconurl: "/images/folder.svg", Clickfunc: () => { new Explorer() } },
 ]
 
 export let TaskbarIconList_R = [
-    { Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("WiFi", "Window_WiFi") } },
+    { Iconurl: "/images/wifiicon.png", Clickfunc: () => { new WiFi() } },
 ]
 
 export let MenuIconList_L = [
-    { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Clickfunc: () => { CallWindow("JobManager", "Window_JobManager") } },
-    { Name: "Internet Browser", Iconurl: "/images/earth.svg", Clickfunc: () => { CallWindow("InternetBrowser", "Window_InternetBrowser") } },
-    { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { CallWindow("Mail", "Window_Mail") } },
-    { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { CallWindow("Store", "Window_Store") } },
-    { Name: "Game Manager", Iconurl: "/images/manager.svg", Clickfunc: () => { CallWindow("GameManager", "Window_GameManager") } },
+    { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Clickfunc: () => { new JobManager() } },
+    { Name: "Internet Browser", Iconurl: "/images/earth.svg", Clickfunc: () => { new InternetBrowser() } },
+    { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { new Mail() } },
+    { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { new Store() } },
+    { Name: "Game Manager", Iconurl: "/images/manager.svg", Clickfunc: () => { new GameManager() } },
 ]
 export let MenuIconList_R = [
-    { Name: "マイドキュメント", Iconurl: "/images/directory.png", Clickfunc: () => { CallWindow("Explorer", Math.random()) } },
-    { Name: "マイピクチャ", Iconurl: "/images/directory.png", Clickfunc: () => { CallWindow("Explorer", Math.random()) } },
-    { Name: "マイミュージック", Iconurl: "/images/directory.png", Clickfunc: () => { CallWindow("Explorer", Math.random()) } },
-    { Name: "ダウンロード", Iconurl: "/images/directory.png", Clickfunc: () => { CallWindow("Explorer", Math.random()) } },
-    { Name: "Wi-Fi", Iconurl: "/images/wifiicon.png", Clickfunc: () => { CallWindow("WiFi", "Window_WiFi") } },
+    { Name: "マイドキュメント", Iconurl: "/images/directory.png", Clickfunc: () => { new Explorer("/Users/ANZEN/Document/") } },
+    { Name: "マイピクチャ", Iconurl: "/images/directory.png", Clickfunc: () => { new Explorer("/Users/ANZEN/Picture/") } },
+    { Name: "マイミュージック", Iconurl: "/images/directory.png", Clickfunc: () => { new Explorer("/Users/ANZEN/Music/") } },
+    { Name: "ダウンロード", Iconurl: "/images/directory.png", Clickfunc: () => { new Explorer("/Users/ANZEN/Download/") } },
+    { Name: "Wi-Fi", Iconurl: "/images/wifiicon.png", Clickfunc: () => { new WiFi() } },
 ]
 export function RefreshDesktop() {
     const desktop_icons = document.getElementById("desktop_icons")
@@ -417,7 +417,7 @@ export function RefreshTaskbar() {
     menu.insertAdjacentElement('beforeend', logoff_shutdown);
 
     logoff_shutdown.firstElementChild.addEventListener('click', () => {
-        CallWindow("LoginWindow", "Window_LoginWindow");
+        new LoginWindow()
     })
     logoff_shutdown.firstElementChild.nextElementSibling.nextElementSibling.addEventListener('click', () => {
         Reboot()

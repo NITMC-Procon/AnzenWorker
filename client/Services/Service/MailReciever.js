@@ -1,6 +1,5 @@
 // 初期から呼び出されるサービス
 
-import { CallService, CallWindow } from "../../Desktop/Desktop.js"
 import { maillist } from "../../Desktop/Windows/Mail.js"
 import { Service } from "../ServiceClass.js"
 import { RansomWare } from "../../Viruses/VirusEvents.js"

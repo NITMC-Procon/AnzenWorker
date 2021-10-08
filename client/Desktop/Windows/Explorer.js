@@ -20,7 +20,7 @@ const html = `
 const style="width:40em;height:30em;"
 
 export class Explorer extends Window {
-    /** @param {!Folder=} folder */
+    /** @param {Folder|String=} folder */
     constructor(folder) {
         super(html, "Explorer",{style:style,window_id:"Explorer"+RandomData()})
         if(this.creationFailed)return
@@ -34,7 +34,10 @@ export class Explorer extends Window {
         this.patharea = this.backbutton.nextElementSibling
         /** @type {HTMLButtonElement} *///@ts-ignore
         this.gobutton = this.patharea.nextElementSibling
-        this.currentFolder = folder?folder:Root
+        if(typeof folder == "string") 
+            /** @type {Folder} *///@ts-ignore
+            this.currentFolder = Root.GetPath(folder)
+        else this.currentFolder = folder?folder:Root
         this.open(this.currentFolder)
         
         this.backbutton.addEventListener("click",()=>{

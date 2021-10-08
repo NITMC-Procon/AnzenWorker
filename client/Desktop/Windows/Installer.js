@@ -1,9 +1,6 @@
 'use strict'
 import { Window } from "../Window.js"
-// @ts-ignore
 import { SystemConfigs } from "../Desktop.js"
-// @ts-ignore
-import { CallWindow } from "../Desktop.js"
 
 
 const html = `<div class="installerframe" style="width: 800px;height: 600px;background-color: rgb(233, 233, 233);">
