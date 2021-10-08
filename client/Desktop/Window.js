@@ -250,22 +250,22 @@ export class Window{
                         this.window.style.width = position.left + position.width - event.pageX + this.localx + "px";
                     }
                 }
-                const up = (e) => {
-                    document.body.removeEventListener("mousemove", move, false);
-                    document.body.removeEventListener("touchmove", move, false);
-                    this.window.lastElementChild.firstElementChild.removeEventListener("mouseup", up, false);
-                    this.window.lastElementChild.firstElementChild.removeEventListener("touchend", up, false);
-                    document.body.removeEventListener("mouseleave", up, false);
-                    document.body.removeEventListener("touchleave", up, false);
+                const up = () => {
+                    document.removeEventListener("mousemove", move, false);
+                    document.removeEventListener("touchmove", move, false);
+                    document.removeEventListener("mouseup", up, false);
+                    document.removeEventListener("touchend", up, false);
+                    document.removeEventListener("mouseleave", up, false);
+                    document.removeEventListener("touchleave", up, false);
                 }
-                document.body.addEventListener("mousemove", move, { passive: false });
-                document.body.addEventListener("touchmove", move, { passive: false });
+                document.addEventListener("mousemove", move, { passive: false });
+                document.addEventListener("touchmove", move, { passive: false });
         
                 //マウスボタンが離されたとき、またはカーソルが外れたとき発火
-                this.window.addEventListener("mouseup", up, { passive: true });
-                this.window.addEventListener("touchend", up, { passive: true });
-                document.body.addEventListener("mouseleave", up, { passive: true });
-                document.body.addEventListener("touchleave", up, { passive: true });
+                document.addEventListener("mouseup", up, { passive: true });
+                document.addEventListener("touchend", up, { passive: true });
+                document.addEventListener("mouseleave", up, { passive: true });
+                document.addEventListener("touchleave", up, { passive: true });
             }
             child.addEventListener("mousedown", mousedown, { passive: true });
             child.addEventListener("touchstart", mousedown, { passive: true });
