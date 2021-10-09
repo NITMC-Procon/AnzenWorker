@@ -178,9 +178,9 @@ function phishing1() {
 }
 
 function porn1() {
-    let ihtml = `<div style="width: 100%;height: 60em;background-color: black;color: pink;">
+    let ihtml = `<div style="width: 100%;background-color: black;color: pink;">
     <h1>過激無料動画</h1>
-    <img src="/images/virus/mosaic_porn.png" width="100%">
+    <img src="/images/virus/mosaic_sample.png" width="100%">
     <h2>※お楽しみいただくには専用プレイヤーをダウンロードしてください</h2>
     <div style="text-align: center;">
         <button id="dlplayer" style="width: 15rem;height: 4rem;font-size: 1.5rem;color: red;background-color: pink;">今すぐダウンロード</button>

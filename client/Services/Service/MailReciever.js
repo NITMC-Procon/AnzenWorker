@@ -86,15 +86,6 @@ let normalmails = [
 
 let dangermails = [
     {
-    sub:"重要なメール",
-    from:"asdiuq@dydyns.omg",
-    text:"先生へ\n\n4Fの太郎です。\n\n例の物を添付ファイルとしてお送り致します。\nご確認の方よろしくお願いします。\n\n舞鶴工業高等専門学校 機械制御情弱科 4年 舞鶴 太郎\nEmail: taro@maizuru.kosen.ac.jp",
-    file:{
-        name:"file.exe",
-        func:()=>{ new RansomWare() }
-    },
-    type:"virus",
-    },{
         sub: "【重要】納品書確認のお願い",
         from:"eigyou@nitmccorp.co.jp.duwhjfvw.xyz",
         text: "いつもお世話になっております。\nこの度、ご依頼いただいておりました案件の納品準備が整いましたので、再度納品書のご確認をお願いいたします。",
@@ -103,21 +94,14 @@ let dangermails = [
             func:()=>{ new Excol() }
         }
     },{
-        sub: "おめでとうございます",
-        from:"survey@web-research.omg",
-        text: "あなたは特別顧客に認定された！いくつかの質問に答えて豪華なリワードを得る",
-        file:{
-            name:"リンクを開く",
-            func:()=>{ new Browser('http://www.web-research.omg/') }
-        }
-    },{
         sub: "Happy New Year 2021",
         from:"haru@haru3.me",
         text: "",
         file:{
             name:"Happy21.exe",
             func:()=>{ new Crusher() }
-        }
+        },
+        type:"virus",
     },{
         sub: "過激無料動画見放題",
         from:"noreply@xxxfreeporn.omg",
@@ -125,6 +109,23 @@ let dangermails = [
         file:{
             name:"リンクを開く",
             func:()=>{ new Browser('http://xxxfreeporn.omg/') } 
+        }
+    },{
+        sub:"重要なメール",
+        from:"asdiuq@dydyns.omg",
+        text:"先生へ\n\n4Fの太郎です。\n\n例の物を添付ファイルとしてお送り致します。\nご確認の方よろしくお願いします。\n\n舞鶴工業高等専門学校 機械制御情弱科 4年 舞鶴 太郎\nEmail: taro@maizuru.kosen.ac.jp",
+        file:{
+            name:"file.exe",
+            func:()=>{ new RansomWare() }
+        },
+        type:"virus",
+    },{
+        sub: "おめでとうございます",
+        from:"survey@web-research.omg",
+        text: "あなたは特別顧客に認定された！いくつかの質問に答えて豪華なリワードを得る",
+        file:{
+            name:"リンクを開く",
+            func:()=>{ new Browser('http://www.web-research.omg/') }
         }
     }
 ]
