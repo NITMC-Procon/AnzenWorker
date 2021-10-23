@@ -103,6 +103,9 @@ export class WiFi extends Window{
         // document.getElementById("gamestart_button").onclick = () => {this.game_button("start")};
         // this.bodyElem.firstElementChild.nextElementSibling.firstChild.addEventListener('click',() => {this.game_button("start")})
         // this.bodyElem.firstElementChild.nextElementSibling.lastElementChild.addEventListener('click',() => {this.game_button("stop")})
+        if(JSON.stringify(SystemConfigs.connected_wifi) != "[]"){
+            this.select(SystemConfigs.connected_wifi)
+        }
     }
     get_wifis() {//Wi-Fi一覧取得(実際はネットから持ってくるか、自動生成でそれっぽいの用意する)
         // 接続先, 暗号化, 保護されているか(0:保護なし/1:保護あり), WiFiの強さ（0~3）

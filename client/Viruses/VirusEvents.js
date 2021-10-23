@@ -1,4 +1,4 @@
-import { Result,RefreshDesktop } from "../Desktop/Desktop.js"
+import { Result,RefreshDesktop, SystemConfigs } from "../Desktop/Desktop.js"
 import { Window } from "../Desktop/Window.js"
 import { Service } from "../Services/ServiceClass.js"
 import { SendTo,SentToMeHandler,Socket } from "../Functions/socket.js"
@@ -9,7 +9,7 @@ export class WormVirus extends Service {//自己増殖型
         this.timer = setInterval(this.emitter.bind(this), 1000*20);//20秒ごとに呼ぶ
         this.targets = []
 
-        Result.Flag.push("WormVirus")
+        if(!Result.Flag.includes("WormVirus"))Result.Flag.push("WormVirus")
 
         Result.SecurityScore -= 100;
 
@@ -67,6 +67,7 @@ export class RansomWare extends Window {//身代金要求ウィンドウ
         this.nobutton = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling.firstElementChild
         this.yesbutton = this.nobutton.nextElementSibling
 
+        if(!SystemConfigs.Result.Flag.includes("RansomWare"))SystemConfigs.Result.Flag.push("RansomWare")
         this.encryptfiles(Root);
         RefreshDesktop()
         this.nobutton.addEventListener('click', (e) => {
@@ -76,6 +77,7 @@ export class RansomWare extends Window {//身代金要求ウィンドウ
             // if(Math.random()>0.3)// 約2/3
                 this.decryptfiles(Root);
                 RefreshDesktop()
+            Result.Revenue -= 2000
             this.destroy();
         });
     }

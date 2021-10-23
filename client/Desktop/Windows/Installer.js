@@ -158,7 +158,7 @@ export class Installer extends Window {
         button_next.disabled = false;
         // button_exit.disabled = false;
         SystemConfigs.Result.SecurityScore -= 1000;
-        SystemConfigs.Result.Flag.push('unwantedSoftware');
+        if(!SystemConfigs.Result.Flag.includes("unwantedSoftware"))SystemConfigs.Result.Flag.push('unwantedSoftware');
     }
 
     setPage(1);
