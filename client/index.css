@@ -298,7 +298,7 @@ div.login-buttons{
   left: 0px;
   background: linear-gradient(to bottom,rgb(0, 62, 196),rgb(0,110, 249),rgb(0,89, 224),rgb(0,89, 224),rgb(0,89, 224),rgb(35, 147, 251),rgb(0, 62, 196));
   border-color: rgb(0, 62, 196) ;
-  width: 25vw;
+  width: 25em;
   max-height: 100vh;
   overflow: hidden;
   opacity: 1;

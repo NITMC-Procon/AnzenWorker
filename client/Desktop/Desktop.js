@@ -370,19 +370,19 @@ export function RefreshTaskbar() {
 
     const menu = desktop_taskbar_menu.firstElementChild;
     menu.innerHTML = "";
-    let user = createElementFromHTML(`<div style = "display:flex;padding-bottom:0.5vw;">
-            <img src="/images/usericon.png" style="display:flex;width:4vw; height:4vw; margin-left:2vw;margin-top:0.5vw;"></img>
-            <div style = "color:white;padding-top:1.5vw;padding-left:3vw;font-size:2vw;">${UserName}</div>
+    let user = createElementFromHTML(`<div style = "display:flex;padding-bottom:0.5em;">
+            <img src="/images/usericon.png" style="display:flex;width:4em; height:4em; margin-left:2em;margin-top:0.5em;"></img>
+            <div style = "color:white;padding-top:1.5em;padding-left:3em;font-size:2em;">${UserName}</div>
             </div>`);
     menu.insertAdjacentElement('beforeend', user)
 
     MenuIconList_L.forEach((icon, i) => {
-        let temp = createElementFromHTML(`<div style = "display:flex;background-color:#c0c0c0;width:98%;padding-left:0.5vw;">
-            <img src="${icon.Iconurl}" style="display:flex;width:2vw; height:1.7vw; margin:0.8vw 0.6vw;"></img>
-            <div style = "color:black;padding-top:1vw;font-size:1vw;width:12vw;">${icon.Name}</div>
+        let temp = createElementFromHTML(`<div style = "display:flex;background-color:#c0c0c0;width:98%;padding-left:0.5em;">
+            <img src="${icon.Iconurl}" style="display:flex;width:2em; height:1.7em; margin:0.8em 0.6em;"></img>
+            <div style = "color:black;padding-top:1em;font-size:1em;width:12em;">${icon.Name}</div>
 
-            <img src="${MenuIconList_R[i].Iconurl}" style="display:flex;width:2vw;height:1.7vw;background-color:rgb(157, 185, 220);padding-left:1vw;padding-top:1vw;padding-bottom:1vw;"></img>
-            <div style = "display:flex;background-color:rgb(157, 185, 220);width:46%;color:black;padding-top:1vw;padding-left:1vw;font-size:1vw;>
+            <img src="${MenuIconList_R[i].Iconurl}" style="display:flex;width:2em;height:1.7em;background-color:rgb(157, 185, 220);padding-left:1em;padding-top:1em;padding-bottom:1em;"></img>
+            <div style = "display:flex;background-color:rgb(157, 185, 220);width:46%;color:black;padding-top:1em;padding-left:1em;font-size:1em;>
                 <div style = "">${MenuIconList_R[i].Name}</div>
             </div>
         </div>`)
@@ -402,17 +402,17 @@ export function RefreshTaskbar() {
             if (typeof MenuIconList_R[i].Clickfunc == "function") MenuIconList_R[i].Clickfunc();
         })
     })
-    let temp = createElementFromHTML(`<div style = "display:flex;background-color:#c0c0c0;width:48%;padding-left:0.5vw;">
-            <div style = "color:black;padding-left:1.7vw;padding-top:0.3vw;font-size:1vw;width:12vw;">全てのプログラム</div>
-            <img src="/images/arrow.png" style="display:flex;width:3.3vw; height:2vw;margin-left:0px;margin-top:0vw;"></img>
+    let temp = createElementFromHTML(`<div style = "display:flex;background-color:#c0c0c0;width:48%;padding-left:0.5em;">
+            <div style = "color:black;padding-left:1.7em;padding-top:0.3em;font-size:1em;width:12em;">全てのプログラム</div>
+            <img src="/images/arrow.png" style="display:flex;width:3.3em; height:2em;margin-left:0px;margin-top:0em;"></img>
         </div>`);
     menu.insertAdjacentElement('beforeend', temp);
 
-    let logoff_shutdown = createElementFromHTML(`<div style = "display:flex;width:80%;padding-left:1vw;margin:0.1vw 4vw;">
-            <img src="/images/logoff.png" style="display:flex;width:2vw; height:2vw; margin:0.5vw 1vw;"></img>
-            <div style = "color:white;padding-top:1vw;font-size:1vw;">ログオフ</div>
-            <img src="/images/shutdown.png" style="display:flex;width:2vw; height:2vw; margin:0.5vw 1vw;"></img>
-            <div style = "color:white;padding-top:1vw;font-size:1vw;">シャットダウン</div>
+    let logoff_shutdown = createElementFromHTML(`<div style = "display:flex;width:80%;padding-left:1em;margin:0.1em 4em;">
+            <img src="/images/logoff.png" style="display:flex;width:2em; height:2em; margin:0.5em 1em;"></img>
+            <div style = "color:white;padding-top:1em;font-size:1em;">ログオフ</div>
+            <img src="/images/shutdown.png" style="display:flex;width:2em; height:2em; margin:0.5em 1em;"></img>
+            <div style = "color:white;padding-top:1em;font-size:1em;">シャットダウン</div>
         </div>`)
     menu.insertAdjacentElement('beforeend', logoff_shutdown);
 
