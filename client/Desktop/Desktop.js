@@ -16,8 +16,7 @@ import { Installer } from './Windows/Installer.js'
 import { Explorer } from './Windows/Explorer.js'
 import { TextInputWindow, YesNoButtonWindow } from '../Functions/InputWindow.js'
 import { AddContextMenu } from '../Functions/contextmenu.js'
-import { AdVirusService1 } from '../Services/Service/AdVirusService1.js'
-import { Browser } from './Windows/Browser.js'
+import { Notify } from '../Functions/notify.js'
 
 const UserName = "ANZEN"
 
@@ -206,6 +205,21 @@ export let DesktopIconList = [
 
 export let TaskbarIconList_R = [
     { Iconurl: "/images/wifiicon.png", Clickfunc: () => { new WiFi() } },
+    { Iconurl: "/images/icons/fullscr.svg", Clickfunc: (icon) => {
+        console.log(icon)
+        if (document.fullscreenElement !== undefined && document.fullscreenElement !== null){
+            document.exitFullscreen()
+            icon.Iconurl = "/images/icons/fullscr.svg"
+        } else {
+            if( document.body.requestFullscreen ) {
+                document.body.requestFullscreen()
+                icon.Iconurl = "/images/icons/nofullscr.svg"
+            }else{
+                Notify("フルスクリーン表示に失敗しました")
+            }
+        }
+        RefreshTaskbar()
+    } },
 ]
 
 export let MenuIconList_L = [
@@ -363,7 +377,7 @@ export function RefreshTaskbar() {
     TaskbarIconList_R.forEach((icon) => {
         let temp = createElementFromHTML(`<img src="${icon.Iconurl}" class="desktop_icon_image"></img>`)
         temp.addEventListener('click', () => {
-            if (typeof icon.Clickfunc == "function") icon.Clickfunc();
+            if (typeof icon.Clickfunc == "function") icon.Clickfunc(icon);
         })
         desktop_taskbar_R.insertAdjacentElement('beforeend', temp)
     })
