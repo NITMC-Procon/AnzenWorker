@@ -1,6 +1,6 @@
 'use strict'
 import { Window } from "../Window.js"
-import { SystemConfigs, Task, CallWindow, RefreshDesktop } from "../../System/Desktop.js"
+import { SystemConfigs, Task, RefreshDesktop } from "../../System/Desktop.js"
 import { VirusScanner } from "./VirusScanner.js"
 import { RansomWare } from "../../Viruses/VirusEvents.js"
 import { Notify } from "../../Functions/notify.js"
@@ -419,7 +419,7 @@ export class Store extends Window {
                     func: () => { new RansomWare() }
                 }
                 // インストール
-                SystemConfigs.Packages.Install(apps[this.selectapp].name, apps[this.selectapp].icon, () => { CallWindow(apps[this.selectapp].window) })
+                SystemConfigs.Packages.Install(apps[this.selectapp].name, apps[this.selectapp].icon, () => { new apps[this.selectapp].window() })
                 RefreshDesktop()
             }
             else {

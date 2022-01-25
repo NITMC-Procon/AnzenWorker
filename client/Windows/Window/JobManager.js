@@ -1,8 +1,9 @@
 'use strict'
 import { Window } from "../Window.js"
-import { CallWindow,SystemConfigs } from "../../System/Desktop.js"
+import { SystemConfigs } from "../../System/Desktop.js"
 import { Mail } from "./Mail.js"
 import { WiFi } from "./WiFi.js"
+import { Store } from "./Store.js"
 
 const html = `
 <div style="display: flex;width: 100%;height: 100%;user-select:none;">
@@ -54,15 +55,15 @@ export let tasklist = [
   {
       title: "メールを確認",
       text: `届いたメールを確認する\n\nメールを確認しましょう。中には怪しいメールもあるので注意しましょう\n間違って開いたりすると大変なことになってしまうかもしれません…`,
-      class: "Mail"
+      class: Mail
   }, {
     title: "Wi-Fiに接続",
     text: `Wi-Fiに接続する\n\n様々な接続先の中から、一番安全なものを選びましょう。\n誤ったWi-Fiに接続すると、大変なことになってしまうかもしれません…`,
-    class: "WiFi"
+    class: WiFi
   }, {
     title: "ソフトをインストール",
     text: `必要なソフトをインストールする\n\nPCを利用する上で必要なソフトをインストールしましょう。場合によっては、`,
-    class: "Store"
+    class: Store
   }
 ]
 
@@ -117,7 +118,7 @@ export class JobManager extends Window {
     }
     accpettask() {
         let windowName = "Window_" + this.keep.class
-        CallWindow(this.keep.class, windowName)
+        new this.keep.class()
         // this.destroy()
     }
 }

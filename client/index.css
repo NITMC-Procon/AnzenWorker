@@ -241,8 +241,28 @@ div.login-buttons{
 }
 .icon>.icon_image{
   object-fit: contain;
+  position: relative;
   width: 40px;
   height: 40px;
+}
+.icon>.icon_image>img{
+  object-fit: contain;
+  width: 40px;
+  height: 40px;
+  max-width:100%;
+  max-height:100%;
+}
+
+.icon.shortcut>.icon_image::after{
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background-image: url("/images/explorer/shortcut.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 0;bottom:0;
 }
 .icon>.icon_text{
   font-size: 0.9rem;
@@ -386,6 +406,7 @@ div.login-buttons{
 
 #contextmenu {
   position: absolute;
+  z-index: 3;
 }
 #contextmenu ul {
   user-select: none;
