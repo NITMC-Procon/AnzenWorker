@@ -1,5 +1,5 @@
 
-import { WindowManager } from "../Desktop/Desktop.js";
+import { WindowManager } from "../System/Desktop.js";
 
 export class Service{
     constructor() {

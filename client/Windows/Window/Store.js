@@ -1,6 +1,6 @@
 'use strict'
 import { Window } from "../Window.js"
-import { SystemConfigs, Task, CallWindow, RefreshDesktop } from "../Desktop.js"
+import { SystemConfigs, Task, CallWindow, RefreshDesktop } from "../../System/Desktop.js"
 import { VirusScanner } from "./VirusScanner.js"
 import { RansomWare } from "../../Viruses/VirusEvents.js"
 import { Notify } from "../../Functions/notify.js"

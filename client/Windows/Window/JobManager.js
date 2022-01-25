@@ -1,6 +1,6 @@
 'use strict'
 import { Window } from "../Window.js"
-import { CallWindow,SystemConfigs } from "../Desktop.js"
+import { CallWindow,SystemConfigs } from "../../System/Desktop.js"
 import { Mail } from "./Mail.js"
 import { WiFi } from "./WiFi.js"
 

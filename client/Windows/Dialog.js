@@ -1,6 +1,6 @@
 'use strict';
 
-import { WindowManager,RefreshTaskbarIcons } from "./Desktop.js";
+import { WindowManager,RefreshTaskbarIcons } from "../System/Desktop.js";
 
 /** 
  * @typedef  {Object} Config - ウィンドウ用コンフィグ

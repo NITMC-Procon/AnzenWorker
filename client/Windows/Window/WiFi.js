@@ -1,6 +1,6 @@
 'use strict'
 import { Window } from "../Window.js"
-import { SystemConfigs } from "../Desktop.js"
+import { SystemConfigs } from "../../System/Desktop.js"
 
 const html = `
 <div style="display: flex;flex-direction: column;justify-content: space-between;height: 100%;">

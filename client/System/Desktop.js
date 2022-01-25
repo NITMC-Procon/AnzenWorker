@@ -1,19 +1,19 @@
-import { Folder, File, Link, Root } from '../Desktop/FileSystem.js'
-import { GameManager } from './Windows/GameManager.js'
-import { LoginWindow } from './Windows/LoginWindow.js'
-import { WiFi } from './Windows/WiFi.js'
+import { Folder, File, Link, Root } from './FileSystem.js'
+import { GameManager } from '../Windows/Window/GameManager.js'
+import { LoginWindow } from '../Windows/Window/LoginWindow.js'
+import { WiFi } from '../Windows/Window/WiFi.js'
 import { Socket } from '../Functions/socket.js'
-import { Crusher } from './Windows/Crusher.js'
-import { Mail } from './Windows/Mail.js'
-import { InternetBrowser } from './Windows/InternetBrowser.js'
-import { Store } from './Windows/Store.js'
-import { ResultWindow } from './Windows/ResultWindow.js'
-import { JobManager } from './Windows/JobManager.js'
+import { Crusher } from '../Windows/Window/Crusher.js'
+import { Mail } from '../Windows/Window/Mail.js'
+import { InternetBrowser } from '../Windows/Window/InternetBrowser.js'
+import { Store } from '../Windows/Window/Store.js'
+import { ResultWindow } from '../Windows/Window/ResultWindow.js'
+import { JobManager } from '../Windows/Window/JobManager.js'
 import { MailReciever } from '../Services/Service/MailReciever.js'
-import { VirusScanner } from './Windows/VirusScanner.js'
-import { Excol } from './Windows/Excol.js'
-import { Installer } from './Windows/Installer.js'
-import { Explorer } from './Windows/Explorer.js'
+import { VirusScanner } from '../Windows/Window/VirusScanner.js'
+import { Excol } from '../Windows/Window/Excol.js'
+import { Installer } from '../Windows/Window/Installer.js'
+import { Explorer } from '../Windows/Window/Explorer.js'
 import { TextInputWindow, YesNoButtonWindow } from '../Functions/InputWindow.js'
 import { AddContextMenu } from '../Functions/contextmenu.js'
 import { Notify } from '../Functions/notify.js'
@@ -46,7 +46,7 @@ export let WindowManager = {
     /** @type {HTMLElement} */
     windowarea: null,
     windowindex: 0,
-    /** @type {Array<import('./Window.js').Window>} */
+    /** @type {Array<import('../Windows/Window.js').Window>} */
     windows: [],
     services: [],
 }

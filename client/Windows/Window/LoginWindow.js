@@ -1,6 +1,6 @@
 'use strict'
 import { Dialog } from "../Dialog.js"
-import { SystemConfigs } from "../Desktop.js"
+import { SystemConfigs } from "../../System/Desktop.js"
 import { Socket } from '../../Functions/socket.js'
 
 const html = `

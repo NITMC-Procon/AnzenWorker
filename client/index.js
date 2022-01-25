@@ -1,4 +1,4 @@
-import { CallWindow, SystemConfigs, InitGame, StopGame, Boot } from './Desktop/Desktop.js'
+import { CallWindow, SystemConfigs, InitGame, StopGame, Boot } from './System/Desktop.js'
 import { Notify } from './Functions/notify.js';
 import { Handlers, Connect_to_server, Socket } from './Functions/socket.js';
 

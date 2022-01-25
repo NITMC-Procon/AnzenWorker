@@ -1,4 +1,3 @@
-
 class Item{
     /** 
      * @param {Folder} parent

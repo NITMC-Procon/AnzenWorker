@@ -1,4 +1,4 @@
-import { RandomData, Window } from '../Desktop/Window.js'
+import { RandomData, Window } from '../Windows/Window.js'
 
 export class TextInputWindow extends Window {
     /**

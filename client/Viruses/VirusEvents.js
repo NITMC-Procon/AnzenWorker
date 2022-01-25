@@ -1,8 +1,8 @@
-import { Result,RefreshDesktop, SystemConfigs } from "../Desktop/Desktop.js"
-import { Window } from "../Desktop/Window.js"
+import { Result,RefreshDesktop, SystemConfigs } from "../System/Desktop.js"
+import { Window } from "../Windows/Window.js"
 import { Service } from "../Services/ServiceClass.js"
 import { SendTo,SentToMeHandler,Socket } from "../Functions/socket.js"
-import { Root } from '../Desktop/FileSystem.js'
+import { Root } from '../System/FileSystem.js'
 
 export class WormVirus extends Service {//自己増殖型
     create(){

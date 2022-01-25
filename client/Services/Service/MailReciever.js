@@ -1,12 +1,12 @@
 // 初期から呼び出されるサービス
 
-import { maillist } from "../../Desktop/Windows/Mail.js"
+import { maillist } from "../../Windows/Window/Mail.js"
 import { Service } from "../ServiceClass.js"
 import { RansomWare } from "../../Viruses/VirusEvents.js"
-import { Browser } from "../../Desktop/Windows/Browser.js"
-import { Excol } from "../../Desktop/Windows/Excol.js"
-import { Crusher } from "../../Desktop/Windows/Crusher.js"
-import { Installer } from "../../Desktop/Windows/Installer.js"
+import { Browser } from "../../Windows/Window/Browser.js"
+import { Excol } from "../../Windows/Window/Excol.js"
+import { Crusher } from "../../Windows/Window/Crusher.js"
+import { Installer } from "../../Windows/Window/Installer.js"
 
 let normalmails = [
     {

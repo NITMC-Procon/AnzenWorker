@@ -1,6 +1,6 @@
 // 初期から呼び出されるサービス
 
-import { AdVirusView1 } from "../../Desktop/Windows/AdVirusView1.js";
+import { AdVirusView1 } from "../../Windows/Window/AdVirusView1.js";
 import { Service } from "../ServiceClass.js"
 
 

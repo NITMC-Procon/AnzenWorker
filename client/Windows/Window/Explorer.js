@@ -1,6 +1,6 @@
 'use strict'
 import { Window,RandomData,createElementFromHTML } from "../Window.js"
-import { Root,Folder,File,Link } from '../FileSystem.js'
+import { Root,Folder } from '../../System/FileSystem.js'
 import { AddContextMenu } from '../../Functions/contextmenu.js'
 import { TextInputWindow, YesNoButtonWindow } from '../../Functions/InputWindow.js'
 
