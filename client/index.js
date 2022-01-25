@@ -16,6 +16,7 @@ window.addEventListener("load", () => {
         Boot()
     
         new LoginWindow()
+        new GameManager()
     
         Connect_to_server(ServerAddress)
         

@@ -244,8 +244,8 @@ export function RefreshDesktop() {
     let elm_drag
     desktopfolder.children.forEach(item => {
         /** @type {HTMLElement} *///@ts-ignore
-        let temp = createElementFromHTML(`<div class="icon" draggable="true">
-                <img src="${item.icon}" class="icon_image"></img>
+        let temp = createElementFromHTML(`<div class="icon${item.target?" shortcut":""}" draggable="true">
+                <div class="icon_image"><img src="${item.icon}"></img></div>
                 <span class="icon_text">${item.name}</span>
                 </div>`)
         temp.addEventListener('dblclick', () => {
@@ -310,6 +310,7 @@ export function RefreshDesktop() {
             <ul>
                 <li>Delete</li>
                 <li>Rename</li>
+                ${item.target?"<li>Open Target Folder</li>":""}
             </ul>
             `)
         menu.firstElementChild.addEventListener("click", () => {
@@ -329,6 +330,11 @@ export function RefreshDesktop() {
                 RefreshDesktop()
             })
         })
+        if(item.target != null){
+            menu.firstElementChild.nextElementSibling.nextElementSibling.addEventListener("click",()=>{
+                new Explorer(item.target.parent)
+            })
+        }
         AddContextMenu(temp, menu)
     })
     desktop_icons.ondrop = (e) => {
