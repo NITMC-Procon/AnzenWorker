@@ -21,21 +21,21 @@ import { Notify } from '../Functions/notify.js'
 const UserName = "ANZEN"
 
 //ココにウィンドウのリストを追加していく
-const windowList = {
-    "GameManager": GameManager,
-    "LoginWindow": LoginWindow,
-    "WiFi": WiFi,
-    "Crusher": Crusher,
-    "Mail": Mail,
-    "InternetBrowser": InternetBrowser,
-    "Store": Store,
-    "ResultWindow": ResultWindow,
-    "JobManager": JobManager,
-    "VirusScanner": VirusScanner,
-    "Excol": Excol,
-    "Explorer": Explorer,
-    "Installer": Installer
-}
+// const windowList = {
+//     "GameManager": GameManager,
+//     "LoginWindow": LoginWindow,
+//     "WiFi": WiFi,
+//     "Crusher": Crusher,
+//     "Mail": Mail,
+//     "InternetBrowser": InternetBrowser,
+//     "Store": Store,
+//     "ResultWindow": ResultWindow,
+//     "JobManager": JobManager,
+//     "VirusScanner": VirusScanner,
+//     "Excol": Excol,
+//     "Explorer": Explorer,
+//     "Installer": Installer
+// }
 
 //ココに最初から動かすバックグラウンドサービスのリストを追加していく
 const systemServiceList = {
@@ -57,36 +57,36 @@ WindowManager.windowarea = document.getElementById("desktop_windows")
  * @param {String|Object} classfunc
  * @param {String|Number=} window_id
  */
-export function CallWindow(classfunc, window_id) {
-    if (!window_id && typeof classfunc == 'string') {
-        window_id = classfunc
-    }
-    if (typeof classfunc == 'string') {
-        if (windowList[classfunc]) {
-            CreateWindow(windowList[classfunc], window_id)
-        }
-    } else if (typeof classfunc == 'function') {
-        CreateWindow(classfunc, window_id)
-    }
-}
+// export function CallWindow(classfunc, window_id) {
+//     if (!window_id && typeof classfunc == 'string') {
+//         window_id = classfunc
+//     }
+//     if (typeof classfunc == 'string') {
+//         if (windowList[classfunc]) {
+//             CreateWindow(windowList[classfunc], window_id)
+//         }
+//     } else if (typeof classfunc == 'function') {
+//         CreateWindow(classfunc, window_id)
+//     }
+// }
 
 /** サービスを呼ぶ(1個だけ)
  * @param {String|Object} classfunc
  * サービスは1つだけなので識別用IDは無い
  */
-export function CallService(classfunc) {
-    if (typeof classfunc == 'string') {
-        // if (!WindowManager.services[classfunc] && systemServiceList[classfunc]) {
-        //     WindowManager.services[classfunc] = new systemServiceList[classfunc]();//サービスを作成
-        // }
-        new systemServiceList[classfunc]()
-    } else if (typeof classfunc == 'function') {
-        // if (!WindowManager.services[classfunc.name] && systemServiceList[classfunc]) {
-        //     WindowManager.services[classfunc.name] = new classfunc()
-        // }
-        new classfunc()
-    }
-}
+// export function CallService(classfunc) {
+//     if (typeof classfunc == 'string') {
+//         // if (!WindowManager.services[classfunc] && systemServiceList[classfunc]) {
+//         //     WindowManager.services[classfunc] = new systemServiceList[classfunc]();//サービスを作成
+//         // }
+//         new systemServiceList[classfunc]()
+//     } else if (typeof classfunc == 'function') {
+//         // if (!WindowManager.services[classfunc.name] && systemServiceList[classfunc]) {
+//         //     WindowManager.services[classfunc.name] = new classfunc()
+//         // }
+//         new classfunc()
+//     }
+// }
 
 export let Task = {
     CompletedTask: [],
@@ -528,7 +528,7 @@ export function InitGame() {//リザルトとかを初期化
         WindowManager.services[serviceid].destuctor();
     }
     for (let serviceid in systemServiceList) {//初期サービスを呼び出す
-        CallService(serviceid)
+        new systemServiceList[serviceid]()
     }
 }
 
