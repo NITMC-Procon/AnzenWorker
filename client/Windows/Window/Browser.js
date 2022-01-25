@@ -1,6 +1,6 @@
 'use strict'
 import { AdVirusService1 } from "../../Services/Service/AdVirusService1.js";
-import { CallService, SystemConfigs } from "../../System/Desktop.js";
+import { SystemConfigs } from "../../System/Desktop.js";
 import { Window } from "../Window.js"
 import { Installer } from "./Installer.js";
 
@@ -190,7 +190,7 @@ function porn1() {
 
     document.getElementById('dlplayer').onclick = onClickDownload;
     function onClickDownload() {
-        createdownload({ Name: "player.exe", Clickfunc: () => { CallService(AdVirusService1) } })
+        createdownload({ Name: "player.exe", Clickfunc: () => { new AdVirusService1() } })
     }
     
 }

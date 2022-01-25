@@ -1,6 +1,9 @@
-import { CallWindow, SystemConfigs, InitGame, StopGame, Boot } from './System/Desktop.js'
+import { SystemConfigs, InitGame, StopGame, Boot } from './System/Desktop.js'
 import { Notify } from './Functions/notify.js';
 import { Handlers, Connect_to_server, Socket } from './Functions/socket.js';
+import { LoginWindow } from './Windows/Window/LoginWindow.js'
+import { ResultWindow } from './Windows/Window/ResultWindow.js'
+import { GameManager } from './Windows/Window/GameManager.js';
 
 let host = window.document.location.host;   // .replace(/:.*/, '');
 let ServerAddress = 'ws://' + host;         //  + ':8080';
@@ -12,7 +15,8 @@ window.addEventListener("load", () => {
         bootwindow.classList.add("hidden")
         Boot()
     
-        CallWindow("LoginWindow","Window_LoginWindow")//最初に呼ぶ
+        new LoginWindow()
+        new GameManager()
     
         Connect_to_server(ServerAddress)
         
@@ -62,6 +66,6 @@ function gamestop(msg){
         clearTimeout(stoptimer)
         SystemConfigs.room.status=false
         Notify("ゲームが終了しました")
-        CallWindow("ResultWindow", "Window_ResultWindow")
+        new ResultWindow()
     }
 }

@@ -9,6 +9,8 @@ class Item{
         this.isdir = isdir
         this.name = name//名前変えるときはRename()して
         this.icon = ""
+        /** @type {Item} */
+        this.target = null
         
         if(parent !== null){
             if(!name) return

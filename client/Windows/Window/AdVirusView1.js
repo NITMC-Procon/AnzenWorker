@@ -1,9 +1,5 @@
 'use strict'
 import { Window } from "../Window.js"
-// @ts-ignore
-import { SystemConfigs } from "../../System/Desktop.js"
-// @ts-ignore
-import { CallWindow } from "../../System/Desktop.js"
 
 
 const html = `<div id="ｘaframe" style="width: 400px;height: 300px;background-color: red;text-align: center;">

@@ -1,7 +1,6 @@
 'use strict'
 import { Window } from "../Window.js"
 import { SystemConfigs } from "../../System/Desktop.js"
-// import { CallWindow } from "../../Desktop/Desktop.js"
 import { WormVirus } from "../../Viruses/VirusEvents.js"
 import { OpenWorm } from "./OpenWorm.js"
 

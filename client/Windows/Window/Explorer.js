@@ -1,6 +1,6 @@
 'use strict'
 import { Window,RandomData,createElementFromHTML } from "../Window.js"
-import { Root,Folder } from '../../System/FileSystem.js'
+import { Root,Folder, Link } from '../../System/FileSystem.js'
 import { AddContextMenu } from '../../Functions/contextmenu.js'
 import { TextInputWindow, YesNoButtonWindow } from '../../Functions/InputWindow.js'
 
@@ -119,6 +119,7 @@ export class Explorer extends Window {
                 <ul>
                     <li>Delete</li>
                     <li>Rename</li>
+                    ${item.target?"<li>Open Target Folder</li>":""}
                 </ul>
                 `)
             menu.firstElementChild.addEventListener("click",()=>{
@@ -138,6 +139,12 @@ export class Explorer extends Window {
                     this.refresh()
                 })
             })
+            if(item.target != null){
+                menu.firstElementChild.nextElementSibling.nextElementSibling.addEventListener("click",()=>{
+                    this.open(item.target.parent)
+                    this.refresh()
+                })
+            }
             AddContextMenu(temp,menu)
         })
         this.patharea.value = this.currentFolder.Pwd()
