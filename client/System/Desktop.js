@@ -10,9 +10,7 @@ import { Store } from '../Windows/Window/Store.js'
 import { ResultWindow } from '../Windows/Window/ResultWindow.js'
 import { JobManager } from '../Windows/Window/JobManager.js'
 import { MailReciever } from '../Services/Service/MailReciever.js'
-import { VirusScanner } from '../Windows/Window/VirusScanner.js'
-import { Excol } from '../Windows/Window/Excol.js'
-import { Installer } from '../Windows/Window/Installer.js'
+import { JobReciever } from '../Services/Service/JobReciever.js'
 import { Explorer } from '../Windows/Window/Explorer.js'
 import { TextInputWindow, YesNoButtonWindow } from '../Functions/InputWindow.js'
 import { AddContextMenu } from '../Functions/contextmenu.js'
@@ -38,9 +36,10 @@ const UserName = "ANZEN"
 // }
 
 //ココに最初から動かすバックグラウンドサービスのリストを追加していく
-const systemServiceList = {
-    "MailReciever": MailReciever
-}
+const systemServiceList = [
+    MailReciever,
+    JobReciever,
+]
 
 export let WindowManager = {
     /** @type {HTMLElement} */
@@ -533,9 +532,9 @@ export function InitGame() {//リザルトとかを初期化
     for (let serviceid in WindowManager.services) {//すべてのサービスを停止
         WindowManager.services[serviceid].destuctor();
     }
-    for (let serviceid in systemServiceList) {//初期サービスを呼び出す
-        new systemServiceList[serviceid]()
-    }
+    systemServiceList.forEach(s=>{
+        new s()
+    })
 }
 
 export function StopGame() {//サービス等停止用
