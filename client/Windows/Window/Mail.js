@@ -1,7 +1,7 @@
 'use strict'
 import { Window, RandomData, createElementFromHTML } from "../Window.js"
 import { SystemConfigs, Task } from "../../System/Desktop.js"
-import { SendTo,SentToMeHandler,Socket } from "../../Functions/socket.js"
+import { SendTo,SentToMeHandler,Socket } from "../../System/Network.js"
 import { Notify } from "../../Functions/notify.js"
 import { AddContextMenu } from '../../Functions/contextmenu.js'
 

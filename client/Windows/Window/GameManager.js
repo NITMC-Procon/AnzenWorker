@@ -1,7 +1,7 @@
 'use strict'
 import { Window } from "../Window.js"
 import { SystemConfigs } from "../../System/Desktop.js"
-import { Socket, Handlers } from '../../Functions/socket.js'
+import { Socket, Handlers } from '../../System/Network.js'
 import { Notify } from "../../Functions/notify.js"
 
 const html = `<br>

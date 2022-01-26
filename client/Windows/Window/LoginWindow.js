@@ -1,7 +1,7 @@
 'use strict'
 import { Dialog } from "../Dialog.js"
 import { SystemConfigs } from "../../System/Desktop.js"
-import { Socket } from '../../Functions/socket.js'
+import { Socket } from '../../System/Network.js'
 
 const html = `
 <div style="display: flex;justify-content: center;width: 100%;">

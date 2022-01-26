@@ -1,6 +1,6 @@
 import { SystemConfigs, InitGame, StopGame, Boot } from './System/Desktop.js'
 import { Notify } from './Functions/notify.js';
-import { Handlers, Connect_to_server, Socket } from './Functions/socket.js';
+import { Handlers, InitSocket, Socket } from './System/Network.js';
 import { LoginWindow } from './Windows/Window/LoginWindow.js'
 import { ResultWindow } from './Windows/Window/ResultWindow.js'
 import { GameManager } from './Windows/Window/GameManager.js';
@@ -18,7 +18,7 @@ window.addEventListener("load", () => {
         new LoginWindow()
         new GameManager()
     
-        Connect_to_server(ServerAddress)
+        InitSocket(ServerAddress)
         
         Handlers["gameInfo"] = (msg) => {
             switch (msg.status) {

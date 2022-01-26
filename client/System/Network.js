@@ -1,5 +1,5 @@
 import 'https://cdn.socket.io/4.1.3/socket.io.js'
-import { Notify } from './notify.js'
+import { Notify } from '../Functions/notify.js'
 /** @type {import("socket.io").Socket} */
 export let Socket
 
@@ -9,7 +9,7 @@ export let Handlers = {
     "sentToMe": (arg) =>{sentToMe(arg)}
 }
 
-export function Connect_to_server(server) {
+export function InitSocket(server) {
     Socket = io(server);
 
     Socket.on("connect",() => {
