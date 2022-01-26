@@ -130,7 +130,8 @@ let dangermails = [
     }
 ]
 export class MailReciever extends Service {
-    create(){
+    constructor(){
+        super()
         this.nmails = normalmails.slice();//.slice()でコピーしてる(そのままだと参照コピー)
         this.dmails = dangermails.slice();
         this.ntimer = setInterval(this.nreciever.bind(this), 1000*8);//8秒ごとに呼ぶ
@@ -146,7 +147,7 @@ export class MailReciever extends Service {
             this.nreciever()
         }
     }
-    destroy(){
+    destuctor(){
         clearInterval(this.ntimer)
     }
     nreciever(){

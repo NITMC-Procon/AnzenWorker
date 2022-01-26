@@ -11,15 +11,12 @@ export class Service{
         }else{
             WindowManager.services[this.constructor.name] = this
         }
-
-        this.create()
     }
-    destuctor(){
+    destroy(){
         if (this.parent.services[this.constructor.name]){
             delete this.parent.services[this.constructor.name]
         }
-        this.destroy()
+        this.destuctor()
     }
-    create(){}
-    destroy(){}
+    destuctor(){}
 }

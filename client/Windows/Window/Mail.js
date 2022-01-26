@@ -80,7 +80,7 @@ export let maillist = []
 
 export class Mail extends Window{
     constructor(){
-        super(html,"メール",{style:style});
+        super(html,"メール",{style:style,window_id:"Window_Mail"});
         if(this.creationFailed)return
         
         /** @type {HTMLElement} *///@ts-ignore

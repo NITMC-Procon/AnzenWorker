@@ -5,13 +5,14 @@ import { Service } from "../ServiceClass.js"
 
 
 export class AdVirusService1 extends Service {
-    create(){
+    constructor(){
+        super()
         this.timer = setInterval(this.openAd.bind(this), 1000*20);//20秒ごとに呼ぶ
         for(let i = 0;i<6;i++){
             this.openAd()
         }
     }
-    destroy(){
+    destructor(){
         clearInterval(this.timer)
     }
     openAd(){
