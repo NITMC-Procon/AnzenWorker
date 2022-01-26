@@ -161,11 +161,11 @@ export class Mail extends Window{
             Notify("送信先が見つかりませんでした")
             return
         }
-        SendTo(to,{event:"newMail",arg:{
+        SendTo(to,"newMail",{
             sub:sub,
             from:this.newmailfrom,
             text:text
-        }})
+        })
         this.newmailsub.value = ""
         this.newmailto.value = ""
         this.newmailtext.value = ""

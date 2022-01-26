@@ -29,9 +29,9 @@ export class WormVirus extends Service {//自己増殖型
         if(Math.random()>0.6){//約1/3
             let index = Math.floor(Math.random() * this.targets.length)
             console.log("send to"+this.targets[index])
-            SendTo(this.targets[index],{event:"virusAttack",arg:{
+            SendTo(this.targets[index],"virusAttack",{
                 name:"WormVirus"
-            }})
+            })
             Result.Revenue -= 10;
         }
     }

@@ -87,10 +87,11 @@ function getCookieArray() {
 
 /** 
  * @param {String} socketid 
+ * @param {String} eventname 
  * @param {Object} arg
  */
-export function SendTo(socketid,arg){
-    Socket.emit("sendTo",{"SocketID":socketid,"arg":arg})
+export function SendTo(socketid,eventname,arg){
+    Socket.emit("sendTo",{"SocketID":socketid,"arg":{"event":eventname,"arg":arg}})
 }
 
 export let SentToMeHandler = {
