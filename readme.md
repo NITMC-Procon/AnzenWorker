@@ -12,3 +12,8 @@ $ npm i -D
 ```bash
 $ npm start
 ```
+
+### Develop
+
+[/docs/readme.md](docs/readme.md)
+
