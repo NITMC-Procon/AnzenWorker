@@ -102,14 +102,14 @@ let dangermails = [
             func:()=>{ new Crusher() }
         },
         type:"virus",
-    },{
-        sub: "過激無料動画見放題",
-        from:"noreply@xxxfreeporn.omg",
-        text: "今限定！\n過激動画が無料で見放題！今すぐチェック",
-        file:{
-            name:"リンクを開く",
-            func:()=>{ new Browser('http://xxxfreeporn.omg/') } 
-        }
+    // },{
+    //     sub: "過激無料動画見放題",
+    //     from:"noreply@xxxfreeporn.omg",
+    //     text: "今限定！\n過激動画が無料で見放題！今すぐチェック",
+    //     file:{
+    //         name:"リンクを開く",
+    //         func:()=>{ new Browser('http://xxxfreeporn.omg/') } 
+    //     }
     },{
         sub:"重要なメール",
         from:"asdiuq@dydyns.omg",
