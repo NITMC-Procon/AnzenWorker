@@ -3,7 +3,7 @@ import { GameManager } from '../Windows/Window/GameManager.js'
 import { LoginWindow } from '../Windows/Window/LoginWindow.js'
 import { WiFi } from '../Windows/Window/WiFi.js'
 import { Socket } from './Network.js'
-import { Crusher } from '../Windows/Window/Crusher.js'
+import { Lime } from '../Windows/Window/Lime.js'
 import { Mail } from '../Windows/Window/Mail.js'
 import { InternetBrowser } from '../Windows/Window/InternetBrowser.js'
 import { Store } from '../Windows/Window/Store.js'
@@ -200,6 +200,7 @@ export let DesktopIconList = [
     { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { new LoginWindow() } },
     { Name: "リザルト 画面", Iconurl: "/images/result.svg", Clickfunc: () => { new ResultWindow() } },
     { Name: "Explorer", Iconurl: "/images/folder.svg", Clickfunc: () => { new Explorer() } },
+    { Name: "Lime", Iconurl: "/images/apps/Lime.svg", Clickfunc: () => { new Lime() } }
 ]
 
 export let TaskbarIconList_R = [

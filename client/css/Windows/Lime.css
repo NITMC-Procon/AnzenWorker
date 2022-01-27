@@ -1,0 +1,148 @@
+div[app-lime]>.talk>.chats>.chat>.usericon{
+    margin: 0.2em;
+    padding: 0;
+    max-width: 2em;
+}
+div[app-lime]>.users>.user>.usericon{
+    margin: 0.2em;
+    padding: 0;
+    max-width: 3em;
+}
+div[app-lime]>.users{
+    box-sizing: border-box;
+    flex-basis: 12em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border-right: 2px gray solid;
+    height: 100%;
+    overflow: auto;
+}
+div[app-lime]>.users>.user{
+    padding: 0.2em 0.5em;
+    display: flex;
+    flex-direction: row;
+    height: 4em;
+    align-items: center;
+    cursor:default;
+    user-select:none;
+}
+div[app-lime]>.users>.user:hover{
+    background-color: rgba(128, 128, 128, 0.5);
+}
+div[app-lime]>.users>.user>.texts>.name{
+    font-size: 0.8em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+}
+div[app-lime]>.users>.user>.texts>.message{
+    color: gray;
+    font-size: 0.7em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+}
+div[app-lime]>.talk{
+    flex-shrink: 1;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    overflow: hidden;
+}
+div[app-lime]>.talk>.name{
+    padding: 0.5em;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+div[app-lime]>.talk>.chats{
+    padding: 0 0.5em;
+    box-sizing: border-box;
+    overflow: auto;
+    flex-grow: 1;
+}
+div[app-lime]>.talk>.chats>.chat{
+    display: flex;
+    flex-direction: row;
+    margin: 0.4em 0;
+}
+div[app-lime]>.talk>.chats>.chat.me{
+    flex-direction: row-reverse;
+}
+div[app-lime]>.talk>.chats>.chat.me>.usericon{
+    display: none;
+}
+div[app-lime]>.talk>.chats>.chat>.texts>.name{
+    display: block;
+    font-size: 0.9em;
+    color: gray;
+    opacity: 0;
+    height: 0.5em;
+}
+div[app-lime]>.talk>.chats>.chat>.texts>div>.message{
+    background-color: rgba(172, 172, 172, 0.5);
+    border-radius: 1em/1em;
+    border-top-left-radius: 0em;
+    padding: 0.2em 0.5em;
+    word-break: break-word;
+    display: block;
+}
+div[app-lime]>.talk>.chats>.chat>.texts>div>.timestamp{
+    margin: auto 0.3em 0;
+    font-size: 0.9em;
+    color: gray;
+}
+div[app-lime]>.talk>.chats>.chat>.texts>div{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+div[app-lime]>.talk>.chats>.chat.me>.texts>div>.message{
+    border-top-left-radius: 1em;
+    border-top-right-radius: 0;
+    background-color: rgba(195, 246, 157,0.8);
+}
+div[app-lime]>.talk>.chats.group>.chat>.texts>.name{
+    opacity: 1;
+    height: auto;
+}
+div[app-lime]>.talk>.chats.group>.chat.me>.texts>.name{
+    display: none;
+}
+div[app-lime]>.talk>.input{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    border-top: gray 1px solid;
+}
+div[app-lime]>.talk>.input>button{
+    width: 4em;
+    background-color:none;
+    border:none;
+}
+div[app-lime]>.talk>.input>button:hover{
+    background-color: rgb(192, 192, 192);
+}
+div[app-lime]>.talk>.input>textarea{
+    max-width: 100%;
+    resize: none;
+    height: 3em;
+    width: 100%;
+    border:none;
+}
+div[app-lime]>.talk>.input>textarea::-webkit-scrollbar-button:vertical:end:increment,
+div[app-lime]>.talk>.input>textarea::-webkit-scrollbar-button:vertical:start:decrement 
+{
+    display: none;
+}
+div[app-lime] .usericon>img{
+    width: 100%;
+    border-radius:50%;
+}
+div[app-lime]{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
