@@ -1,0 +1,43 @@
+<!-- Copy me to edit -->
+<html>
+<head>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <!-- Edit style to change window size -->
+    <div class="window active" style="width: 40em; height: 90%; min-width: 5em; min-height: 2em;">
+        <div class="window-titlebar">
+            <!-- Window titleElem begin -->
+            <span>Example</span>
+            <!-- Window titleElem end   -->
+            <div style="display: flex;">
+              <span class="button minimize"></span>
+              <span class="button maxmize"></span>
+              <span class="button close"></span>
+            </div>
+        </div>
+        <div class="window-body">
+            <!-- Window bodyElem begin -->
+            <p>This is test message</p>
+            <style>
+                p{
+                    font-size: 1.6em;
+                }
+            </style>
+            <link rel="stylesheet" href="">
+            <!-- Window bodyElem end   -->
+        </div>
+        
+        <div>
+            <div style="position: absolute; top: -5px; cursor: ns-resize; width: 100%; height: 10px;"></div>
+            <div style="position: absolute; left: -5px; top: 0px; cursor: ew-resize; width: 10px; height: 100%;"></div>
+            <div style="position: absolute; bottom: -5px; cursor: ns-resize; width: 100%; height: 10px;"></div>
+            <div style="position: absolute; right: -5px; top: 0px; cursor: ew-resize; width: 10px; height: 100%;"></div>
+            <div style="position: absolute; top: -5px; left: -5px; cursor: nwse-resize; width: 10px; height: 10px;"></div>
+            <div style="position: absolute; left: -5px; bottom: -5px; cursor: nesw-resize; width: 10px; height: 10px;"></div>
+            <div style="position: absolute; right: -5px; bottom: -5px; cursor: nwse-resize; width: 10px; height: 10px;"></div>
+            <div style="position: absolute; top: -5px; right: -5px; cursor: nesw-resize; width: 10px; height: 10px;"></div>
+        </div>
+    </div>
+</body>
+</html>
