@@ -10,6 +10,7 @@ const html = `
   </div>
   <div class = "small-block">
     <div class = "item3">管理状態</div>
+    <div class = "item3">アップデート</div>
   </div>
   <div class="parent2">
     <div class = "item2">
@@ -31,7 +32,21 @@ const html = `
         </ul2>
       </div>
       <hr class = "line1">
+    </div>
 
+    <div class = "item2">
+      <div style="padding-top:15px; padding-bottom:10px;">ウイルスとスパイウェア定義の状況: 最新</div>
+      <div style="font-size:0.9em; padding-bottom:20px;">ウイルスとスパイウェアの定義を更新し、自動であなたのコンピュータを守ります。</div>
+      <div style = "display:flex;">
+        <div class = "stats">
+          <p>最終更新日: 2022/02/11</p>
+          <p>ウイルス定義バージョン: 1.12</p>
+          <p>スパイウェア定義バージョン: 1.12</p>
+        </div>
+        <div style="width:40%">
+          <div class="update_btn">アップデート</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -154,6 +169,22 @@ const html = `
     display:inline;
     width:200px;
   }
+  .is_hidden{
+    display:none;
+  }
+  .stats{
+    width:50%;
+    padding-left:50px;
+    font-size:0.9em;
+    text-align: left;
+  }
+  .update_btn{
+    width:8em;
+    height:2em;
+    background-color:#3399ff;
+    text-align: center;
+    margin-top:2em;
+  }
 </style>`
 const style = "width:40em;height:27em;"
 
@@ -168,9 +199,17 @@ export class VirusScanner extends Window {
     /** @type {HTMLElement} *///@ts-ignore
     this.item2 = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling
     /** @type {HTMLElement} *///@ts-ignore
+    this.home_tab = this.item2.firstElementChild
+    /** @type {HTMLElement} *///@ts-ignore
+    this.update_tab = this.home_tab.nextElementSibling
+    /** @type {HTMLElement} *///@ts-ignore
     this.supervise_check = this.item2.firstElementChild.firstElementChild
     /** @type {HTMLElement} *///@ts-ignore
     this.bad1 = this.item2.firstElementChild.firstElementChild.nextElementSibling
+    /** @type {HTMLElement} *///@ts-ignore
+    this.home = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling.firstElementChild
+    /** @type {HTMLElement} *///@ts-ignore
+    this.update = this.home.nextElementSibling
 
     this.bad1.hidden = true
 
@@ -179,6 +218,17 @@ export class VirusScanner extends Window {
         this.inform_danger(SystemConfigs.installed_software[i])
       }
     }
+
+    this.home.addEventListener('click', () => {
+      this.home_tab.classList.remove('is_hidden')
+      this.update_tab.classList.add('is_hidden')
+    })
+
+    this.update.addEventListener('click', () => {
+      this.home_tab.classList.add('is_hidden')
+      this.update_tab.classList.remove('is_hidden')
+    })
+
   }
   // 不正ソフト検出 or 怪しいウイルス対策ソフト導入
   inform_danger(dangerous_software) {
