@@ -59,7 +59,7 @@ File.contentに関数が入っていると、Open時にその関数が呼ばれ�
 
 ### ネットワーク
 
-通信には[/System/FileSystem.js](../client/System/FileSystem.js)を用いる。Socket.emit("eventname",data)でサーバーにデータを送信する。応答を受け取る場合は第3引数にコールバック関数を入れる。
+通信には[/System/Network.js](../client/System/Network.js)を用いる。Socket.emit("eventname",data)でサーバーにデータを送信する。応答を受け取る場合は第3引数にコールバック関数を入れる。
 
 簡易的な通信を行うために、SendTo関数を実装している。  
 SendTo("targetSocketID","eventName",{...})でデータを送信すると相手側でSentToMeHandler["eventName"]が呼ばれる。予めSentToMeHandler["eventName"]に関数を入れておく必要がある。  
