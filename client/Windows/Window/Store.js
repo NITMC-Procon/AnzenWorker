@@ -208,7 +208,8 @@ export let apps = [
         safety: "safe",
         type: "security",
         icon: "../images/apps/AntiVirus.png",
-        window: VirusScanner
+        window: VirusScanner,
+        last_update: "2015/11/02",
     }, {
         name: "EasyVirusScanner",
         star: 1,
@@ -219,7 +220,8 @@ export let apps = [
         safety: "danger",
         type: "security",
         icon: "../images/apps/AntiVirus.png",
-        window: VirusScanner
+        window: VirusScanner,
+        last_update: "2015/11/02",
     }, {
         name: "AntiVirusPro",
         star: 3,
@@ -230,7 +232,8 @@ export let apps = [
         safety: "safe",
         type: "security",
         icon: "../images/apps/AntiVirus.png",
-        window: VirusScanner
+        window: VirusScanner,
+        last_update: "2015/11/02",
     }, {
         name: "PC-Cleaner",
         star: 1,
@@ -241,7 +244,8 @@ export let apps = [
         safety: "danger",
         type: "app",
         icon: "../images/apps/PC-Cleaner.png",
-        window: RansomWare
+        window: RansomWare,
+        last_update: "2015/11/02",
     }
 ]
 
@@ -382,7 +386,7 @@ export class Store extends Window {
                 document.getElementById("install_btn").innerText = "アンインストール"
 
                 //  Configのinstalled_softwareにアプリを追加
-                SystemConfigs.installed_software.push([apps[this.selectapp].name, apps[this.selectapp].safety, apps[this.selectapp].type])
+                SystemConfigs.installed_software.push([apps[this.selectapp].name, apps[this.selectapp].safety, apps[this.selectapp].type, apps[this.selectapp].last_update])
 
                 //  評価
                 // 安全なソフトをインストールしたら、
