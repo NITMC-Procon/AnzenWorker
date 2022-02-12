@@ -30,18 +30,22 @@ const html = `
         <ul2>
           <li2>ウイルス & スパイウェア 定義: 最新</li2>
         </ul2>
+        <ul2>
+          <li4>ウイルス & スパイウェア 定義: 更新があります</li4>
+        </ul2>
+        </ul2>
       </div>
       <hr class = "line1">
     </div>
 
     <div class = "item2">
-      <div style="padding-top:15px; padding-bottom:10px;">ウイルスとスパイウェア定義の状況: 最新</div>
+      <div style="padding-top:15px; padding-bottom:10px;">ウイルスとスパイウェア定義の状況: 更新があります</div>
       <div style="font-size:0.9em; padding-bottom:20px;">ウイルスとスパイウェアの定義を更新し、自動であなたのコンピュータを守ります。</div>
       <div style = "display:flex;">
         <div class = "stats">
-          <p>最終更新日: 2022/02/11</p>
-          <p>ウイルス定義バージョン: 1.12</p>
-          <p>スパイウェア定義バージョン: 1.12</p>
+          <p>最終更新日: 2015/11/02</p>
+          <p>ウイルス定義バージョン: 0.82</p>
+          <p>スパイウェア定義バージョン: 0.82</p>
         </div>
         <div style="width:40%">
           <div class="update_btn">アップデート</div>
@@ -154,6 +158,21 @@ const html = `
     border-bottom: 2px solid #25AF01;
     transform: rotate(-45deg);
   }
+  li4{
+    position: relative;
+    text-align: left;
+    border-bottom: 1px solid #c0c0c0;
+  }
+  li4::after{
+    content: '×';
+    display: block;
+    position: absolute;
+    top: .2em;
+    left: -1.5em;
+    width: 10px;
+    height: 5px;
+    color:#ff0000;
+  }
   hr.line1{
     margin-top:50px;
     background-color:c0c0c0;
@@ -165,9 +184,21 @@ const html = `
     font-size:4em;
     width:60px;
   }
+  .bad_2{
+    display:inline-block;
+    text-align:left;
+    color: #ff0000;
+    font-size:1.1em;
+    width: 10px;
+    height: 5px;
+  }
   .bad2{
     display:inline;
     width:200px;
+  }
+  .bad3{
+    display:flex;
+    width:50px;
   }
   .is_hidden{
     display:none;
@@ -193,7 +224,6 @@ export class VirusScanner extends Window {
     super(html, "VirusScanner", { style: style });
     if (this.creationFailed) return
 
-
     /** @type {HTMLElement} *///@ts-ignore
     this.condition_var = this.bodyElem.firstElementChild.firstElementChild.firstElementChild
     /** @type {HTMLElement} *///@ts-ignore
@@ -210,8 +240,26 @@ export class VirusScanner extends Window {
     this.home = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling.firstElementChild
     /** @type {HTMLElement} *///@ts-ignore
     this.update = this.home.nextElementSibling
+    /** @type {HTMLElement} *///@ts-ignore
+    this.parent2 = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling
+    /** @type {HTMLElement} *///@ts-ignore
+    this.block = this.parent2.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
+    /** @type {HTMLElement} *///@ts-ignore
+    this.up_to_date = this.block.firstElementChild
+    /** @type {HTMLElement} *///@ts-ignore
+    this.out_of_date = this.up_to_date.nextElementSibling
+    /** @type {HTMLElement} *///@ts-ignore
+    this.update_cond = this.parent2.firstElementChild.nextElementSibling.firstElementChild
+    /** @type {HTMLElement} *///@ts-ignore
+    this.update_btn = this.parent2.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild
+    /** @type {HTMLElement} *///@ts-ignore
+    this.update_date = this.parent2.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild
+    /** @type {HTMLElement} *///@ts-ignore
+    this.virus_version = this.update_date.nextElementSibling
+    /** @type {HTMLElement} *///@ts-ignore
+    this.spyware_version = this.virus_version.nextElementSibling
 
-    this.bad1.hidden = true
+    var soft_num = this.reset();
 
     for (var i = 0; i < SystemConfigs.installed_software.length; i++) {
       if (SystemConfigs.installed_software[i][1] == "danger") {
@@ -229,7 +277,48 @@ export class VirusScanner extends Window {
       this.update_tab.classList.remove('is_hidden')
     })
 
+    this.update_btn.addEventListener('click', () => {
+      this.update_cond.innerText = "ウイルスとスパイウェア定義の状況: 最新";
+      this.inform_safe();
+      this.up_to_date.classList.remove('is_hidden')
+      this.out_of_date.classList.add('is_hidden')
+      this.update_date.innerText = "最終更新日: " + get_today();
+      this.virus_version.innerText = "ウイルス定義バージョン: 1.25";
+      this.spyware_version.innerText = "スパイウェア定義バージョン: 1.25";
+      this.update_btn.innerText = "最新版です"
+      SystemConfigs.installed_software[soft_num][3] = get_today()
+    })
   }
+
+  // 初期化
+  reset() {
+    this.home_tab.classList.remove('is_hidden')
+    this.update_tab.classList.add('is_hidden')
+    this.up_to_date.classList.add('is_hidden');
+
+    this.condition_var.style.backgroundColor = "#ff0000"
+    this.condition_var.innerText = "コンピュータステータス - 危険な状態にあります"
+    this.supervise_check.hidden = true
+    this.bad1.hidden = false
+
+    for (var i = 0; i < SystemConfigs.installed_software.length; i++) {
+      if (SystemConfigs.installed_software[i][2] == "security") {
+        if (SystemConfigs.installed_software[i][3] == get_today()) {
+          this.update_cond.innerText = "ウイルスとスパイウェア定義の状況: 最新";
+          this.inform_safe();
+          this.up_to_date.classList.remove('is_hidden')
+          this.out_of_date.classList.add('is_hidden')
+          this.update_date.innerText = "最終更新日: " + get_today();
+          this.virus_version.innerText = "ウイルス定義バージョン: 1.25";
+          this.spyware_version.innerText = "スパイウェア定義バージョン: 1.25";
+          this.update_btn.innerText = "最新版です"
+          SystemConfigs.installed_software[i][3] = get_today()
+        }
+      }
+      return i;
+    }
+  }
+
   // 不正ソフト検出 or 怪しいウイルス対策ソフト導入
   inform_danger(dangerous_software) {
     this.condition_var.style.backgroundColor = "#ff0000"
@@ -251,4 +340,18 @@ function createElementFromHTML(html) {
   html = html.trim(); // Never return a text node of whitespace as the result
   template.innerHTML = html;
   return template.content.firstElementChild;
+}
+
+function get_today() {
+  //今日の日付データを変数に格納
+  //変数は"today"とする
+  var today = new Date();
+
+  //年・月・日・曜日を取得
+  var year = today.getFullYear();
+  var month = today.getMonth() + 1;
+  var day = today.getDate();
+
+  //年・月・日・曜日を書き出す
+  return (year + "/" + month + "/" + day);
 }
