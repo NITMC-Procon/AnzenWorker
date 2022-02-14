@@ -76,20 +76,25 @@ const html = `
     text-align: left;
   }
   .item1{
-    background-color: #008000;
+    background-color: linear-gradient(to bottom,rgb(35, 251, 147),rgb(0,224,89),rgb(0, 224,89),rgb(0, 224,89),rgb(0, 249,110),rgb(0,196,62));
     display: inline-block;
     width:100%;
     height:25px;
     color:white;
+    border-bottom:2px solid #c0c0c0;
+    text-shadow: 1px 2px 3px #808080;
   }
   .item2{
     background-color: #ffffff;
+    border: 1px solid #c0c0c0;
+    border-top: 1px solid #ffffff;
     display: inline-block;
     width:90%;
     height:260px;
   }
   .item3{
     background-color: #ffffff;
+    border: 1px solid #c0c0c0;
     display: inline-block;
     width:20%;
     height:25px;
@@ -212,9 +217,11 @@ const html = `
   .update_btn{
     width:8em;
     height:2em;
-    background-color:#3399ff;
+    background-color:#ffffff;
+    border:2px solid #3399cc;
     text-align: center;
     margin-top:2em;
+    border-radius: 6px;
   }
 </style>`
 const style = "width:40em;height:27em;"
@@ -270,11 +277,19 @@ export class VirusScanner extends Window {
     this.home.addEventListener('click', () => {
       this.home_tab.classList.remove('is_hidden')
       this.update_tab.classList.add('is_hidden')
+      this.home.style.backgroundColor = "#ffffff";
+      this.home.style.borderBottomColor = "#ffffff";
+      this.update.style.backgroundColor = "#c0c0c0";
+      this.update.style.borderBottomColor = "#c0c0c0";
     })
 
     this.update.addEventListener('click', () => {
       this.home_tab.classList.add('is_hidden')
       this.update_tab.classList.remove('is_hidden')
+      this.home.style.backgroundColor = "#c0c0c0";
+      this.home.style.borderBottomColor = "#c0c0c0";
+      this.update.style.backgroundColor = "#ffffff";
+      this.update.style.borderBottomColor = "#ffffff";
     })
 
     this.update_btn.addEventListener('click', () => {
@@ -287,6 +302,7 @@ export class VirusScanner extends Window {
       this.spyware_version.innerText = "スパイウェア定義バージョン: 1.25";
       this.update_btn.innerText = "最新版です"
       SystemConfigs.installed_software[soft_num][3] = get_today()
+      this.update_btn.style.backgroundColor = "#c0c0c0";
     })
   }
 
@@ -301,6 +317,11 @@ export class VirusScanner extends Window {
     this.supervise_check.hidden = true
     this.bad1.hidden = false
 
+    this.home.style.backgroundColor = "#ffffff";
+    this.home.style.borderBottomColor = "#ffffff";
+    this.update.style.backgroundColor = "#c0c0c0";
+    this.update.style.borderBottomColor = "#c0c0c0";
+
     for (var i = 0; i < SystemConfigs.installed_software.length; i++) {
       if (SystemConfigs.installed_software[i][2] == "security") {
         if (SystemConfigs.installed_software[i][3] == get_today()) {
@@ -313,6 +334,7 @@ export class VirusScanner extends Window {
           this.spyware_version.innerText = "スパイウェア定義バージョン: 1.25";
           this.update_btn.innerText = "最新版です"
           SystemConfigs.installed_software[i][3] = get_today()
+          this.update_btn.style.backgroundColor = "#c0c0c0";
         }
       }
       return i;
@@ -321,14 +343,14 @@ export class VirusScanner extends Window {
 
   // 不正ソフト検出 or 怪しいウイルス対策ソフト導入
   inform_danger(dangerous_software) {
-    this.condition_var.style.backgroundColor = "#ff0000"
+    this.condition_var.style.background = "linear-gradient(to right,rgb(150,0,62),rgb(180,0,89),rgb(200,0,89),rgb(210,0,89),rgb(180,0,110),rgb(190,0,62))"
     this.condition_var.innerText = "コンピュータステータス - 危険な状態にあります"
     this.supervise_check.hidden = true
     this.bad1.hidden = false
   }
 
   inform_safe() {
-    this.condition_var.style.backgroundColor = "#008000"
+    this.condition_var.style.background = "linear-gradient(to right,rgb(0,150,62),rgb(0,180,89),rgb(0, 200,89),rgb(0, 210,89),rgb(0, 180,110),rgb(0,190,62))";
     this.condition_var.innerText = "コンピュータステータス - 保護済み"
     this.supervise_check.hidden = false
     this.bad1.hidden = true
