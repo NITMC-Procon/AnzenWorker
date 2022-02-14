@@ -8,6 +8,9 @@ import { Notify } from "../../Functions/notify.js"
 const html = `
 <div style="display: flex;flex-direction: column;justify-content: space-between;height: 100%;">
     <div style="width: 100%;">
+        <diV class = "error">
+            ネットワークに接続できませんでした。
+        </div>
     </div>
 </div>
 <style>
@@ -98,28 +101,28 @@ const html = `
         white-space: pre;
         position:absolute;
         font-size:1.2em;
-        top:300px;
+        top:340px;
         left:400px;
     }
     .platform_subject{
         white-space: pre;
         position:absolute;
         font-size:1.6em;
-        top:325px;
+        top:365px;
         left:100px;
     }
     .platform_text{
         white-space: pre;
         position:absolute;
         font-size:1.2em;
-        top:370px;
+        top:410px;
         left:200px;
     }
     .author_subject{
         white-space: pre;
         position:absolute;
         font-size:1.6em;
-        top:420px;
+        top:440px;
         left:100px;
     }
     .author_text{
@@ -127,32 +130,35 @@ const html = `
         position:absolute;
         font-size:1.2em;
         color: #0000FF;
-        top:460px;
+        top:480px;
         left:100px;
     }
     .function_subject{
         white-space: pre;
         position:absolute;
         font-size:1.6em;
-        top:325px;
+        top:365px;
         left:500px;
     }
     .function_text{
         white-space: pre;
         position:absolute;
         font-size:1.2em;
-        top:370px;
+        top:430px;
         left:480px;
     }
     .backbtn{
         position:absolute;
         top:32px;
-        left:0px;
+        left:1.5px;
         width: 57px;
         height: 50px;
         line-height: 50px;
         background-color: #808080;
         color: #fff;
+    }
+    .error{
+        
     }
     .star_icon{
         position:relative;
@@ -195,7 +201,7 @@ const html = `
     .star5_rating[data-rate="1"]:after{ width: 20%; } /* 星1 */
     .star5_rating[data-rate="0"]:after{ width: 0%; } /* 星0 */
 </style>`
-const style = "width:54em;height:33em;"
+const style = "width:54em;height:34em;"
 
 export let apps = [
     {
@@ -246,7 +252,79 @@ export let apps = [
         icon: "../images/apps/PC-Cleaner.png",
         window: RansomWare,
         last_update: "2015/11/02",
-    }
+    }, {
+        name: "AntiVirusPro",
+        star: 3,
+        price: 3900,
+        introduction: "ウイルス対策ソフト有料版\n誰にとっても使いやすくて信頼度も高い",
+        func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
+        corporation: "©Anti Virus Corporation",
+        safety: "safe",
+        type: "security",
+        icon: "../images/apps/AntiVirus.png",
+        window: VirusScanner,
+        last_update: "2015/11/02",
+    }, {
+        name: "AntiVirusPro",
+        star: 3,
+        price: 3900,
+        introduction: "ウイルス対策ソフト有料版\n誰にとっても使いやすくて信頼度も高い",
+        func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
+        corporation: "©Anti Virus Corporation",
+        safety: "safe",
+        type: "security",
+        icon: "../images/apps/AntiVirus.png",
+        window: VirusScanner,
+        last_update: "2015/11/02",
+    }, {
+        name: "AntiVirusPro",
+        star: 3,
+        price: 3900,
+        introduction: "ウイルス対策ソフト有料版\n誰にとっても使いやすくて信頼度も高い",
+        func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
+        corporation: "©Anti Virus Corporation",
+        safety: "safe",
+        type: "security",
+        icon: "../images/apps/AntiVirus.png",
+        window: VirusScanner,
+        last_update: "2015/11/02",
+    }, {
+        name: "AntiVirusPro",
+        star: 3,
+        price: 3900,
+        introduction: "ウイルス対策ソフト有料版\n誰にとっても使いやすくて信頼度も高い",
+        func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
+        corporation: "©Anti Virus Corporation",
+        safety: "safe",
+        type: "security",
+        icon: "../images/apps/AntiVirus.png",
+        window: VirusScanner,
+        last_update: "2015/11/02",
+    }, {
+        name: "AntiVirusPro",
+        star: 3,
+        price: 3900,
+        introduction: "ウイルス対策ソフト有料版\n誰にとっても使いやすくて信頼度も高い",
+        func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
+        corporation: "©Anti Virus Corporation",
+        safety: "safe",
+        type: "security",
+        icon: "../images/apps/AntiVirus.png",
+        window: VirusScanner,
+        last_update: "2015/11/02",
+    }, {
+        name: "AntiVirusPro",
+        star: 3,
+        price: 3900,
+        introduction: "ウイルス対策ソフト有料版\n誰にとっても使いやすくて信頼度も高い",
+        func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
+        corporation: "©Anti Virus Corporation",
+        safety: "safe",
+        type: "security",
+        icon: "../images/apps/AntiVirus.png",
+        window: VirusScanner,
+        last_update: "2015/11/02",
+    },
 ]
 
 export class Store extends Window {
@@ -254,6 +332,8 @@ export class Store extends Window {
         super(html, "Store", { style: style });
         if (this.creationFailed) return
 
+        /** @type {HTMLElement} *///@ts-ignore
+        this.error = this.bodyElem.firstElementChild.firstElementChild.firstElementChild
         this.list_container = this.bodyElem.firstElementChild.firstElementChild
         let allapp = ''
         this.selectapp = -1     //　選んだアプリを記憶
@@ -323,6 +403,13 @@ export class Store extends Window {
             this.list_container.children[this.list_container.childElementCount - 1].children[j].classList.toggle('is_hidden')
         }
         this.list_container.children[this.list_container.childElementCount - 1].classList.toggle('is_hidden')
+        this.error.classList.toggle('is_hidden')
+
+        if (SystemConfigs.connected_wifi.length == 0) {
+            for (let j = 0; j < this.list_container.childElementCount; j++) {
+                this.list_container.children[j].classList.toggle('is_hidden')
+            }
+        }
 
         for (let i = 0; i < this.list_container.childElementCount - 1; i++) {
             this.list_container.children[i].addEventListener('click', () => {
@@ -334,6 +421,7 @@ export class Store extends Window {
                     this.list_container.children[this.list_container.childElementCount - 1].children[j].classList.toggle('is_hidden')
                 }
                 this.list_container.children[this.list_container.childElementCount - 1].classList.toggle('is_hidden')
+                this.error.classList.toggle('is_hidden')
 
                 // 選んだアプリを記憶
                 this.selectapp = i - 1
@@ -353,6 +441,7 @@ export class Store extends Window {
                 this.list_container.children[this.list_container.childElementCount - 1].children[j].classList.toggle('is_hidden')
             }
             this.list_container.children[this.list_container.childElementCount - 1].classList.toggle('is_hidden')
+            this.error.classList.toggle('is_hidden')
 
             // 記憶したアプリをリセット
             this.selectapp = -1
