@@ -6,7 +6,8 @@ import { ResultWindow } from './Windows/Window/ResultWindow.js'
 import { GameManager } from './Windows/Window/GameManager.js';
 
 let host = window.document.location.host;   // .replace(/:.*/, '');
-let ServerAddress = 'ws://' + host;         //  + ':8080';
+let protocol = window.document.location.protocol == "https:" ?'wss://':'ws://'
+let ServerAddress = protocol + host;         //  + ':8080';
 
 //ロードされたらゲーム開始
 window.addEventListener("load", () => {
