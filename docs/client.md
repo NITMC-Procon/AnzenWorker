@@ -82,3 +82,15 @@ SendTo("targetSocketID","eventName",{...})でデータを送信すると相手�
 ```
 
 と言った形でデータが渡されるため、ここからIDなどの情報を得ることができる。
+
+### 通知
+
+通知の送信には[/Functions/notify.js](../client/Functions/notify.js)を用いる。
+
+```
+Notify("TestMessage",{
+     callback: ()=>{alert("Test")},
+})
+```
+
+とすると通知が送られ、クリックするとアラートが表示される。

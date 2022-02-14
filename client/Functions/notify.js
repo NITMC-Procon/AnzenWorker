@@ -6,13 +6,18 @@ const notifyarea = document.getElementById("notification_area")
 // 例
 // Notify("message",{
 //     callback: (args)=>{alert(args)},
-//     args:["test"],
 //     style: "background-color: white; color: red;"
 //   })
 
+/** 
+ * @typedef  {Object} Config - 通知用コンフィグ
+ * @property {!Function=} callback - クリック時に実行される関数
+ * @property {!String=} style - 通知に適用されるスタイル
+ */
+
 /**
     @param {String} text HTML
-    @param {Object} option コンフィグ
+    @param {!Config=} option コンフィグ
     @return {Element} 通知のエレメント
 */
 export function Notify(text,option){
@@ -26,7 +31,7 @@ export function Notify(text,option){
         setTimeout(()=>{
             notifyelem.remove()
         },600)
-        if(option && typeof option.callback == 'function') option.callback(...option.args);
+        if(option && typeof option.callback == 'function') option.callback();
     }
     setTimeout(()=>{
         notifyelem.classList.add("show")
