@@ -411,7 +411,7 @@ export class Store extends Window {
             }
         }
 
-        for (let i = 0; i < this.list_container.childElementCount - 1; i++) {
+        for (let i = 2; i < this.list_container.childElementCount - 1; i++) {
             this.list_container.children[i].addEventListener('click', () => {
                 // 表示するオブジェクトを入れ替える
                 for (let j = 0; j < this.list_container.childElementCount; j++) {
@@ -424,10 +424,10 @@ export class Store extends Window {
                 this.error.classList.toggle('is_hidden')
 
                 // 選んだアプリを記憶
-                this.selectapp = i - 1
+                this.selectapp = i - 2
 
                 // テキスト変更
-                this.change_text(apps[i - 1])
+                this.change_text(apps[i - 2])
 
             })
         }
