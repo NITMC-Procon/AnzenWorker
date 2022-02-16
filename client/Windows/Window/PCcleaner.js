@@ -76,14 +76,32 @@ const html = `
           Activate Now
         </button>
       </div>
-      <u style="height:50%;color:#9999ff;text-align: center;">Enter code</u>
+      <u style="height:50%;color:#9999ff;text-align: center;margin-left:17%">Enter code</u>
     </div>
   </div>
 
   <div style="width:80%;height:100%;">
+    <div style="width:100%;height:15%;"></div>
 
+    <div class="page">
+      <div class="circle4">
+        <div class = "circle5"></div>
+        <div class = "stick3"></div>
+        <div class = "stick4"></div>
+        <div class = "stick5"></div>
+        <div class = "circle6"></div>
+        <div class = "circle7"></div>
+        <div class = "circle8"></div>
+        <div class = "circle9" id = "Scan_btn"></div>
+        <div style = "position:absolute;color:white;left:0.9em;top:1.6em;font-size:2em;">SCAN</div>
+      </div>
+    </div>
+    <div class="page">
+      <div style = "text-align:center;color:white;font-size:2em;margin-top:0.5em;">50% Cleaned</div>
+    </div>
   </div>
 </div>
+
 <style>
   .tab{
     position:relative;
@@ -94,6 +112,13 @@ const html = `
   }
   .tab:hover{
     background-color:#224466;
+  }
+  .page{
+    position:relative;
+    height:37%;
+    width:100%;
+    border:none;
+    background-color:#003366;
   }
   .circle{
     padding-top:2px;
@@ -121,6 +146,62 @@ const html = `
     margin:auto;
     padding-top:0.5px;
   }
+  .circle4{
+    position:relative;
+    width: 9em;
+    height: 9em;
+    border-radius: 50%;
+    background: aqua;
+    margin:auto;
+  }
+  .circle5{
+    position:absolute;
+    width: 8em;
+    height: 8em;
+    border-radius: 50%;
+    background: #003366;
+    left:0.5em;
+    top:0.5em;
+  }
+  .circle6{
+    position:absolute;
+    width: 7.8em;
+    height: 7.8em;
+    border-radius: 50%;
+    background: blue;
+    left:0.6em;
+    top:0.6em;
+  }
+  .circle7{
+    position:absolute;
+    width: 7.2em;
+    height: 7.2em;
+    border-radius: 50%;
+    background: #003366;
+    left:0.9em;
+    top:0.9em;
+  }
+  .circle8{
+    position:absolute;
+    width: 7.1em;
+    height: 7.1em;
+    border-radius: 50%;
+    background: aqua;
+    left:0.95em;
+    top:0.95em;
+  }
+  .circle9{
+    position:absolute;
+    width: 6.9em;
+    height: 6.9em;
+    border-radius: 50%;
+    background: #003366;
+    left:1.05em;
+    top:1.05em;
+  }
+  .circle9:hover{
+    background-color:#224466;
+  }
   .stick{
     position:relative;
     left:11px;
@@ -137,6 +218,29 @@ const html = `
     top:-3px;
     background: #9999ff;
     transform: rotate(-45deg);
+  }
+  .stick3{
+    position:absolute;
+    width:1em;
+    height:10em;
+    background: #003366;
+    left:3.5em;
+    transform: rotate(-60deg);
+  }
+  .stick4{
+    position:absolute;
+    width:1em;
+    height:11em;
+    background: #003366;
+    left:3.5em;
+    transform: rotate(-120deg);
+  }
+  .stick5{
+    position:absolute;
+    width:1em;
+    height:10em;
+    background: #003366;
+    left:3.5em;
   }
   .square{
     padding-top:2px;
@@ -172,8 +276,9 @@ const html = `
     height: 90%;
     border-radius: 5%;
     background: #ff9900;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top:5%;
   }
   .arrow{
   display: inline-block;
@@ -193,7 +298,17 @@ export class PCcleaner extends Window {
     if (this.creationFailed) return
 
     /** @type {HTMLElement} *///@ts-ignore
-    this.condition_var = this.bodyElem.firstElementChild.firstElementChild.firstElementChild
+    this.page = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling.firstElementChild
+    /** @type {HTMLElement} *///@ts-ignore
+    this.scan = this.page.nextElementSibling.firstElementChild.firstElementChild
+    /** @type {HTMLElement} *///@ts-ignore
+    this.scanbtn = this.scan.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
+    /** @type {HTMLElement} *///@ts-ignore
+    this.text = this.page.nextElementSibling.nextElementSibling.firstElementChild
 
+    this.scanbtn.addEventListener('click', () => {
+      var rand = Math.round(((Math.random() * 100) % 100));
+      this.text.innerText = rand + "% Cleaned";
+    })
   }
 }
