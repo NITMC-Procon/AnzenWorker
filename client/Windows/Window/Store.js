@@ -2,6 +2,7 @@
 import { Window } from "../Window.js"
 import { SystemConfigs, Task, RefreshDesktop } from "../../System/Desktop.js"
 import { VirusScanner } from "./VirusScanner.js"
+import { PCcleaner } from "./PCcleaner.js"
 import { RansomWare } from "../../Viruses/VirusEvents.js"
 import { Notify } from "../../Functions/notify.js"
 
@@ -250,7 +251,7 @@ export let apps = [
         safety: "danger",
         type: "app",
         icon: "../images/apps/PC-Cleaner.png",
-        window: RansomWare,
+        window: PCcleaner,
         last_update: "2015/11/02",
     }, {
         name: "AntiVirusPro",
@@ -405,12 +406,13 @@ export class Store extends Window {
         this.list_container.children[this.list_container.childElementCount - 1].classList.toggle('is_hidden')
         this.error.classList.toggle('is_hidden')
 
+        /*
         if (SystemConfigs.connected_wifi.length == 0) {
             for (let j = 0; j < this.list_container.childElementCount; j++) {
                 this.list_container.children[j].classList.toggle('is_hidden')
             }
         }
-
+        */
         for (let i = 2; i < this.list_container.childElementCount - 1; i++) {
             this.list_container.children[i].addEventListener('click', () => {
                 // 表示するオブジェクトを入れ替える
