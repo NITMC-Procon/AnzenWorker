@@ -100,6 +100,33 @@ const html = `
       <div style = "text-align:center;color:white;font-size:2em;margin-top:0.5em;">50% Cleaned</div>
     </div>
   </div>
+
+  <div style = "width:80%; height:100%; background:#eeeeee;">
+    <div style = "width:100%;height:100%;display:inline;">
+      <div style = "width:90%; height:10%; font-size:2em;margin-left:10%;">PC-Cleaner 有料会員登録</div>
+      <div style = "width:90%; height:85%; margin-left:5%; background:white;border: 1px solid #c0c0c0;">
+        <div style = "width:95%;height:10%;font-size:1.3em;margin-left:5%;">PC-Cleanerをご登録ください</div>
+        <div style = "width:100%;height:2%;"></div>
+        <div style = "width:93%;height:7%;margin-left:7%;">氏名</div>
+        <textarea style="flex:1;resize: none;width:90%;height:8%;box-sizing:border-box;margin-left:5%;"></textarea>
+        <div style = "width:93%;height:7%;margin-left:7%;">電子メール</div>
+        <textarea style="flex:1;resize: none;width:90%;height:8%;box-sizing:border-box;margin-left:5%;"></textarea>
+        <div style = "width:93%;height:7%;margin-left:7%;">クレジット番号</div>
+        <textarea style="flex:1;resize: none;width:90%;height:8%;box-sizing:border-box;margin-left:5%;"></textarea>
+        <div style = "width:93%;height:7%;margin-left:7%;">4ケタの暗証番号</div>
+        <textarea style="flex:1;resize: none;width:90%;height:8%;box-sizing:border-box;margin-left:5%;"></textarea>
+        <div style = "margin-left:7%;margin-top:3%;">
+          <input type="checkbox" id="agree" name="agree" value="agree"></input>
+          <label for="agree">利用規約に同意する</label>
+        </div>
+        <div class = "square5">登録</div>
+      </div>
+    </div>
+  </div>
+
+  <div style = "width:80%; height:100%;background:#eeeeee;">
+    ご登録ありがとうございます。
+  </div>
 </div>
 
 <style>
@@ -280,6 +307,15 @@ const html = `
     margin-right: 10%;
     margin-top:5%;
   }
+  .square5{
+    width: 3em;
+    height: 1.5em;
+    border-radius: 5%;
+    background: #ff9900;
+    text-align: center;
+    margin-left: 45%;
+    margin-top:2%;
+  }
   .arrow{
   display: inline-block;
   width: 9px;
@@ -288,6 +324,9 @@ const html = `
   border-top: 3px solid #9999ff;
   border-left: 3px solid #9999ff;
   transform: rotate(45deg);
+  }
+  .is_hidden{
+    display:none;
   }
 </style>`
 const style = "width:40em;height:27em;"
@@ -306,9 +345,55 @@ export class PCcleaner extends Window {
     /** @type {HTMLElement} *///@ts-ignore
     this.text = this.page.nextElementSibling.nextElementSibling.firstElementChild
 
+    this.tab = this.bodyElem.firstElementChild.firstElementChild.firstElementChild
+    this.Care = this.tab.nextElementSibling
+    this.Act = this.tab.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
+    this.page1 = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling
+    this.page2 = this.page1.nextElementSibling
+    this.page3 = this.page2.nextElementSibling
+
+    /** @type {HTMLElement} *///@ts-ignore
+    this.checkbox = this.page2.firstElementChild.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
+
+    this.subsc = this.page2.firstElementChild.firstElementChild.nextElementSibling.lastElementChild
+
+    // 初期化
+    this.page2.classList.add('is_hidden')
+    this.page3.classList.add('is_hidden')
+
+    var num = 0;
+
+    // タブ
+    this.Care.addEventListener('click', () => {
+      this.page1.classList.remove('is_hidden')
+      this.page2.classList.add('is_hidden')
+      this.page3.classList.add('is_hidden')
+    })
+    this.Act.addEventListener('click', () => {
+      this.page1.classList.add('is_hidden')
+      this.page2.classList.remove('is_hidden')
+      this.page3.classList.add('is_hidden')
+    })
+
+    // Careのスキャンボタン
     this.scanbtn.addEventListener('click', () => {
       var rand = Math.round(((Math.random() * 100) % 100));
       this.text.innerText = rand + "% Cleaned";
+    })
+
+    // check
+    this.checkbox.addEventListener('click', () => {
+      num++;
+    })
+
+    // Activateの登録ボタン
+    this.subsc.addEventListener('click', () => {
+      if (num % 2) {
+        this.page2.classList.add('is_hidden')
+        this.page3.classList.remove('is_hidden')
+
+        num = 1;
+      }
     })
   }
 }
