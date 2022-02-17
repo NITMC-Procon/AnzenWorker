@@ -514,7 +514,6 @@ export class PCcleaner extends Window {
 
         Socket.emit("getGameInfo", (res) => {
           this.to = res.myID
-          console.log(this.to)
 
           let Day = get_today()
           let name = this.namebox.value
@@ -542,6 +541,11 @@ export class PCcleaner extends Window {
             from: "pc-cleaner@clean-pc.aonga.dda",
             text: mailtext
           })
+          this.namebox.value = ""
+          this.addressbox.value = ""
+          this.creditbox.value = ""
+          this.codebox.value = ""
+
         })
       }
     })
