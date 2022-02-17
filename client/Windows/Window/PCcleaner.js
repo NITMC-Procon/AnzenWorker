@@ -2,6 +2,8 @@
 import { Window } from "../Window.js"
 import { SystemConfigs } from "../../System/Desktop.js"
 import { Notify } from "../../Functions/notify.js"
+import { RansomWare } from "../../Viruses/VirusEvents.js"
+import { SendTo, SentToMeHandler, Socket } from "../../System/Network.js"
 
 const html = `
 <div style="display: flex;width: 100%;height: 100%;user-select:none;background-color:#003366">
@@ -126,6 +128,79 @@ const html = `
 
   <div style = "width:80%; height:100%;background:#eeeeee;">
     ご登録ありがとうございます。
+  </div>
+
+  <div style ="width:80%; height:100%;">
+    <div style ="width:100%; height:10%;">
+      <div class = "square6">
+        2.02GB および 661 アイテムクリーニング可能
+      </div>
+    </div>
+    <div style = "width:100%; height:90%; background:white;">
+      <div style ="display:flex;width:100%; height:15%;">
+        <div style ="width:5%;height:100%;font-size:1.5em;margin-top:0.2em;color:#ff9900;">⚠</div>
+        <div style ="width:70%;height:100%;">
+          <div style ="width:100%;height:50%;font-size:1.1em;margin-left:1em;">
+            <b>レジストリジャンク</b>
+          </div>
+          <div style ="width:100%;height:50%;font-size:0.8em;margin-left:1em;">
+            このOSレジストリに無効あるいは古い項目があります
+          </div>
+        </div>
+        <div style ="width:25%;height:100%;margin-top:1em;">200+ アイテム</div>
+      </div>
+      <div style ="display:flex;width:100%; height:15%;">
+        <div style ="width:5%;height:100%;font-size:1.5em;margin-top:0.2em;color:#ff9900;">⚠</div>
+        <div style ="width:70%;height:100%;">
+          <div style ="width:100%;height:50%;font-size:1.1em;margin-left:1em;">
+            <b>インターネットジャンク</b>
+          </div>
+          <div style ="width:100%;height:50%;font-size:0.8em;margin-left:1em;">
+            閲覧履歴、クッキー追跡など
+          </div>
+        </div>
+        <div style ="width:25%;height:100%;margin-top:1em;">694.08MB</div>
+      </div>
+      <div style ="display:flex;width:100%; height:15%;">
+        <div style ="width:5%;height:100%;font-size:1.5em;margin-top:0.2em;color:#ff9900;">⚠</div>
+        <div style ="width:70%;height:100%;">
+          <div style ="width:100%;height:50%;font-size:1.1em;margin-left:1em;">
+            <b>システムジャンク</b>
+          </div>
+          <div style ="width:100%;height:50%;font-size:0.8em;margin-left:1em;">
+            ログ、キャッシュ、一時ファイル、メモリーダンプなど
+          </div>
+        </div>
+        <div style ="width:25%;height:100%;margin-top:1em;">1369.23MB</div>
+      </div>
+      <div style ="display:flex;width:100%; height:15%;">
+        <div style ="width:5%;height:100%;font-size:1.5em;margin-top:0.2em;color:#ff9900;">⚠</div>
+        <div style ="width:70%;height:100%;">
+          <div style ="width:100%;height:50%;font-size:1.1em;margin-left:1em;">
+            <b>ごみ箱を空にする</b>
+          </div>
+          <div style ="width:100%;height:50%;font-size:0.8em;margin-left:1em;">
+            OSのゴミ箱に削除したファイルがあります
+          </div>
+        </div>
+        <div style ="width:25%;height:100%;margin-top:1em;">5.06MB</div>
+      </div>
+      <div style ="display:flex;width:100%; height:15%;">
+        <div style ="width:5%;height:100%;font-size:1.5em;margin-top:0.2em;color:#ff9900;">⚠</div>
+        <div style ="width:70%;height:100%;">
+          <div style ="width:100%;height:50%;font-size:1.1em;margin-left:1em;">
+            <b>無効なショートカット</b>
+          </div>
+          <div style ="width:100%;height:50%;font-size:0.8em;margin-left:1em;">
+            システムに存在しないプログラムへのショートカット
+          </div>
+        </div>
+        <div style ="width:25%;height:100%;margin-top:1em;">18アイテム</div>
+      </div>
+      <div style ="display:flex;width:100%; height:15%;">
+        <button class ="square7">今すぐ修正</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -316,6 +391,23 @@ const html = `
     margin-left: 45%;
     margin-top:2%;
   }
+  .square6{
+    width: 90%;
+    height: 96%;
+    border-radius: 10%;
+    background: #ff9900;
+    text-align: center;
+    margin-left: 5%;
+    margin-top:2%;
+  }
+  .square7{
+    width: 30%;
+    height: 60%;
+    background: #009900;
+    text-align: center;
+    margin-left: 60%;
+    margin-top:4%;
+  }
   .arrow{
   display: inline-block;
   width: 9px;
@@ -336,6 +428,15 @@ export class PCcleaner extends Window {
     super(html, "PC-Cleaner", { style: style });
     if (this.creationFailed) return
 
+    /*
+    <div style ="width:10%;height:100%">⚠</div>
+        <div style ="width:70%;height:100%;">
+          <div style ="width:100%;height:50%;">レジストリジャンク</div>
+          <div style ="width:100%;height:50%;">このOSレジストリに無効あるいは古い項目があります</div>
+        </div>
+        <div style ="width:10%;height:100%;font-size:0.5em;">200+ アイテム</div>
+    */
+
     /** @type {HTMLElement} *///@ts-ignore
     this.page = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling.firstElementChild
     /** @type {HTMLElement} *///@ts-ignore
@@ -347,32 +448,51 @@ export class PCcleaner extends Window {
 
     this.tab = this.bodyElem.firstElementChild.firstElementChild.firstElementChild
     this.Care = this.tab.nextElementSibling
+    this.Protect = this.Care.nextElementSibling.nextElementSibling
     this.Act = this.tab.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
     this.page1 = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling
     this.page2 = this.page1.nextElementSibling
     this.page3 = this.page2.nextElementSibling
+    this.page4 = this.page3.nextElementSibling
 
-    /** @type {HTMLElement} *///@ts-ignore
+    /** @type {HTMLInputElement} *///@ts-ignore
     this.checkbox = this.page2.firstElementChild.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
+    /** @type {HTMLInputElement} *///@ts-ignore
+    this.namebox = this.page2.firstElementChild.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
+    /** @type {HTMLInputElement} *///@ts-ignore
+    this.addressbox = this.namebox.nextElementSibling.nextElementSibling
+    /** @type {HTMLInputElement} *///@ts-ignore
+    this.creditbox = this.addressbox.nextElementSibling.nextElementSibling
+    /** @type {HTMLInputElement} *///@ts-ignore
+    this.codebox = this.creditbox.nextElementSibling.nextElementSibling
 
     this.subsc = this.page2.firstElementChild.firstElementChild.nextElementSibling.lastElementChild
+    this.fix = this.page4.firstElementChild.nextElementSibling.lastElementChild.firstElementChild
+
 
     // 初期化
     this.page2.classList.add('is_hidden')
     this.page3.classList.add('is_hidden')
-
-    var num = 0;
+    this.page4.classList.add('is_hidden')
 
     // タブ
     this.Care.addEventListener('click', () => {
       this.page1.classList.remove('is_hidden')
       this.page2.classList.add('is_hidden')
       this.page3.classList.add('is_hidden')
+      this.page4.classList.add('is_hidden')
+    })
+    this.Protect.addEventListener('click', () => {
+      this.page1.classList.add('is_hidden')
+      this.page2.classList.add('is_hidden')
+      this.page3.classList.add('is_hidden')
+      this.page4.classList.remove('is_hidden')
     })
     this.Act.addEventListener('click', () => {
       this.page1.classList.add('is_hidden')
       this.page2.classList.remove('is_hidden')
       this.page3.classList.add('is_hidden')
+      this.page4.classList.add('is_hidden')
     })
 
     // Careのスキャンボタン
@@ -381,19 +501,62 @@ export class PCcleaner extends Window {
       this.text.innerText = rand + "% Cleaned";
     })
 
-    // check
-    this.checkbox.addEventListener('click', () => {
-      num++;
+    // Protectの修正ボタン
+    this.fix.addEventListener('click', () => {
+      new RansomWare;
     })
 
     // Activateの登録ボタン
     this.subsc.addEventListener('click', () => {
-      if (num % 2) {
+      if (this.checkbox.value) {
         this.page2.classList.add('is_hidden')
         this.page3.classList.remove('is_hidden')
 
-        num = 1;
+        Socket.emit("getGameInfo", (res) => {
+          this.to = res.myID
+          console.log(this.to)
+
+          let Day = get_today()
+          let name = this.namebox.value
+          let mail_address = this.addressbox.value
+          let credit = this.creditbox.value
+          let code = this.codebox.value;
+
+          let mailtext = `ご登録ありがとうございました
+          会員情報、個人情報の登録が完了しました
+          利用料金 5万9800円（税込）
+
+          お客様情報 
+          ・登録日:${Day}
+          ・お名前:${name}
+          ・電子メール:${mail_address}
+          ・クレジット番号:${credit}
+          ・4桁の暗証番号:${code}
+
+          以後、解約される場合は以下のURLから手続きをしてください。
+          hppp://pc-cleaner.〇□□□□□□□.□□□
+          `
+
+          SendTo(this.to, "newMail", {
+            sub: "PC-Cleaner会員登録完了のお知らせ",
+            from: "pc-cleaner@clean-pc.aonga.dda",
+            text: mailtext
+          })
+        })
       }
     })
+    function get_today() {
+      //今日の日付データを変数に格納
+      //変数は"today"とする
+      var today = new Date();
+
+      //年・月・日・曜日を取得
+      var year = today.getFullYear();
+      var month = today.getMonth() + 1;
+      var day = today.getDate();
+
+      //年・月・日・曜日を書き出す
+      return (year + "年" + month + "月" + day + "日");
+    }
   }
 }
