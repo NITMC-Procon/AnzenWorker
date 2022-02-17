@@ -1,5 +1,5 @@
 'use strict'
-import { Dialog } from "../Dialog.js"
+import { Window } from "../Window.js"
 import { SystemConfigs } from "../../System/Desktop.js"
 import { Socket } from '../../System/Network.js'
 
@@ -19,14 +19,14 @@ const html = `
 `
 const style = "width:35em;"
 
-export class LoginWindow extends Dialog {
+export class LoginWindow extends Window {
     constructor() {
-        super(html, "AnzenWorkerにログオン", { style: style ,no_xbutton: true})
+        super(html, "AnzenWorkerにログオン", { style: style,no_xbutton: true, dialog:true})
         if(this.creationFailed)return
         
         this.bodyElem.lastElementChild.firstElementChild.addEventListener('click', () => { this.room_button("join") })
         this.bodyElem.lastElementChild.lastElementChild.addEventListener('click', () => { this.room_button("create") })
-        this.drag.classList.add("login-window")
+        this.window.classList.add("login-window")
 
         /** @type {HTMLInputElement} *///@ts-ignore
         this.roomid_input = document.getElementById("room_id")

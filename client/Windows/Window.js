@@ -10,6 +10,8 @@ import { WindowManager,RefreshTaskbarIcons } from "../System/Desktop.js";
  * @property {!Boolean=} no_xbutton - ウィンドウの閉じるボタンの非表示
  * @property {!Boolean=} no_maxmizebutton - ウィンドウのフルスクリーンボタンの非表示
  * @property {!Boolean=} no_minimizebutton - ウィンドウの最小化ボタンの非表示
+ * @property {!Boolean=} dialog - ウィンドウの最小化ボタンの非表示
+ * @property {!Boolean=} no_draggable - ウィンドウの最小化ボタンの非表示
  * @property {!String=} window_id - ウィンドウID
  */
 
@@ -43,6 +45,13 @@ export class Window{
             WindowManager.windows[this.window_id] =this
         }
 
+        if (configs.dialog){//ダイアログは動かせない･リサイズできない･最大化/最小化も出来ない
+            configs.no_draggable = true
+            configs.no_resizable = true
+            configs.no_maxmizebutton = true
+            configs.no_minimizebutton = true
+        }
+
         let windowhtml = createElementFromHTML(`
             <div class="window active" style="${(this.configs != null && this.configs.style) ? this.configs.style : ""}">
                 <div class="window-titlebar">
@@ -68,15 +77,24 @@ export class Window{
                     <div style="position: absolute; top: -5px; right: -5px; cursor: nesw-resize; width: 10px; height: 10px;"></div>
                 </div>`:""}
             </div>`)
+
+        let winparent = this.parent.windowarea//ダイアログとそれ以外でウィンドウの作成先が変わるので一旦代入
+        this.overlay = null
+        if (configs.dialog){
+            //@ts-ignore
+            this.overlay = winparent = document.body.insertAdjacentElement('beforeend', createElementFromHTML(`<div class="overlay"></div>`))
+            windowhtml.style.position = "relative"
+        }else{
+            windowhtml.style.top = Math.random() * (document.documentElement.clientHeight / 2) + "px"
+            windowhtml.style.left = Math.random() * (document.documentElement.clientWidth / 2) + "px"
+            windowhtml.style["z-index"] = ++this.parent.windowindex;
+        }
+
         /** @type {HTMLElement} *///@ts-ignore
-        this.window = this.parent.windowarea.insertAdjacentElement('afterbegin', windowhtml)
+        this.window = winparent.insertAdjacentElement('afterbegin', windowhtml)
         if(!this.window.style["min-width"]) this.window.style["min-width"]= this.title.length + 2 + "em";
         if(!this.window.style["min-height"]) this.window.style["min-height"]= "2em";
-        
-        this.window.style.top = Math.random() * (document.documentElement.clientHeight / 2) + "px"
-        this.window.style.left = Math.random() * (document.documentElement.clientWidth / 2) + "px"
-        this.window.style["z-index"] = ++this.parent.windowindex;
-        
+                
         this.titleElem = this.window.firstElementChild.firstElementChild
         this.bodyElem = this.window.firstElementChild.nextElementSibling
 
@@ -120,7 +138,7 @@ export class Window{
 
         this.BringToTop()
 
-        this.makeDraggable()
+        if(!configs.no_draggable)this.makeDraggable()
         if(!configs.no_resizable)this.makeResizable()
         RefreshTaskbarIcons()
     }
@@ -316,6 +334,9 @@ export class Window{
         }
         RefreshTaskbarIcons()
         this.window.remove()
+        if(this.overlay != null){
+            this.overlay.remove()
+        }
     }
     Minimize(){
         this.window.classList.add("disabled");
