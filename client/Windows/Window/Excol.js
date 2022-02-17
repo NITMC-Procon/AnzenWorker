@@ -364,6 +364,7 @@ export class Excol extends Window {
 function onCliclMacroEnable(){
   divMacroWarn.setAttribute('style','display: none;');
   SystemConfigs.Result.SecurityScore -= 200;
+  SystemConfigs.Result.Flag.push('dangerousMacro');
     new OpenWorm();
 }
 
