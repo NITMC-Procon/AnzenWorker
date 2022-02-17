@@ -4,6 +4,7 @@ import { Handlers, InitSocket, Socket } from './System/Network.js';
 import { LoginWindow } from './Windows/Window/LoginWindow.js'
 import { ResultWindow } from './Windows/Window/ResultWindow.js'
 import { GameManager } from './Windows/Window/GameManager.js';
+import { Logon } from './System/Logon.js';
 
 let host = window.document.location.host;   // .replace(/:.*/, '');
 let protocol = window.document.location.protocol == "https:" ?'wss://':'ws://'
@@ -16,7 +17,9 @@ window.addEventListener("load", () => {
         bootwindow.classList.add("hidden")
         Boot()
     
-        new LoginWindow()
+       // new LoginWindow()
+       Logon();
+
         new GameManager()
     
         InitSocket(ServerAddress)
