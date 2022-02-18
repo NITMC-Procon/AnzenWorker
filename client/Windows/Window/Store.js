@@ -5,6 +5,7 @@ import { VirusScanner } from "./VirusScanner.js"
 import { PCcleaner } from "./PCcleaner.js"
 import { RansomWare } from "../../Viruses/VirusEvents.js"
 import { Notify } from "../../Functions/notify.js"
+import { Feedback } from "./feedback.js"
 
 const html = `
 <div style="display: flex;flex-direction: column;justify-content: space-between;height: 100%;">
@@ -145,7 +146,7 @@ const html = `
         white-space: pre;
         position:absolute;
         font-size:1.2em;
-        top:430px;
+        top:400px;
         left:480px;
     }
     .backbtn{
@@ -254,17 +255,18 @@ export let apps = [
         window: PCcleaner,
         last_update: "2015/11/02",
     }, {
-        name: "AntiVirusPro",
-        star: 3,
-        price: 3900,
-        introduction: "ウイルス対策ソフト有料版\n誰にとっても使いやすくて信頼度も高い",
-        func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
-        corporation: "©Anti Virus Corporation",
+        name: "Feedback",
+        star: 5,
+        price: 0,
+        introduction: `安全仕事人に対して、
+        フィードバックを送信するアプリ\n`,
+        func: "・気になる点がございましたら、\n気軽にご送信ください\n・いただいたメッセージには全て目を通し、\n改善に取り組みます",
+        corporation: "©AnzenWorker",
         safety: "safe",
-        type: "security",
-        icon: "../images/apps/AntiVirus.png",
-        window: VirusScanner,
-        last_update: "2015/11/02",
+        type: "app",
+        icon: "../images/apps/Feedback.png",
+        window: Feedback,
+        last_update: "2022/02/17",
     }, {
         name: "AntiVirusPro",
         star: 3,
