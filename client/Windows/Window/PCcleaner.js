@@ -1,9 +1,7 @@
 'use strict'
 import { Window } from "../Window.js"
-import { SystemConfigs } from "../../System/Desktop.js"
-import { Notify } from "../../Functions/notify.js"
 import { RansomWare } from "../../Viruses/VirusEvents.js"
-import { SendTo, SentToMeHandler, Socket } from "../../System/Network.js"
+import { SendTo, Socket } from "../../System/Network.js"
 
 const html = `
 <div style="display: flex;width: 100%;height: 100%;user-select:none;background-color:#003366">
@@ -468,7 +466,6 @@ export class PCcleaner extends Window {
 
     this.subsc = this.page2.firstElementChild.firstElementChild.nextElementSibling.lastElementChild
     this.fix = this.page4.firstElementChild.nextElementSibling.lastElementChild.firstElementChild
-
 
     // 初期化
     this.page2.classList.add('is_hidden')
