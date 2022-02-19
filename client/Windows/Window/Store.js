@@ -407,6 +407,12 @@ export class Store extends Window {
         }
         this.list_container.children[this.list_container.childElementCount - 1].classList.toggle('is_hidden')
         this.error.classList.toggle('is_hidden')
+        this.can = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+        // 情報を引き継ぐ
+        if (SystemConfigs.installed_software.length != 0) {
+            this.can = SystemConfigs.installed_software;
+        }
 
         /*
         if (SystemConfigs.connected_wifi.length == 0) {
@@ -433,6 +439,13 @@ export class Store extends Window {
                 // テキスト変更
                 this.change_text(apps[i - 2])
 
+                // アプリを入れれるかどうか
+                if (this.can[this.selectapp] == 1) {
+                    document.getElementById("install_btn").innerText = "アンインストール"
+                }
+                else {
+                    document.getElementById("install_btn").innerText = "インストール"
+                }
             })
         }
         // backボタンが押された時
@@ -453,33 +466,12 @@ export class Store extends Window {
 
         // installボタンが押された時
         this.list_container.children[this.list_container.childElementCount - 1].children[5].addEventListener('click', () => {
-            // アプリを入れれるかどうか
-            let can = true
-            // 自分がセキュリティソフトの時 or 既にインストールされている時
-            if (apps[this.selectapp].type == "security") {
-                // 既にセキュリティソフトが入っていたら
-                for (var k = 0; k < SystemConfigs.installed_software.length; k++) {
-                    if (SystemConfigs.installed_software[k][2] == "security") {
-                        // セキュリティソフトをこれ以上入れられないようにする
-                        can = false
-                    }
-                }
-
-            }
-
-            if (apps[this.selectapp].type == "app") {
-                for (var k = 0; k < SystemConfigs.installed_software.length; k++) {
-                    if (SystemConfigs.installed_software[k][2] == "app") {
-                        can = false
-                    }
-                }
-            }
-
-            if (can) {
+            if (this.can[this.selectapp] == 0) {
                 document.getElementById("install_btn").innerText = "アンインストール"
+                this.can[this.selectapp] = 1;
 
                 //  Configのinstalled_softwareにアプリを追加
-                SystemConfigs.installed_software.push([apps[this.selectapp].name, apps[this.selectapp].safety, apps[this.selectapp].type, apps[this.selectapp].last_update])
+                SystemConfigs.installed_software = this.can
 
                 //  評価
                 // 安全なソフトをインストールしたら、
@@ -508,28 +500,21 @@ export class Store extends Window {
                     }
 
                 }
-
-                if (apps[this.selectapp].name != apps[3].name) {
-
-                }
-                else {
-                    func: () => { new RansomWare() }
-                }
                 // インストール
-                SystemConfigs.Packages.Install(apps[this.selectapp].name, apps[this.selectapp].icon, () => { new apps[this.selectapp].window() })
+                let sa = this.selectapp
+                SystemConfigs.Packages.Install(apps[sa].name, apps[sa].icon, () => { new apps[sa].window() })
                 RefreshDesktop()
             }
             else {
                 document.getElementById("install_btn").innerText = "インストール"
+                this.can[this.selectapp] = 0;
 
-                //　保存されている配列の位置を検索
-                var loc = SystemConfigs.installed_software.indexOf([apps[this.selectapp].name])
                 //　Configのinstalled_softwareからアプリを削除
-                SystemConfigs.installed_software.splice(loc, 1)
+                SystemConfigs.installed_software = this.can
 
                 // デスクトップからアイコンを削除
                 SystemConfigs.Packages.Uninstall(apps[this.selectapp].name)
-                this.destroy()
+                //this.destroy()
                 RefreshDesktop()
             }
         })
@@ -564,13 +549,12 @@ export class Store extends Window {
             document.getElementById("price").innerText = "￥" + app.price
         }
 
-        for (var i = 0; i < SystemConfigs.installed_software.length; i++) {
-            if (SystemConfigs.installed_software[i][0] == apps[this.selectapp].name) {
-                document.getElementById("install_btn").innerText = "アンインストール"
-            }
-            else {
-                document.getElementById("install_btn").innerText = "インストール"
-            }
+        // アプリを入れれるかどうか
+        if (this.can[this.selectapp] == 1) {
+            document.getElementById("install_btn").innerText = "アンインストール"
+        }
+        else {
+            document.getElementById("install_btn").innerText = "インストール"
         }
     }
 }
