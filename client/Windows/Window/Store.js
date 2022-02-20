@@ -1,5 +1,5 @@
 'use strict'
-import { Window } from "../Window.js"
+import { Window,RandomData } from "../Window.js"
 import { SystemConfigs, Task, RefreshDesktop } from "../../System/Desktop.js"
 import { VirusScanner } from "./VirusScanner.js"
 import { PCcleaner } from "./PCcleaner.js"
@@ -7,21 +7,23 @@ import { RansomWare } from "../../Viruses/VirusEvents.js"
 import { Notify } from "../../Functions/notify.js"
 import { Feedback } from "./feedback.js"
 
+const RandData = RandomData()
+
 const html = `
-<div style="display: flex;flex-direction: column;justify-content: space-between;height: 100%;">
-    <div style="width: 100%;">
+<div style="display: flex;flex-direction: column;justify-content: space-between;height: 100%;" ${RandData}>
+    <div style="width: 100%;overflow:auto;">
         <diV class = "error">
             ネットワークに接続できませんでした。
         </div>
     </div>
 </div>
 <style>
-    .title{
+    div[${RandData}] .title{
         font-size:2em;
         padding-top: 10px;
         padding-left: 30px;
     }
-    .list_container{
+    div[${RandData}] .list_container{
         display: inline-block;
         width: 150px;
         height: 202px;
@@ -33,16 +35,16 @@ const html = `
         align-items: center;
         border: 1px solid #cccccc;
     }
-    .is_hidden{
-        display:none;
-    }
-    .store_container{
+    div[${RandData}] .store_container{
         display:flex;
         width:750px;
         height:250px;
         margin:3em 3.5em;
     }
-    .store_background{
+    div[${RandData}] .is_hidden{
+        display:none;
+    }
+    div[${RandData}] .store_background{
         width:750px;
         height:250px;
         box-sizing:border-box;
@@ -50,23 +52,23 @@ const html = `
         border: 1px solid #cccccc;
         user-select: none;
     }
-    .app_icon{
+    div[${RandData}] .app_icon{
         position:relative;
         top:5px;
         left:17px;
     }
-    .app_icon2{
+    div[${RandData}] .app_icon2{
         position:absolute;
         left:120px;
         top:100px;
     }
-    .title2{
+    div[${RandData}] .title2{
         position:absolute;
         font-size:2em;
         top:80px;
         left:325px;
     }
-    .copname{
+    div[${RandData}] .copname{
         position:absolute;
         font-size:1em;
         color: #0000FF;
@@ -74,14 +76,14 @@ const html = `
         left:325px;
         white-space: nowrap;
     }
-    .introduction{
+    div[${RandData}] .introduction{
         white-space: pre;
         position:absolute;
         font-size:1.2em;
         top:150px;
         left:330px;
     }
-    .install_btn{
+    div[${RandData}] .install_btn{
         white-space: pre;
         position:absolute;
         height:40px;
@@ -92,42 +94,42 @@ const html = `
         margin:0em 0em;
         padding: 10px;
     }
-    .price{
+    div[${RandData}] .price{
         white-space: pre;
         position:absolute;
         font-size:1.2em;
         top:220px;
         left:340px;
     }
-    .detail{
+    div[${RandData}] .detail{
         white-space: pre;
         position:absolute;
         font-size:1.2em;
         top:340px;
         left:400px;
     }
-    .platform_subject{
+    div[${RandData}] .platform_subject{
         white-space: pre;
         position:absolute;
         font-size:1.6em;
         top:365px;
         left:100px;
     }
-    .platform_text{
+    div[${RandData}] .platform_text{
         white-space: pre;
         position:absolute;
         font-size:1.2em;
         top:410px;
         left:200px;
     }
-    .author_subject{
+    div[${RandData}] .author_subject{
         white-space: pre;
         position:absolute;
         font-size:1.6em;
         top:440px;
         left:100px;
     }
-    .author_text{
+    div[${RandData}] .author_text{
         white-space: pre;
         position:absolute;
         font-size:1.2em;
@@ -135,45 +137,42 @@ const html = `
         top:480px;
         left:100px;
     }
-    .function_subject{
+    div[${RandData}] .function_subject{
         white-space: pre;
         position:absolute;
         font-size:1.6em;
         top:365px;
         left:500px;
     }
-    .function_text{
+    div[${RandData}] .function_text{
         white-space: pre;
         position:absolute;
         font-size:1.2em;
         top:400px;
         left:480px;
     }
-    .backbtn{
+    div[${RandData}] .backbtn{
         position:absolute;
-        top:32px;
-        left:1.5px;
+        top:0px;
+        left:0px;
         width: 57px;
         height: 50px;
         line-height: 50px;
         background-color: #808080;
         color: #fff;
     }
-    .error{
-        
-    }
-    .star_icon{
+    div[${RandData}] .star_icon{
         position:relative;
         top:-20px;
         left:10px;
     }
-    .star_icon2{
+    div[${RandData}] .star_icon2{
         position:absolute;
         top:190px;
         left:550px;
         font-size: 2em;
     }
-    .star5_rating{
+    div[${RandData}] .star5_rating{
         position: relative;
         z-index: 0;
         display: inline-block;
@@ -182,11 +181,11 @@ const html = `
         /*font-size: 25px;  フォントサイズ 自由に設定化 */
     }
 
-    .star5_rating:before, .star5_rating:after{
+    div[${RandData}] .star5_rating:before, .star5_rating:after{
         content: '★★★★★';
     }
 
-    .star5_rating:after{
+    div[${RandData}] .star5_rating:after{
         position: absolute;
         z-index: 1;
         top: 0;
@@ -196,12 +195,12 @@ const html = `
         color: #ffcf32; /* イエローカラー 自由に設定化 */
     }
 
-    .star5_rating[data-rate="5"]:after{ width: 100%; } /* 星5 */
-    .star5_rating[data-rate="4"]:after{ width: 80%; } /* 星4 */
-    .star5_rating[data-rate="3"]:after{ width: 60%; } /* 星3 */
-    .star5_rating[data-rate="2"]:after{ width: 40%; } /* 星2 */
-    .star5_rating[data-rate="1"]:after{ width: 20%; } /* 星1 */
-    .star5_rating[data-rate="0"]:after{ width: 0%; } /* 星0 */
+    div[${RandData}] .star5_rating[data-rate="5"]:after{ width: 100%; } /* 星5 */
+    div[${RandData}] .star5_rating[data-rate="4"]:after{ width: 80%; } /* 星4 */
+    div[${RandData}] .star5_rating[data-rate="3"]:after{ width: 60%; } /* 星3 */
+    div[${RandData}] .star5_rating[data-rate="2"]:after{ width: 40%; } /* 星2 */
+    div[${RandData}] .star5_rating[data-rate="1"]:after{ width: 20%; } /* 星1 */
+    div[${RandData}] .star5_rating[data-rate="0"]:after{ width: 0%; } /* 星0 */
 </style>`
 const style = "width:54em;height:34em;"
 
@@ -402,11 +401,11 @@ export class Store extends Window {
             </div>`
         allapp += container2
         this.list_container.insertAdjacentHTML('beforeend', allapp)
-        for (let j = 0; j < this.list_container.children[this.list_container.childElementCount - 1].childElementCount; j++) {
-            this.list_container.children[this.list_container.childElementCount - 1].children[j].classList.toggle('is_hidden')
-        }
-        this.list_container.children[this.list_container.childElementCount - 1].classList.toggle('is_hidden')
-        this.error.classList.toggle('is_hidden')
+        // for (let j = 0; j < this.list_container.children[this.list_container.childElementCount - 1].childElementCount; j++) {
+        //     this.list_container.children[this.list_container.childElementCount - 1].children[j].classList.toggle('is_hidden')
+        // }
+        this.list_container.children[this.list_container.childElementCount - 1].classList.add('is_hidden')
+        this.error.classList.add('is_hidden')
         this.can = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
         // 情報を引き継ぐ
@@ -425,13 +424,13 @@ export class Store extends Window {
             this.list_container.children[i].addEventListener('click', () => {
                 // 表示するオブジェクトを入れ替える
                 for (let j = 0; j < this.list_container.childElementCount; j++) {
-                    this.list_container.children[j].classList.toggle('is_hidden')
+                    this.list_container.children[j].classList.add('is_hidden')
                 }
-                for (let j = 0; j < this.list_container.children[this.list_container.childElementCount - 1].childElementCount; j++) {
-                    this.list_container.children[this.list_container.childElementCount - 1].children[j].classList.toggle('is_hidden')
-                }
-                this.list_container.children[this.list_container.childElementCount - 1].classList.toggle('is_hidden')
-                this.error.classList.toggle('is_hidden')
+                // for (let j = 0; j < this.list_container.children[this.list_container.childElementCount - 1].childElementCount; j++) {
+                //     this.list_container.children[this.list_container.childElementCount - 1].children[j].classList.toggle('is_hidden')
+                // }
+                this.list_container.children[this.list_container.childElementCount - 1].classList.remove('is_hidden')
+                // this.error.classList.toggle('is_hidden')
 
                 // 選んだアプリを記憶
                 this.selectapp = i - 2
@@ -452,13 +451,13 @@ export class Store extends Window {
         this.list_container.children[this.list_container.childElementCount - 1].children[this.list_container.children[this.list_container.childElementCount - 1].childElementCount - 1].addEventListener('click', () => {
             // 表示するオブジェクトを入れ替える
             for (let j = 0; j < this.list_container.childElementCount; j++) {
-                this.list_container.children[j].classList.toggle('is_hidden')
+                this.list_container.children[j].classList.remove('is_hidden')
             }
-            for (let j = 0; j < this.list_container.children[this.list_container.childElementCount - 1].childElementCount; j++) {
-                this.list_container.children[this.list_container.childElementCount - 1].children[j].classList.toggle('is_hidden')
-            }
-            this.list_container.children[this.list_container.childElementCount - 1].classList.toggle('is_hidden')
-            this.error.classList.toggle('is_hidden')
+            // for (let j = 0; j < this.list_container.children[this.list_container.childElementCount - 1].childElementCount; j++) {
+            //     this.list_container.children[this.list_container.childElementCount - 1].children[j].classList.toggle('is_hidden')
+            // }
+            this.list_container.children[this.list_container.childElementCount - 1].classList.add('is_hidden')
+            this.error.classList.add('is_hidden')
 
             // 記憶したアプリをリセット
             this.selectapp = -1
@@ -557,11 +556,4 @@ export class Store extends Window {
             document.getElementById("install_btn").innerText = "インストール"
         }
     }
-}
-
-function createElementFromHTML(html) {
-    let template = document.createElement('template');
-    html = html.trim(); // Never return a text node of whitespace as the result
-    template.innerHTML = html;
-    return template.content.firstElementChild;
 }
