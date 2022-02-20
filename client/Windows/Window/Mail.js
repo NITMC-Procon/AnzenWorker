@@ -1,7 +1,7 @@
 'use strict'
 import { Window, RandomData, createElementFromHTML } from "../Window.js"
 import { SystemConfigs, Task } from "../../System/Desktop.js"
-import { SendTo,SentToMeHandler,Socket } from "../../System/Network.js"
+import { SendTo, SentToMeHandler, Socket } from "../../System/Network.js"
 import { Notify } from "../../Functions/notify.js"
 import { AddContextMenu } from '../../Functions/contextmenu.js'
 
@@ -74,15 +74,15 @@ const html = `
     content:  "📎 ";
   }
 </style>`
-const style="width:40em;height:20em;"
+const style = "width:40em;height:20em;"
 
 export let maillist = []
 
-export class Mail extends Window{
-    constructor(){
-        super(html,"メール",{style:style,window_id:"Window_Mail"});
-        if(this.creationFailed)return
-        
+export class Mail extends Window {
+    constructor() {
+        super(html, "メール", { style: style, window_id: "Window_Mail" });
+        if (this.creationFailed) return
+
         /** @type {HTMLElement} *///@ts-ignore
         this.maillist = this.bodyElem.firstElementChild.firstElementChild.lastElementChild
         /** @type {HTMLElement} *///@ts-ignore
@@ -97,134 +97,133 @@ export class Mail extends Window{
         this.maildelbutton = this.mailtextarea.nextElementSibling
 
         /** @type {HTMLElement} *///@ts-ignore
-        this.mailarea =  this.bodyElem.firstElementChild.firstElementChild.nextElementSibling
+        this.mailarea = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling
 
         /** @type {HTMLInputElement} *///@ts-ignore
-        this.mailrefresh =  this.bodyElem.firstElementChild.firstElementChild.firstElementChild.firstElementChild
+        this.mailrefresh = this.bodyElem.firstElementChild.firstElementChild.firstElementChild.firstElementChild
 
         /** @type {HTMLElement} *///@ts-ignore
-        this.newmailarea =  this.mailarea.nextElementSibling
+        this.newmailarea = this.mailarea.nextElementSibling
         /** @type {HTMLInputElement} *///@ts-ignore
-        this.newmailbutton =  this.bodyElem.firstElementChild.firstElementChild.firstElementChild.lastElementChild
+        this.newmailbutton = this.bodyElem.firstElementChild.firstElementChild.firstElementChild.lastElementChild
         /** @type {HTMLInputElement} *///@ts-ignore
-        this.newmailto =  this.newmailarea.firstElementChild.nextElementSibling.lastElementChild
+        this.newmailto = this.newmailarea.firstElementChild.nextElementSibling.lastElementChild
         /** @type {HTMLInputElement} *///@ts-ignore
-        this.newmailsub =  this.newmailarea.firstElementChild.nextElementSibling.nextElementSibling.lastElementChild
+        this.newmailsub = this.newmailarea.firstElementChild.nextElementSibling.nextElementSibling.lastElementChild
         /** @type {HTMLInputElement} *///@ts-ignore
-        this.newmailtext =  this.newmailarea.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
+        this.newmailtext = this.newmailarea.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
         /** @type {HTMLInputElement} *///@ts-ignore
-        this.newmaildelbutton =  this.newmailtext.nextElementSibling.firstElementChild
+        this.newmaildelbutton = this.newmailtext.nextElementSibling.firstElementChild
         /** @type {HTMLInputElement} *///@ts-ignore
-        this.newmailsendbutton =  this.newmaildelbutton.nextElementSibling
+        this.newmailsendbutton = this.newmaildelbutton.nextElementSibling
 
-        Socket.emit("getGameInfo",(res)=>{
+        Socket.emit("getGameInfo", (res) => {
             this.newmailfrom = res.myID
             this.newmailto.innerHTML = ""
             let temp = ""
-            if(res.users){
-                res.users.forEach((user)=>{
-                    if(user.SocketID != this.newmailfrom) temp += `<option value="${user.SocketID}">${user.Name?user.Name:user.SocketID}</option>`
+            if (res.users) {
+                res.users.forEach((user) => {
+                    if (user.SocketID != this.newmailfrom) temp += `<option value="${user.SocketID}">${user.Name ? user.Name : user.SocketID}</option>`
                 })
                 this.newmailto.innerHTML = temp
             }
         })
 
         this.refreshMails()
-        
-        this.mailfilearea.addEventListener('click',()=>{
+
+        this.mailfilearea.addEventListener('click', () => {
             this.openfile()
         })
-        this.maildelbutton.addEventListener('click',()=>{
+        this.maildelbutton.addEventListener('click', () => {
             this.deleteMail()
         })
-        this.newmailbutton.addEventListener('click',()=>{
+        this.newmailbutton.addEventListener('click', () => {
             this.mailarea.classList.add("disabled")
             this.newmailarea.classList.remove("disabled")
         })
-        this.newmaildelbutton.addEventListener('click',()=>{
+        this.newmaildelbutton.addEventListener('click', () => {
             this.mailarea.classList.remove("disabled")
             this.newmailarea.classList.add("disabled")
         })
-        this.newmailsendbutton.addEventListener('click',()=>{
+        this.newmailsendbutton.addEventListener('click', () => {
             this.send()
         })
-        this.mailrefresh.addEventListener('click',()=>{
+        this.mailrefresh.addEventListener('click', () => {
             this.refreshMails()
         })
     }
-    send(){
+    send() {
         this.newmailarea.classList.add("disabled")
         let sub = this.newmailsub.value
         let to = this.newmailto.value
         let text = this.newmailtext.value
-        if(!to){
+        if (!to) {
             Notify("送信先が見つかりませんでした")
             return
         }
-        SendTo(to,"newMail",{
-            sub:sub,
-            from:this.newmailfrom,
-            text:text
+        SendTo(to, "newMail", {
+            sub: sub,
+            from: this.newmailfrom,
+            text: text
         })
         this.newmailsub.value = ""
         this.newmailto.value = ""
         this.newmailtext.value = ""
     }
-    select(mail){
+    select(mail) {
         this.mailarea.classList.remove("disabled")
         this.newmailarea.classList.add("disabled")
         this.keep = mail
-        this.mailtitlearea.textContent = mail.sub?mail.sub:""
+        this.mailtitlearea.textContent = mail.sub ? mail.sub : ""
         //@ts-ignore
-        this.mailtextarea.innerText = mail.text?mail.text:""
-        this.mailfromarea.innerText = mail.from?mail.from:""
-        if(mail.file){
-            this.mailfilearea.style.display=""
+        this.mailtextarea.innerText = mail.text ? mail.text : ""
+        this.mailfromarea.innerText = mail.from ? mail.from : ""
+        if (mail.file) {
+            this.mailfilearea.style.display = ""
             this.mailfilearea.textContent = mail.file.name;
-        }else{
-            this.mailfilearea.style.display="none"
+        } else {
+            this.mailfilearea.style.display = "none"
         }
-        this.maildelbutton.style.display=(mail?"":"none")
+        this.maildelbutton.style.display = (mail ? "" : "none")
     }
-    openfile(){
-        if(this.keep && this.keep.file.func){
+    openfile() {
+        if (this.keep && this.keep.file.func) {
             this.keep.file.func()
         }
-        if(this.keep.type=="virus"){//ウイルス開いたのなら
-            Task.Complete("Mail",true);//失敗
+        if (this.keep.type == "virus") {//ウイルス開いたのなら
+            Task.Complete("Mail", true);//失敗
         }
     }
-    deleteMail(){
-        if(this.keep.type == "virus"){//ウイルスメール削除
+    deleteMail() {
+        if (this.keep.type == "virus") {//ウイルスメール削除
             SystemConfigs.Result.Revenue += 100;
             SystemConfigs.Result.SecurityScore += 200;
             Task.Complete("Mail");
         }
-        maillist = maillist.filter((item)=> {
+        maillist = maillist.filter((item) => {
             return item !== this.keep;
         });
         this.select([])
         this.mailarea.classList.add("disabled")
         this.refreshMails()
     }
-    refreshMails(){
-        if(JSON.stringify(SystemConfigs.connected_wifi) != "[]"){
-            this.select([])
-            this.maillist.innerHTML=""
-            maillist.forEach((mail) =>{
+    refreshMails() {
+        if (JSON.stringify(SystemConfigs.connected_wifi) != "[]") {
+            this.maillist.innerHTML = ""
+            maillist.forEach((mail) => {
                 let temp = createElementFromHTML(`<div class="mailbox">
                         <p>${mail.from}</p>
                         <p>${mail.sub}</p>
                         <p style="color:gray">${mail.text}</p>
                     </div>`)
-                temp.addEventListener('click',()=>{
+                temp.addEventListener('click', () => {
                     this.select(mail)
-                    if(!mail.read){ //未読メール
+                    if (!mail.read) { //未読メール
                         mail.read = true;
                         SystemConfigs.Result.Revenue += 100;
                     }
                 })
-                this.maillist.insertAdjacentElement('beforeend',temp)
+                this.maillist.insertAdjacentElement('beforeend', temp)
 
                 let menu = createElementFromHTML(`
                 <ul>
@@ -237,17 +236,17 @@ export class Mail extends Window{
                 })
                 AddContextMenu(temp, menu)
             })
-        }else{
+        } else {
             this.select({
                 sub: "ネットワークに接続出来ませんでした",
-                from:"SystemMessage",
+                from: "SystemMessage",
                 text: "ネットワークに接続出来ませんでした。\nWi-Fiに接続しているか、確認してください。"
             })
-            this.maildelbutton.style.display="none"
+            this.maildelbutton.style.display = "none"
         }
     }
 }
 
-SentToMeHandler["newMail"] = (mail)=>{
+SentToMeHandler["newMail"] = (mail) => {
     maillist.push(mail)
 }
