@@ -4,6 +4,7 @@ import { Handlers, InitSocket, Socket } from './System/Network.js';
 import { LoginWindow } from './Windows/Window/LoginWindow.js'
 import { ResultWindow } from './Windows/Window/ResultWindow.js'
 import { GameManager } from './Windows/Window/GameManager.js';
+import { InitWizard } from './Windows/Window/InitWizard.js';
 import { Logon } from './System/Logon.js';
 
 let host = window.document.location.host;   // .replace(/:.*/, '');
@@ -18,7 +19,11 @@ window.addEventListener("load", () => {
         Boot()
     
        // new LoginWindow()
-       Logon();
+        Logon();
+
+        if(!SystemConfigs.isWizardClosed){
+            new InitWizard();
+        }
 
         new GameManager()
     

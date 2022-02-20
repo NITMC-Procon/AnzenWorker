@@ -121,7 +121,9 @@ export let SystemConfigs = {
         List: [],
         Install: package_Install,
         Uninstall: package_Uninstall
-    }
+    },
+
+    isWizardClosed: false
 }
 
 function package_Install(name, iconurl, func) {
