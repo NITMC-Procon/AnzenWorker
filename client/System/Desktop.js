@@ -8,7 +8,7 @@ import { Mail } from '../Windows/Window/Mail.js'
 import { InternetBrowser } from '../Windows/Window/InternetBrowser.js'
 import { Store } from '../Windows/Window/Store.js'
 import { ResultWindow } from '../Windows/Window/ResultWindow.js'
-import { JobManager } from '../Windows/Window/JobManager.js'
+import { JobManager, joblist } from '../Windows/Window/JobManager.js'
 import { MailReciever } from '../Services/Service/MailReciever.js'
 import { JobReciever } from '../Services/Service/JobReciever.js'
 import { Explorer } from '../Windows/Window/Explorer.js'
@@ -205,21 +205,23 @@ export let DesktopIconList = [
 
 export let TaskbarIconList_R = [
     { Iconurl: "/images/wifiicon.png", Clickfunc: () => { new WiFi() } },
-    { Iconurl: "/images/icons/fullscr.svg", Clickfunc: (icon) => {
-        console.log(icon)
-        if (document.fullscreenElement !== undefined && document.fullscreenElement !== null){
-            document.exitFullscreen()
-            icon.Iconurl = "/images/icons/fullscr.svg"
-        } else {
-            if( document.body.requestFullscreen ) {
-                document.body.requestFullscreen()
-                icon.Iconurl = "/images/icons/nofullscr.svg"
-            }else{
-                Notify("フルスクリーン表示に失敗しました")
+    {
+        Iconurl: "/images/icons/fullscr.svg", Clickfunc: (icon) => {
+            console.log(icon)
+            if (document.fullscreenElement !== undefined && document.fullscreenElement !== null) {
+                document.exitFullscreen()
+                icon.Iconurl = "/images/icons/fullscr.svg"
+            } else {
+                if (document.body.requestFullscreen) {
+                    document.body.requestFullscreen()
+                    icon.Iconurl = "/images/icons/nofullscr.svg"
+                } else {
+                    Notify("フルスクリーン表示に失敗しました")
+                }
             }
+            RefreshTaskbar()
         }
-        RefreshTaskbar()
-    } },
+    },
 ]
 
 export let MenuIconList_L = [
@@ -244,7 +246,7 @@ export function RefreshDesktop() {
     let elm_drag
     desktopfolder.children.forEach(item => {
         /** @type {HTMLElement} *///@ts-ignore
-        let temp = createElementFromHTML(`<div class="icon${item.target?" shortcut":""}" draggable="true">
+        let temp = createElementFromHTML(`<div class="icon${item.target ? " shortcut" : ""}" draggable="true">
                 <div class="icon_image"><img src="${item.icon}"></img></div>
                 <span class="icon_text">${item.name}</span>
                 </div>`)
@@ -310,7 +312,7 @@ export function RefreshDesktop() {
             <ul>
                 <li>Delete</li>
                 <li>Rename</li>
-                ${item.target?"<li>Open Target Folder</li>":""}
+                ${item.target ? "<li>Open Target Folder</li>" : ""}
             </ul>
             `)
         menu.firstElementChild.addEventListener("click", () => {
@@ -330,8 +332,8 @@ export function RefreshDesktop() {
                 RefreshDesktop()
             })
         })
-        if(item.target != null){
-            menu.firstElementChild.nextElementSibling.nextElementSibling.addEventListener("click",()=>{
+        if (item.target != null) {
+            menu.firstElementChild.nextElementSibling.nextElementSibling.addEventListener("click", () => {
                 new Explorer(item.target.parent)
             })
         }
@@ -526,14 +528,16 @@ export function InitGame() {//リザルトとかを初期化
     Task.CompletedTask = []
     Task.FailedTask = []
     Task.SucceedTask = []
+    joblist.splice(0, joblist.length)
 
     // for (let windowid in WindowManager.windows) {//すべてのウィンドウを削除
     //     WindowManager.windows[windowid].destroy(true);
     // }
+
     for (let serviceid in WindowManager.services) {//すべてのサービスを停止
         WindowManager.services[serviceid].destuctor();
     }
-    systemServiceList.forEach(s=>{
+    systemServiceList.forEach(s => {
         new s()
     })
 }
