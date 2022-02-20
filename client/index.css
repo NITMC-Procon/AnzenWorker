@@ -67,6 +67,7 @@ div.login-buttons{
   border-width: 2px;
   border-top-width: 0;
   height: 100%;
+  position:relative;
 }
 .window>.window-titlebar>span {
   text-overflow: ellipsis;
