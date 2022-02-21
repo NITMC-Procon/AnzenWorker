@@ -22,7 +22,7 @@ window.addEventListener("load", () => {
         setTimeout(() => {
             bootwindow.classList.add("hidden")
 
-            Boot()
+            Boot(mode)
 
             if (mode == "create") {
                 new GameManager()
