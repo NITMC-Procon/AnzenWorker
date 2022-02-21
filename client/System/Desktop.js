@@ -18,6 +18,8 @@ import { Notify } from '../Functions/notify.js'
 
 const UserName = "ANZEN"
 
+let bootmode = "join"
+
 //ココにウィンドウのリストを追加していく
 // const windowList = {
 //     "GameManager": GameManager,
@@ -193,7 +195,7 @@ function Task_EmitResult(data) {
     Socket.emit("taskresult", JSON.stringify(data))
 }
 
-export let DesktopIconList = [
+let DesktopIconList_create = [
     { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Clickfunc: () => { new JobManager() } },
     { Name: "Internet Browser", Iconurl: "/images/earth.svg", Clickfunc: () => { new InternetBrowser() } },
     { Name: "Game Manager", Iconurl: "/images/manager.svg", Clickfunc: () => { new GameManager() } },
@@ -204,6 +206,19 @@ export let DesktopIconList = [
     { Name: "Explorer", Iconurl: "/images/folder.svg", Clickfunc: () => { new Explorer() } },
     { Name: "Lime", Iconurl: "/images/apps/Lime.svg", Clickfunc: () => { new Lime() } }
 ]
+
+let DesktopIconList_join = [
+    { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Clickfunc: () => { new JobManager() } },
+    { Name: "Internet Browser", Iconurl: "/images/earth.svg", Clickfunc: () => { new InternetBrowser() } },
+    { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { new Mail() } },
+    { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { new Store() } },
+    { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { new LoginWindow() } },
+    { Name: "リザルト 画面", Iconurl: "/images/result.svg", Clickfunc: () => { new ResultWindow() } },
+    { Name: "Explorer", Iconurl: "/images/folder.svg", Clickfunc: () => { new Explorer() } },
+    { Name: "Lime", Iconurl: "/images/apps/Lime.svg", Clickfunc: () => { new Lime() } }
+]
+
+export let DesktopIconList;
 
 export let TaskbarIconList_R = [
     { Iconurl: "/images/wifiicon.png", Clickfunc: () => { new WiFi() } },
@@ -226,20 +241,56 @@ export let TaskbarIconList_R = [
     },
 ]
 
-export let MenuIconList_L = [
+let MenuIconList_L_create = [
     { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Clickfunc: () => { new JobManager() } },
     { Name: "Internet Browser", Iconurl: "/images/earth.svg", Clickfunc: () => { new InternetBrowser() } },
     { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { new Mail() } },
     { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { new Store() } },
     { Name: "Game Manager", Iconurl: "/images/manager.svg", Clickfunc: () => { new GameManager() } },
 ]
-export let MenuIconList_R = [
+let MenuIconList_R_create = [
     { Name: "マイドキュメント", Iconurl: "/images/directory.png", Clickfunc: () => { new Explorer("/Users/ANZEN/Document/") } },
     { Name: "マイピクチャ", Iconurl: "/images/directory.png", Clickfunc: () => { new Explorer("/Users/ANZEN/Picture/") } },
     { Name: "マイミュージック", Iconurl: "/images/directory.png", Clickfunc: () => { new Explorer("/Users/ANZEN/Music/") } },
     { Name: "ダウンロード", Iconurl: "/images/directory.png", Clickfunc: () => { new Explorer("/Users/ANZEN/Download/") } },
     { Name: "Wi-Fi", Iconurl: "/images/wifiicon.png", Clickfunc: () => { new WiFi() } },
 ]
+
+let MenuIconList_L_join = [
+    { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Clickfunc: () => { new JobManager() } },
+    { Name: "Internet Browser", Iconurl: "/images/earth.svg", Clickfunc: () => { new InternetBrowser() } },
+    { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { new Mail() } },
+    { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { new Store() } }
+]
+let MenuIconList_R_join = [
+    { Name: "マイドキュメント", Iconurl: "/images/directory.png", Clickfunc: () => { new Explorer("/Users/ANZEN/Document/") } },
+    { Name: "マイピクチャ", Iconurl: "/images/directory.png", Clickfunc: () => { new Explorer("/Users/ANZEN/Picture/") } },
+    { Name: "マイミュージック", Iconurl: "/images/directory.png", Clickfunc: () => { new Explorer("/Users/ANZEN/Music/") } },
+    { Name: "ダウンロード", Iconurl: "/images/directory.png", Clickfunc: () => { new Explorer("/Users/ANZEN/Download/") } },
+    { Name: "Wi-Fi", Iconurl: "/images/wifiicon.png", Clickfunc: () => { new WiFi() } },
+]
+
+export let MenuIconList_L;
+export let MenuIconList_R;
+
+function initParameters(){
+    switch(bootmode){
+        case "join":
+            DesktopIconList = DesktopIconList_join;
+            MenuIconList_L = MenuIconList_L_join;
+            MenuIconList_R = MenuIconList_R_join;
+            break;
+        case "create":
+            DesktopIconList = DesktopIconList_create;
+            MenuIconList_L = MenuIconList_L_create;
+            MenuIconList_R = MenuIconList_R_create;  
+            break; 
+        default:
+            break;
+    }
+
+}
+
 export function RefreshDesktop() {
     const desktop_icons = document.getElementById("desktop_icons")
     /** @type {Folder} *///@ts-ignore
@@ -495,7 +546,9 @@ function createElementFromHTML(html) {
     return template.content.firstElementChild;
 }
 
-export function Boot() {
+export function Boot(_bootmode) {
+    bootmode = _bootmode;
+    initParameters();
     initFileSystem()
     RefreshDesktop()
     RefreshTaskbar()
