@@ -127,7 +127,10 @@ let loHtml = `
 </div>`
 
 let container;
-export function Logon(){
+let callback;
+
+export function Logon(_callback){
+    callback = _callback;
      container = document.getElementById('logon');
     container.style.width = "100%";
     container.style.height = "100vh";
@@ -190,6 +193,7 @@ function room_button(str,roomid,username) {
             //     e.classList.add('disabled')
             // })
             message.innerText = ""//警告メッセージ削除
+            callback(str);
             container.remove();
         } else if (resp.roomres == -1) {
             message.innerText = "Room already exists or invalid!"//警告メッセージ
