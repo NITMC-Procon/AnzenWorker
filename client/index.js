@@ -8,35 +8,39 @@ import { InitWizard } from './Windows/Window/InitWizard.js';
 import { Logon } from './System/Logon.js';
 
 let host = window.document.location.host;   // .replace(/:.*/, '');
-let protocol = window.document.location.protocol == "https:" ?'wss://':'ws://'
+let protocol = window.document.location.protocol == "https:" ? 'wss://' : 'ws://'
 let ServerAddress = protocol + host;         //  + ':8080';
 
 //ロードされたらゲーム開始
 window.addEventListener("load", () => {
     const bootwindow = document.getElementById("bootwindow")
-    setTimeout(() => {
-        bootwindow.classList.add("hidden")
-        Boot()
-    
-       // new LoginWindow()
-        Logon();
 
-        if(!SystemConfigs.isWizardClosed){
-            new InitWizard();
-        }
+    InitSocket(ServerAddress)
+    Logon(logonCallBack)
 
-        new GameManager()
-    
-        InitSocket(ServerAddress)
-        
-        Handlers["gameInfo"] = (msg) => {
-            switch (msg.status) {
-                case "start":gamestart(msg); break;
-                case "stop":gamestop(msg); break;
+    function logonCallBack(mode) {
+        setTimeout(() => {
+            bootwindow.classList.add("hidden")
+
+            Boot()
+
+            if (mode == "create") {
+                new GameManager()
             }
-        };
-    }, 1000);
-    
+
+            if (!SystemConfigs.isWizardClosed) {
+                new InitWizard();
+            }
+
+            Handlers["gameInfo"] = (msg) => {
+                switch (msg.status) {
+                    case "start": gamestart(msg); break;
+                    case "stop": gamestop(msg); break;
+                }
+            };
+        }, 1000);
+    };
+
     const backgrounds = [
         "/images/backgrounds/hill.svg",
         "/images/backgrounds/blue.svg",
@@ -45,35 +49,35 @@ window.addEventListener("load", () => {
     let index = 0
     setInterval(() => {//壁紙変更
         index++
-        if(index >= backgrounds.length)index = 0
+        if (index >= backgrounds.length) index = 0
 
         setbackground(backgrounds[index])
-    }, 1000*60);
+    }, 1000 * 60);
 });
 
-function setbackground(str){
+function setbackground(str) {
     const desktop = document.getElementById("desktop")
-    desktop.style.backgroundImage="url("+ str +")"
+    desktop.style.backgroundImage = "url(" + str + ")"
 }
 
 let stoptimer
-function gamestart(msg){
-    if(!SystemConfigs.room.status){//開始されてなければ
+function gamestart(msg) {
+    if (!SystemConfigs.room.status) {//開始されてなければ
         InitGame()
         SystemConfigs.room.startat = msg.startat
         SystemConfigs.room.duration = msg.duration
-        SystemConfigs.room.status=true
+        SystemConfigs.room.status = true
         stoptimer = setTimeout(gamestop, msg.duration);
-    
+
         Notify("ゲームが開始されました")
     }
 }
 
-function gamestop(msg){
-    if(SystemConfigs.room.status){//終了してなければ
+function gamestop(msg) {
+    if (SystemConfigs.room.status) {//終了してなければ
         StopGame()
         clearTimeout(stoptimer)
-        SystemConfigs.room.status=false
+        SystemConfigs.room.status = false
         Notify("ゲームが終了しました")
         new ResultWindow()
     }
