@@ -527,14 +527,19 @@ export function InitGame() {//リザルトとかを初期化
     SystemConfigs.installed_software = []
     Result.Revenue = 0
     Result.SecurityScore = 0
+    Result.Flag = []
     Task.CompletedTask = []
     Task.FailedTask = []
     Task.SucceedTask = []
     joblist.splice(0, joblist.length)
 
-    // for (let windowid in WindowManager.windows) {//すべてのウィンドウを削除
-    //     WindowManager.windows[windowid].destroy(true);
-    // }
+    if (!SystemConfigs.room.status) {
+        for (let windowid in WindowManager.windows) {//すべてのウィンドウを削除
+            if (windowid != "ゲームマネージャー")
+                WindowManager.windows[windowid].destroy(true);
+        }
+    }
+
 
     for (let serviceid in WindowManager.services) {//すべてのサービスを停止
         WindowManager.services[serviceid].destuctor();
