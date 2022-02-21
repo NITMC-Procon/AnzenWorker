@@ -20,30 +20,30 @@ const notifyarea = document.getElementById("notification_area")
     @param {!Config=} option コンフィグ
     @return {Element} 通知のエレメント
 */
-export function Notify(text,option){
-    let style=""
-    if(option && option.style) style=option.style
+export function Notify(text, option) {
+    let style = ""
+    if (option && option.style) style = option.style
     let notifytext = createElementFromHTML(`<div class="notification" style="${style}"><p>${text}</p></div>`)
 
-    let notifyelem = notifyarea.insertAdjacentElement('afterbegin',notifytext)
-    const clickfunc = () =>{
+    let notifyelem = notifyarea.insertAdjacentElement('afterbegin', notifytext)
+    const clickfunc = () => {
         notifyelem.classList.remove("show")
-        setTimeout(()=>{
+        setTimeout(() => {
             notifyelem.remove()
-        },600)
-        if(option && typeof option.callback == 'function') option.callback();
+        }, 600)
     }
-    setTimeout(()=>{
+    setTimeout(() => {
         notifyelem.classList.add("show")
-    },100)
-    setTimeout(clickfunc,8000)
+    }, 100)
+    setTimeout(clickfunc, 8000)
 
-    notifyelem.addEventListener('click',clickfunc)
-    
+    notifyelem.addEventListener('click', () => {
+        option.callback();
+    })
     return notifyelem
 }
 
-function createElementFromHTML(html){
+function createElementFromHTML(html) {
     let template = document.createElement('template');
     html = html.trim(); // Never return a text node of whitespace as the result
     template.innerHTML = html;
