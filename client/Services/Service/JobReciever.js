@@ -42,7 +42,7 @@ export class JobReciever extends Service {
         }
     }
     jrec(i){
-        let index = typeof i?i: Math.floor(Math.random() * this.jlist.length)
+        let index = i??Math.floor(Math.random() * this.jlist.length)
         if(!this.jlist[index]) return  // なにもないのなら帰れ
         Joblist.push(this.jlist[index])
         Notify("新しいタスク:"+this.jlist[index].title,{callback:()=>{new JobManager()}})
