@@ -83,7 +83,7 @@ class Room {
             this.parent.rooms.get(currentroom).Leave(socket);
         }
         socket.join(this.roomid);
-        this.users.push({Name:username?username:"Anon",SocketID:socket.id})
+        this.users.push({Name:username||"Anon",SocketID:socket.id})
         socket.once("disconnect",()=>{
             this.Leave(socket)
         })
@@ -255,7 +255,7 @@ class Games{
         //socket.rooms で Set(2){ 'joer8EhcmAayFaDGAAAH', 'test' } みたいなmapが返ってくる
         //Set(n)からデータを得るために、...socket~で配列化 なんとなくGolangっぽい?
         //1つ目のデータは自分のsocket.idなので、2つ目を取得
-        return roomid?roomid:socket.id
+        return roomid||socket.id
         //もしルームに入ってなければ(roomid==undefined)、socket.idを返すようにした
     }
 }
