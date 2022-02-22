@@ -195,6 +195,7 @@ function room_button(str,roomid,username) {
             //     e.classList.add('disabled')
             // })
             message.innerText = ""//警告メッセージ削除
+            SystemConfigs.room.roomid = roomid;
             callback(str);
             container.remove();
         } else if (resp.roomres == -1) {
@@ -221,5 +222,4 @@ function room_button(str,roomid,username) {
     } else if (str == "create") {
         Socket.emit("createRoom", {roomid:roomid,username:username}, callbackfunc);
     }
-    SystemConfigs.room.roomid = roomid
 }
