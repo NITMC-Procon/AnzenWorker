@@ -2,7 +2,7 @@
 
 サーバー環境の開発は/serverフォルダで行う。このページでは、すべて/server以下として説明を行う。  
 
-## ファイル構造
+## ファイル依存関係
 
 index.js  
 |- Game.js  
@@ -13,7 +13,9 @@ index.js
 index.js: サーバの起動  
 Game.js: ゲーム全体の管理  
 Room.js: ルームの管理  
-no-redis.js: Redisを使用しない。  
+no-redis.js: Redisを使用しない。Redisを省いているだけで、メソッドなどは同じ。  
 db.js: 開発中。アカウントなどの情報をDBに保持する予定  
 Classes.js: ????  
 
+## JSDoc
+各ファイルのメソッドなどはJSDocのindex.htmlから参照。
