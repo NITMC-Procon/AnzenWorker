@@ -1,6 +1,7 @@
 'use strict'
 import { Window,RandomData } from "../Window.js"
-import { SystemConfigs, Task, RefreshDesktop } from "../../System/Desktop.js"
+import { SystemConfigs, Task } from "../../System/System.js"
+import { RefreshDesktop } from "../../System/Desktop.js"
 import { VirusScanner } from "./VirusScanner.js"
 import { PCcleaner } from "./PCcleaner.js"
 import { RansomWare } from "../../Viruses/VirusEvents.js"

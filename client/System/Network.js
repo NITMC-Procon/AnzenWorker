@@ -5,11 +5,11 @@ export let Socket
 
 /** @type {Object} */
 export let Handlers = {
-    "event":()=>{},
     "sentToMe": (arg) =>{sentToMe(arg)}
 }
 
 export function InitSocket(server) {
+    //@ts-ignore
     Socket = io(server);
 
     Socket.on("connect",() => {
@@ -40,7 +40,7 @@ export function InitSocket(server) {
     Socket.emit('regist-uuid', { uuid: uuid })
     
     Handlers["updateUUID"] = (uuid) => {
-        Socket.id = uuid['id'];
+        // Socket.id = uuid['id'];
         console.log('socketuuid: ' + Socket.id);
     };
 }

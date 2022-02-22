@@ -1,8 +1,0 @@
-{
-    "revenue //収益":6521,
-    "sec_score //セキュリティスコア":100,
-    "connected_wifi //接続されてるWi-Fi":["Anzenworker", "802.1x", 1, 3],
-    "installed_software //アプリストアから入れたソフト":["trojan","noton"],
-    "flag //現在立ってるフラグ":["trojan-inside","secured"],
-    "completed_task //終了したタスク一覧":[]
-}

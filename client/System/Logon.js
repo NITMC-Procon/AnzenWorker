@@ -1,4 +1,4 @@
-import { SystemConfigs } from "./Desktop.js"
+import { SystemConfigs } from "./System.js"
 import { Socket } from './Network.js'
 
 
@@ -131,7 +131,7 @@ let callback;
 
 export function Logon(_callback){
     callback = _callback;
-     container = document.getElementById('logon');
+    container = document.getElementById('logon');
     container.style.width = "100%";
     container.style.height = "100vh";
     container.style.margin = "0px";
@@ -161,7 +161,9 @@ export function Logon(_callback){
     }
 
     bstart.onclick = function(){
+        //@ts-ignore
         let roomid = document.getElementById('room').value;
+        //@ts-ignore
         let name = document.getElementById('name').value;
 
         room_button(mode,roomid,name);

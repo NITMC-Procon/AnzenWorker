@@ -1,6 +1,6 @@
 'use strict'
 import { Window } from "../Window.js"
-import { SystemConfigs } from "../../System/Desktop.js"
+import { SystemConfigs } from "../../System/System.js"
 
 
 const html = `<div class="installerframe" style="width: 800px;height: 600px;background-color: rgb(233, 233, 233);">

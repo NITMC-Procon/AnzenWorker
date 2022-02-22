@@ -26,7 +26,7 @@ export function Notify(text, option) {
     let notifytext = createElementFromHTML(`<div class="notification" style="${style}"><p>${text}</p></div>`)
 
     let notifyelem = notifyarea.insertAdjacentElement('afterbegin', notifytext)
-    const clickfunc = () => {
+    const disappear = () => {
         notifyelem.classList.remove("show")
         setTimeout(() => {
             notifyelem.remove()
@@ -34,12 +34,14 @@ export function Notify(text, option) {
     }
     setTimeout(() => {
         notifyelem.classList.add("show")
-    }, 100)
-    setTimeout(clickfunc, 8000)
+    }, 10)
+    setTimeout(disappear, 8000)
 
     notifyelem.addEventListener('click', () => {
-        option.callback();
+        if ( option && typeof option.callback == "function")option.callback();
+        disappear()
     })
+
     return notifyelem
 }
 

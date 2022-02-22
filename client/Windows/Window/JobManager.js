@@ -1,6 +1,6 @@
 'use strict'
 import { Window } from "../Window.js"
-import { SystemConfigs } from "../../System/Desktop.js"
+import { SystemConfigs,Joblist } from "../../System/System.js"
 
 const html = `
 <div style="display: flex;width: 100%;height: 100%;user-select:none;">
@@ -48,8 +48,6 @@ const html = `
 </style>`
 const style = "width:40em;height:20em;"
 
-export let joblist = []
-
 export class JobManager extends Window {
     constructor() {
         super(html, "タスク管理", { style: style,window_id:"Window_JobManager" });
@@ -82,7 +80,7 @@ export class JobManager extends Window {
     refreshtasks() {
       if(SystemConfigs.room.status){
         this.tasklist.innerHTML = ""
-        joblist.forEach((task) => {
+        Joblist.forEach((task) => {
             let temp = createElementFromHTML(`<div class="taskbox">
                     <p>${task.title}</p>
                 </div>`)
