@@ -6,7 +6,7 @@
 
 index.js  
 |- Game.js  
-   |-  Room.js
+&emsp|-  Room.js
 
 ## 各ファイルの説明
 
