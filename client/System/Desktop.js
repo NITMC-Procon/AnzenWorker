@@ -1,5 +1,5 @@
 import { Root } from './FileSystem.js'
-import { Reboot } from './System.js'
+import { Packages, Reboot } from './System.js'
 import { GameManager } from '../Windows/Window/GameManager.js'
 import { LoginWindow } from '../Windows/Window/LoginWindow.js'
 import { WiFi } from '../Windows/Window/WiFi.js'
@@ -27,30 +27,19 @@ export let WindowManager = {
 
 WindowManager.windowarea = document.getElementById("desktop_windows")
 
-let DesktopIconList_create = [
-    { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Clickfunc: () => { new JobManager() } },
-    { Name: "Internet Browser", Iconurl: "/images/earth.svg", Clickfunc: () => { new InternetBrowser() } },
-    { Name: "Game Manager", Iconurl: "/images/manager.svg", Clickfunc: () => { new GameManager() } },
-    { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { new Mail() } },
-    { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { new Store() } },
-    { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { new LoginWindow() } },
-    { Name: "リザルト 画面", Iconurl: "/images/result.svg", Clickfunc: () => { new ResultWindow() } },
-    { Name: "Explorer", Iconurl: "/images/folder.svg", Clickfunc: () => { new Explorer() } },
-    { Name: "Lime", Iconurl: "/images/apps/Lime.svg", Clickfunc: () => { new Lime() } }
-]
 
-let DesktopIconList_join = [
-    { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Clickfunc: () => { new JobManager() } },
-    { Name: "Internet Browser", Iconurl: "/images/earth.svg", Clickfunc: () => { new InternetBrowser() } },
-    { Name: "メール", Iconurl: "/images/mailicon.png", Clickfunc: () => { new Mail() } },
-    { Name: "ストア", Iconurl: "/images/storeicon.png", Clickfunc: () => { new Store() } },
-    { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Clickfunc: () => { new LoginWindow() } },
-    { Name: "リザルト 画面", Iconurl: "/images/result.svg", Clickfunc: () => { new ResultWindow() } },
-    { Name: "Explorer", Iconurl: "/images/folder.svg", Clickfunc: () => { new Explorer() } },
-    { Name: "Lime", Iconurl: "/images/apps/Lime.svg", Clickfunc: () => { new Lime() } }
+/**@type {Array<import("./System").Package>} */
+let Apps = [
+    { Name: "タスク管理", Iconurl: "/images/jobManagericon.png", Constructor:JobManager},
+    { Name: "Internet Browser", Iconurl: "/images/earth.svg", Constructor:InternetBrowser},
+    { Name: "Game Manager", Iconurl: "/images/manager.svg", Constructor:GameManager,AdminOnly:true},
+    { Name: "メール", Iconurl: "/images/mailicon.png", Constructor:Mail},
+    { Name: "ストア", Iconurl: "/images/storeicon.png", Constructor:Store},
+    { Name: "サーバーにログイン", Iconurl: "/images/padlock.png", Constructor:LoginWindow},
+    { Name: "リザルト 画面", Iconurl: "/images/result.svg", Constructor:ResultWindow},
+    { Name: "Explorer", Iconurl: "/images/folder.svg", Constructor:Explorer},
+    { Name: "Lime", Iconurl: "/images/apps/Lime.svg", Constructor:Lime}
 ]
-
-export let DesktopIconList;
 
 export let TaskbarIconList_R = [
     { Iconurl: "/images/wifiicon.png", Clickfunc: () => { new WiFi() } },
@@ -106,14 +95,13 @@ export let MenuIconList_L;
 export let MenuIconList_R;
 
 export function InitParameters(mode){
+    Packages.List = Apps
     switch(mode){
         case "join":
-            DesktopIconList = DesktopIconList_join;
             MenuIconList_L = MenuIconList_L_join;
             MenuIconList_R = MenuIconList_R_join;
             break;
         case "create":
-            DesktopIconList = DesktopIconList_create;
             MenuIconList_L = MenuIconList_L_create;
             MenuIconList_R = MenuIconList_R_create;  
             break; 

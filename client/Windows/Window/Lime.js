@@ -1,19 +1,18 @@
 'use strict'
 import { Window, createElementFromHTML } from "../Window.js"
-import { SystemConfigs, Task } from "../../System/System.js"
+import { WindowManager } from "../../System/Desktop.js";
 import { SendTo, SentToMeHandler, Socket } from "../../System/Network.js"
-import { Notify } from "../../Functions/notify.js"
-import { AddContextMenu } from '../../Functions/contextmenu.js'
+import { Notify } from "../../Functions/notify.js";
 
 const html = `
 <div app-lime>
     <div class="users"> 
     </div>
     <div class="talk">
-        <div class="name">テスト</div>
+        <div class="name"></div>
         <div class="chats group">
         </div>
-        <div class="input">
+        <div class="input hidden">
             <textarea placeholder="メッセージを入力"></textarea>
             <button>送信</button>
         </div>
@@ -64,8 +63,6 @@ export class Lime extends Window {
     /** @type {HTMLElement} *///@ts-ignore
     this.submitbutton = this.inputmessage.nextElementSibling
 
-    this.users.innerHTML = ""
-    this.chatarea.innerHTML = ""
     this.selecteduser = {}
 
     Socket.emit("getGameInfo", (res) => {
@@ -81,7 +78,6 @@ export class Lime extends Window {
                 },
                 "messages":[]
               })
-            else delete chats[i]
           }else{
             this.myname = user.Name
           }
@@ -89,15 +85,7 @@ export class Lime extends Window {
       }
       this.refreshUsers()
     })
-    
-    SentToMeHandler["LimeMessage"] = (message) => {
-      let c = chats.find(chat=> chat.user.socketID == message.user.socketID)
-      c.messages.push(message)
-      chats = chats.filter(chat=>chat.user!==c.user)
-      chats.unshift(c)
-      this.refreshUsers()
-      this.selectChat(chats[0])
-    }
+
     this.submitbutton.addEventListener("click",()=>this.send())
   }
   send() {
@@ -116,6 +104,7 @@ export class Lime extends Window {
     this.selectChat(chats[i])
   }
   selectChat(chat) {
+    this.inputarea.classList.remove("hidden")
     this.chatarea.innerHTML=""
     this.selecteduser = chat.user
     chat.messages.forEach(message=>{
@@ -136,6 +125,9 @@ export class Lime extends Window {
         </div>`)
       elem.addEventListener("click",()=>this.selectChat(chat))
       this.users.insertAdjacentElement("beforeend",elem)
+      if(this.selecteduser == chat.user){
+        this.selectChat(chat)
+      }
     })
   }
   parseMessage(message){
@@ -159,3 +151,29 @@ export class Lime extends Window {
       </div>`)
   }
 }
+
+(()=>{
+  SentToMeHandler["LimeMessage"] = (message) => {
+    console.log(message)
+    let c = chats.find(chat=> chat.user.socketID == message.user.socketID)
+    if(c == undefined) c = {
+        "user":{
+          "name": message.user.name ?? message.user.socketID,
+          "socketID": message.user.socketID
+        },
+        "messages":[]
+      }
+    c.messages.push(message)
+    chats = chats.filter(chat=>chat.user!==c.user)
+    chats.unshift(c)
+    let win = WindowManager.windows["Lime"]
+    if(win != undefined && "refreshUsers" in win && typeof win.refreshUsers == "function"){
+      WindowManager.windows["Lime"].refreshUsers()
+    }else{
+      Notify(`Limeのメッセージ: ${c.user.name}<br>${message.message}`,{callback:()=>{
+        let tmp = new Lime()
+        tmp.selectChat(c)
+      }})
+    }
+  }
+})()

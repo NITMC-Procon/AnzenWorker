@@ -206,6 +206,11 @@ div.login-buttons{
   transform: translateX(0);
   visibility:visible;
 }
+.notification p {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 #desktop{
   position: absolute;
   top:0;
