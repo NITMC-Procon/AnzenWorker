@@ -1,6 +1,6 @@
 import { Folder, File, Link, Root } from './FileSystem.js'
 import { Handlers, InitSocket, Socket } from './Network.js'
-import { RefreshTaskbar,RefreshDesktop,WindowManager,DesktopIconList,InitParameters } from './Desktop.js'
+import { RefreshTaskbar,RefreshDesktop,WindowManager,InitParameters } from './Desktop.js'
 
 import { MailReciever } from '../Services/Service/MailReciever.js'
 import { JobReciever } from '../Services/Service/JobReciever.js'
@@ -29,7 +29,15 @@ export let Task = {
     EmitResult: Task_EmitResult
 }
 
+/**
+ * @typedef {Object} Package  - Package型
+ * @property {String} Name    - アプリ名
+ * @property {Object} Constructor  - アプリのクラス
+ * @property {String} Iconurl - アイコンのURL
+ * @property {Boolean} [AdminOnly = false] - 管理者用アプリ
+ */
 export let Packages = {
+    /**@type {Array<Package>} */
     List: [],
     Install: package_Install,
     Uninstall: package_Uninstall
@@ -64,8 +72,13 @@ export let SystemConfigs = {
     isWizardClosed: false
 }
 
+/**
+ * @param {String} name    - アプリ名
+ * @param {String} iconurl - アイコンのURL
+ * @param {Object} func  - アプリのクラス
+ */
 function package_Install(name, iconurl, func) {
-    SystemConfigs.Packages.List.push(name)
+    SystemConfigs.Packages.List.push({Name:name,Constructor:func,Iconurl:iconurl})
     /**@type {Folder} *///@ts-ignore
     let desktopfolder = Root.GetPath(`/Users/${User_Name}/Desktop/`)
     /**@type {Folder} *///@ts-ignore
@@ -78,8 +91,8 @@ function package_Install(name, iconurl, func) {
 }
 
 function package_Uninstall(name) {
-    SystemConfigs.Packages.List.filter((item) => {
-        return item !== name
+    SystemConfigs.Packages.List = SystemConfigs.Packages.List.filter((item) => {
+        return item.Name !== name
     })
     /**@type {Folder} *///@ts-ignore
     let desktopfolder = Root.GetPath(`/Users/${User_Name}/Desktop/`)
@@ -123,7 +136,7 @@ function Task_EmitResult(data) {
 
 export function Boot(mode) {
     InitParameters(mode)
-    initFileSystem()
+    initFileSystem(mode)
     RefreshDesktop()
     RefreshTaskbar()
 }
@@ -196,7 +209,7 @@ export function StopGame(msg) {//サービス等停止用
     }
 }
 
-function initFileSystem() {
+function initFileSystem(mode) {
     Root.children.clear()
     /**@type {Folder} *///@ts-ignore
     let desktop = Root.NewItem(`/Users/${User_Name}/Desktop/`)
@@ -207,10 +220,11 @@ function initFileSystem() {
     let progfolder = Root.Mkdir("Programs")
 
 
-    DesktopIconList.forEach(icon => {
+    Packages.List.forEach(icon => {
+        if(icon.AdminOnly && mode!="create")return
         let tmp = new File(progfolder, icon.Name)
         tmp.icon = icon.Iconurl
-        tmp.content = icon.Clickfunc
+        tmp.content = ()=>{new icon.Constructor()}
         new Link(desktop, icon.Name, tmp).icon = icon.Iconurl
     })
     RefreshDesktop()

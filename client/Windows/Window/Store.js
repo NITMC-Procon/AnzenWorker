@@ -502,7 +502,7 @@ export class Store extends Window {
                 }
                 // インストール
                 let sa = this.selectapp
-                SystemConfigs.Packages.Install(apps[sa].name, apps[sa].icon, () => { new apps[sa].window() })
+                SystemConfigs.Packages.Install(apps[sa].name, apps[sa].icon, apps[sa].window)
                 RefreshDesktop()
             }
             else {
