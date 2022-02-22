@@ -69,28 +69,26 @@ class Games{
                 socket.on("getGameInfo", (ack) => {
                     let roomid = this.getRoomidFromSocket(socket)
             
+                    if(typeof ack != 'function')
+                        return;
+                    
                     if(!this.isThereRoom(roomid)){
-                        let res = {"status":"fail","message":"no such game"}
+                        ack({"status":"fail","message":"no such game"})
                     }else{
-                        let res = this.rooms.get(roomid).getGameInfo(socket)
-                    }
-
-                    if(typeof ack == 'function'){
-                        ack(res)
+                        ack(this.rooms.get(roomid).getGameInfo(socket))
                     }
                 });
 
                 socket.on("setGameInfo", (arg, ack) => {
-                    let roomid = arg.roomid||this.getRoomidFromSocket(socket)
+                    let roomid = arg.roomid || this.getRoomidFromSocket(socket)
+
+                    if(typeof ack != 'function')
+                        return;
 
                     if(!this.isThereRoom(roomid)){
-                      let  res = {"status":"fail","message":"no such game"}
+                        ack({"status":"fail","message":"no such game"})
                     }else{
-                      let res = this.rooms.get(roomid).setGameInfo(socket,arg)
-                    }
-
-                    if(typeof ack == 'function'){
-                        ack(res)
+                        ack(this.rooms.get(roomid).setGameInfo(socket,arg))
                     }
                 });
 

@@ -41,7 +41,7 @@ const redis = require("socket.io-redis");
 class Games{
 
     /** 
-     * コンストラクタ。
+     * コンストラクタ。  
      * Socketサーバの起動を行う。また、Redisで負荷分散を行う。そのため、複数のSocketサーバが起動する。
      * @constructor
      * @classdesc ゲームのサーバ起動、管理を行う。
@@ -53,17 +53,20 @@ class Games{
      * */
     constructor(Config){
 
-        /** @type {SocketIO.Server} - socketio */
+        /** 
+         * socket.io
+         * @type {SocketIO.Server}*/
         this.io = new SocketIO.Server(Config.server,{serveClient: true});
         this.io.adapter(redis({host: Config.redisIP, port: Config.redisPort}));
-
+        
         console.log("Listening port is %d", Config.port);
-        const isWorker = sticy.listen(Config.server, Config.port);
 
-        if(isWorker){
+        if( sticy.listen(Config.server, Config.port) ){
             console.log("[CLUSTER] Worker started");
 
-            /** @type {Map.&lt;String,Room>} - ルームのリスト(MAP) */
+            /**
+             * ルームリスト(MAP)
+             * @type {Map.&lt;String,Room>}*/
             this.rooms = new Map();
 
             this.io.on("connection", socket => {
@@ -83,20 +86,21 @@ class Games{
                     }else{
                         ack({roomres: -2});
                     }
-                 });
+                });
             
-                socket.on("regist-uuid", arg => {//socketにuuidを紐付け
+                //socketにuuidを紐付け
+                socket.on("regist-uuid", arg => {
                     socket["uuid"] = arg.uuid
                 });
             
-                socket.on("getGameInfo", (ack) => {//ack:コールバ
-                    let roomid=this.getRoomidFromSocket(socket)
-                    let res = {}
+                //ack:コールバック
+                socket.on("getGameInfo", (ack) => {
+                    let roomid = this.getRoomidFromSocket(socket)
             
                     if(!this.isThereRoom(roomid)){
-                        res = {"status":"fail","message":"no such game"}
+                        let res = {"status":"fail","message":"no such game"}
                     }else{
-                        res = this.rooms.get(roomid).getGameInfo(socket)
+                        let res = this.rooms.get(roomid).getGameInfo(socket)
                     }
 
                     if(typeof ack == 'function'){
@@ -104,29 +108,31 @@ class Games{
                     }
                 });
 
-                socket.on("setGameInfo", (arg,ack) => {
-                    let roomid=arg.roomid||this.getRoomidFromSocket(socket)
-                    let res = {}
+                socket.on("setGameInfo", (arg, ack) => {
+                    let roomid = arg.roomid||this.getRoomidFromSocket(socket)
 
                     if(!this.isThereRoom(roomid)){
-                        res = {"status":"fail","message":"no such game"}
+                      let  res = {"status":"fail","message":"no such game"}
                     }else{
-                        res = this.rooms.get(roomid).setGameInfo(socket,arg)
+                      let res = this.rooms.get(roomid).setGameInfo(socket,arg)
                     }
+
                     if(typeof ack == 'function'){
                         ack(res)
                     }
                 });
+
             });
         }
     }
 
     /** 
-     * @param {String} roomid - ルームID 
+     * ゲームの生成
+     * @param {String} roomid  ルームID 
      * @param {SocketIO.Socket} socket
-     * @returns {Room} - 作成されたルーム
+     * @return {Room}  作成されたルーム
      * */
-    newGame(roomid,socket){
+    newGame(roomid, socket){
         let room = new RoomClass.Room(roomid,this)
         
         this.rooms.set(roomid,room)
@@ -135,30 +141,39 @@ class Games{
         return room
     }
     
-    /** @param {String} roomid - ルームID */
+    /** 
+     * ゲームの終了
+     * @param {String} roomid  ルームID */
     DeleteGame(roomid){
-        if(this.rooms.has(roomid)){
+        if(this.isThereRoom(roomid)){
             this.rooms.delete(roomid)
         }else{
-            console.log(`delete: ${roomid}: no such room!`)
+            console.log(`delete: ${roomid}: No such Room ID!`)
         }
     }
 
-    /** @param {String} roomid - ルームID */
+    /**
+     * 指定されたルームIDがすでに存在するかを確認
+     * @param {String} roomid  ルームID 
+     * @return {boolean} すでに存在していればTrue、存在していなければFalse  */
     isThereRoom(roomid) {
         return this.rooms.has(roomid);
         //return this.io.sockets.adapter.rooms.has(roomid);
     }
     
-    /** @param {SocketIO.Socket} socket - ルームID */
+    /** 
+     * socketからルームIDを取得する
+     * @param {SocketIO.Socket} socket
+     * @return {socket.id} ルームに入っているならsocket.idを返す。それ以外はundefinedを返す。
+     */
     getRoomidFromSocket(socket){
-        //socket.rooms で Set(2){ 'joer8EhcmAayFaDGAAAH', 'test' } みたいなmapが返ってくる
-        //Set(n)からデータを得るために、...socket~で配列化 なんとなくGolangっぽい?
-        //1つ目のデータは自分のsocket.idなので、2つ目を取得
+        // socket.rooms で Set(2){ 'joer8EhcmAayFaDGAAAH', 'test' } みたいなmapが返ってくる
+        // Set(n)からデータを得るために、...socket~で配列化 なんとなくGolangっぽい?
+        // 1つ目のデータは自分のsocket.idなので、2つ目を取得
         let roomid = [...socket.rooms.values()][1]
 
-        //もしルームに入ってなければ(roomid==undefined)、socket.idを返すようにした
-        return roomid?roomid:socket.id
+        // もしルームに入ってなければ(roomid==undefined)、socket.idを返す
+        return roomid || socket.id
     }
 }
 
@@ -179,7 +194,7 @@ exports.Games = Games
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Tue Feb 22 2022 16:27:49 GMT+0900 (日本標準時)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Tue Feb 22 2022 17:52:08 GMT+0900 (日本標準時)
 </footer>
 
 <script> prettyPrint(); </script>

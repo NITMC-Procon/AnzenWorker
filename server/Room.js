@@ -6,7 +6,6 @@
 
 //const SocketIO = require("socket.io")
 
-
 /**
  * @typedef {Object} User
  * @property {String} Name
@@ -14,28 +13,50 @@
  */
 
 class Room {
+
     /** 新しいルームを作成
-     * @param {String} roomid - ルームID
-     * @param {Games} parent - 親クラス
+     * @constructor
+     * @classdesc ルームを管理
+     * @param {String} roomid ルームID
+     * @param {Games} parent 親クラス
      */
-    constructor(roomid,parent){
-        /** @type {String} - ルームID */
+    constructor(roomid, parent){
+        /** 
+         * 入室しているルームID
+         * @type {String} */
         this.roomid = roomid
-        /** @type {Games} - 親クラス */
+
+        /** 
+         * 親クラス
+         * @type {Games}*/
         this.parent = parent
-        /** @type {Boolean} - 状態 */
+
+        /**
+         * 状態
+         * @type {Boolean}*/
         this.status = false
-        /** @type {Array.<User>} */
+
+        /** 
+         * ルームのオーナー
+         * @type {Array.<User>}*/
         this.owners = [];
-        /** @type {Array.<User>} */
+
+        /**
+         * ルームに参加しているユーザ
+         * @type {Array.<User>} */
         this.users = [];
-        /** @type {NodeJS.Timeout} */
+
+        /** 
+         * ゲームの終了時間
+         * @type {NodeJS.Timeout}*/
         this.stoptimer = null;
+
         // /** @type {Set.<String>} */
         // this.Clients = parent.io.sockets.adapter.rooms.get(roomid);
     }
 
     /**
+     * メッセージを受け取るためのsocket.ioのListenerを追加 
      * @param {SocketIO.Socket} socket
      */
     addListeners(socket){
@@ -43,6 +64,7 @@ class Room {
     }
 
     /**
+     * メッセージを受け取るためのsocket.ioのListenerを削除
      * @param {SocketIO.Socket} socket
      */
     removeListeners(socket){
@@ -52,22 +74,25 @@ class Room {
     /** socket(送信元)以外に送信
      * @param {SocketIO.Socket} socket 
      * @param {String} param
-     * @param {Object} arg
+     * @param {Object} arg 送信するデータ
      */
     Broadcast(socket,param,...arg){
         socket.broadcast.to(this.roomid).emit(param,...arg)
     }
+
     /** 全員に送信
-     * @param {String} param
-     * @param {Object} arg
+     * @param {String} param 
+     * @param {Object} arg 送信するデータ
      */
     SendToAll(param,...arg){
         this.parent.io.to(this.roomid).emit(param,...arg)
     }
+
     /** 特定の相手に送信
-     * @param {String} destid
+     * @param {String} destid ルームID 
+     * @param {Object} arg 送信するデータ
      */
-    SendTo(destid,arg){
+    SendTo(destid, arg){
         this.parent.io.to(destid).emit("sentToMe",arg)
         console.log(arg,destid)
     }
