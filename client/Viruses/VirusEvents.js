@@ -1,4 +1,5 @@
-import { Result,RefreshDesktop, SystemConfigs } from "../System/Desktop.js"
+import { RefreshDesktop } from "../System/Desktop.js"
+import { Result, SystemConfigs } from "../System/System.js"
 import { Window } from "../Windows/Window.js"
 import { Service } from "../Services/ServiceClass.js"
 import { SendTo,SentToMeHandler,Socket } from "../System/Network.js"

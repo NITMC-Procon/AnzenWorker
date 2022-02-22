@@ -1,6 +1,6 @@
 'use strict'
 import { Window } from "../Window.js"
-import { SystemConfigs } from "../../System/Desktop.js"
+import { SystemConfigs } from "../../System/System.js"
 import { Socket, Handlers } from '../../System/Network.js'
 import { Notify } from "../../Functions/notify.js"
 

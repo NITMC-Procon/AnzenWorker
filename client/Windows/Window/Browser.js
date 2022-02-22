@@ -1,6 +1,6 @@
 'use strict'
 import { AdVirusService1 } from "../../Services/Service/AdVirusService1.js";
-import { SystemConfigs } from "../../System/Desktop.js";
+import { SystemConfigs } from "../../System/System.js";
 import { Window } from "../Window.js"
 import { Installer } from "./Installer.js";
 

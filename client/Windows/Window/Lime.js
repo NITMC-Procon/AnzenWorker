@@ -1,6 +1,6 @@
 'use strict'
 import { Window, createElementFromHTML } from "../Window.js"
-import { SystemConfigs, Task } from "../../System/Desktop.js"
+import { SystemConfigs, Task } from "../../System/System.js"
 import { SendTo, SentToMeHandler, Socket } from "../../System/Network.js"
 import { Notify } from "../../Functions/notify.js"
 import { AddContextMenu } from '../../Functions/contextmenu.js'

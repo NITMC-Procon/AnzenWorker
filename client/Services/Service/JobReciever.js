@@ -1,12 +1,12 @@
 // 初期から呼び出されるサービス
 
-import { joblist, JobManager } from "../../Windows/Window/JobManager.js"
+import { JobManager } from "../../Windows/Window/JobManager.js"
 import { Service } from "../ServiceClass.js"
 import { Mail } from "../../Windows/Window/Mail.js"
 import { WiFi } from "../../Windows/Window/WiFi.js"
 import { Store } from "../../Windows/Window/Store.js"
 import { Notify } from "../../Functions/notify.js"
-import { Task } from "../../System/Desktop.js"
+import { Joblist } from "../../System/System.js"
 
 const jobs = [
     {
@@ -44,7 +44,7 @@ export class JobReciever extends Service {
     jrec(i){
         let index = typeof i?i: Math.floor(Math.random() * this.jlist.length)
         if(!this.jlist[index]) return  // なにもないのなら帰れ
-        joblist.push(this.jlist[index])
+        Joblist.push(this.jlist[index])
         Notify("新しいタスク:"+this.jlist[index].title,{callback:()=>{new JobManager()}})
         this.jlist.splice(index,1)//要素を削除(deleteは使えない)
         if(this.parent.windows["Window_JobManager"]){
