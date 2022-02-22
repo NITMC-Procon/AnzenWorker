@@ -1,11 +1,26 @@
 'use strict';
 
 const Classes = require("./Game.js")
+
+/**
+ * httpサーバのポート番号
+ * @type {int}
+ * */
 const port = 8080
 
 // Default ip addr and port
 // CAUTION: IP address Only
+
+/**
+ * RedisサーバのIP アドレス
+ * @type {int}
+ * */
 const redisIP = "127.0.0.1"; 
+
+/**
+ * Redisサーバのポート番号
+ * @type {int}
+ * */
 const redisPort = "6379";
 
 const http = require('http');
