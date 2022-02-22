@@ -4,9 +4,9 @@
 
 ## ファイル構造
 
-- index.js
-  - Game.js
-   - Room.js
+index.js  
+|- Game.js  
+   |-  Room.js
 
 ## 各ファイルの説明
 
