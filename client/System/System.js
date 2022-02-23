@@ -86,7 +86,7 @@ function package_Install(name, iconurl, func) {
 
     let tmp = new File(progfolder, name)
     tmp.icon = iconurl
-    tmp.content = func
+    tmp.content = ()=>{new func()}
     new Link(desktopfolder, name, tmp).icon = iconurl
 }
 
