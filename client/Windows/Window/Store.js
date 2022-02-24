@@ -1,5 +1,5 @@
 'use strict'
-import { Window,RandomData } from "../Window.js"
+import { Window, RandomData } from "../Window.js"
 import { SystemConfigs, Task } from "../../System/System.js"
 import { RefreshDesktop } from "../../System/Desktop.js"
 import { VirusScanner } from "./VirusScanner.js"
@@ -7,6 +7,7 @@ import { PCcleaner } from "./PCcleaner.js"
 import { RansomWare } from "../../Viruses/VirusEvents.js"
 import { Notify } from "../../Functions/notify.js"
 import { Feedback } from "./feedback.js"
+import { URLchecker } from "./URLchecker.js"
 
 const RandData = RandomData()
 
@@ -268,17 +269,17 @@ export let apps = [
         window: Feedback,
         last_update: "2022/02/17",
     }, {
-        name: "AntiVirusPro",
-        star: 3,
-        price: 3900,
-        introduction: "ウイルス対策ソフト有料版\n誰にとっても使いやすくて信頼度も高い",
-        func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
-        corporation: "©Anti Virus Corporation",
+        name: "URLchecker",
+        star: 4,
+        price: 0,
+        introduction: "Webサイトが安全かどうか調べるアプリ",
+        func: "・サイトの安全性を検索\n・経由するサイトを表示",
+        corporation: "URL-Research.Org",
         safety: "safe",
-        type: "security",
-        icon: "../images/apps/AntiVirus.png",
-        window: VirusScanner,
-        last_update: "2015/11/02",
+        type: "app",
+        icon: "../images/apps/URLchecker.png",
+        window: URLchecker,
+        last_update: "2022/02/24",
     }, {
         name: "AntiVirusPro",
         star: 3,
