@@ -2,14 +2,28 @@
 
 const Classes = require("./Game.js")
 
+// サーバー
+const http = require('http');
+const express = require('express');
+
+const app = express();
+// clientを返す
+app.use("/", express.static('client'));
+
+
+/*=== Server Configuretion ===*/
+
+/**
+ * httpサーバ
+ * @type {http.Server}
+ * */
+const httpServer = http.createServer(app);
+
 /**
  * httpサーバのポート番号
  * @type {int}
  * */
 const port = 8080
-
-// Default ip addr and port
-// CAUTION: IP address Only
 
 /**
  * RedisサーバのIP アドレス
@@ -23,16 +37,38 @@ const redisIP = "127.0.0.1";
  * */
 const redisPort = "6379";
 
-const http = require('http');
-const express = require('express');//サーバー
+/**
+ * ルームIDの最大入力文字数  
+ * 全角半角記号によらず、全て1文字とカウントされる
+ * @type {int}
+ * */
+const maxRoomIdLength = 1024;
 
-const app = express();
-app.use("/", express.static('client'));//clientを返す
+/**
+ * ユーザ名の最大入力文字数  
+ * 全角半角記号によらず、全て1文字とカウントされる
+ * @type {int}
+ * */
+const maxUserNameLength = 1024;
 
-const httpServer = http.createServer(app);
-//const redisServer = {hostname: "localhost", port: 6379};
+const serverConfig = 
+{
+    server: httpServer,
+    port: port,
+    redisIP: redisIP,
+    redisPort: redisPort,
+    maxRoomIdLength: maxRoomIdLength,
+    maxUserNameLength: maxUserNameLength
+};
 
-let Games = new Classes.Games({server:httpServer, port: port, redisIP: redisIP, redisPort: redisPort});
+/*=== End Server Configuretion ===*/
+
+// Start Game!
+let Games = new Classes.Games(serverConfig);
+
+
+//const httpServer = http.createServer(app);
+//let Games = new Classes.Games({server:httpServer, port: port, redisIP: redisIP, redisPort: redisPort, maxRoomIdLength: maxRoomIdLength, maxUserNameLength: maxUserNameLength});
 
 //httpServer.listen(port, () => {
 //    console.log(`listening on ${port}`)

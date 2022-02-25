@@ -22,12 +22,15 @@ class Games{
      *  @param {int} Config.port httpサーバのポート番号
      *  @param {String} Config.redisIP RedisサーバのIPアドレス
      *  @param {int} Config.redisPort Redisサーバのポート番号
+     *  @param {int} Config.maxRoomIdLength ルームIDの最大入力文字数
+     *  @param {int} Config.maxUserNameLength ユーザ名の最大入力文字数
      * */
     constructor(Config){
 
         /** 
          * socket.io
-         * @type {SocketIO.Server}*/
+         * @type {SocketIO.Server}
+         * */
         this.io = new SocketIO.Server(Config.server,{serveClient: true});
         this.io.adapter(redis({host: Config.redisIP, port: Config.redisPort}));
         
@@ -42,20 +45,29 @@ class Games{
             this.rooms = new Map();
 
             this.io.on("connection", socket => {
+
                 socket.on("createRoom", (req, ack) => {
-                    if(!this.isThereRoom(req.roomid)){
-                        this.newGame(req.roomid,socket).Join(socket,req.username);
+                    if(req.roomid.length >= Config.maxRoomIdLength || req.username.length >= Config.maxUserNameLength){
+                        ack({roomres: -3});
+                    }
+                    else if(!this.isThereRoom(req.roomid)){
+                        this.newGame(req.roomid, socket).Join(socket, req.username);
                         ack({roomres: 0});
-                    }else{
+                    }
+                    else{
                         ack({roomres: -1});
                     }
                 });
 
                 socket.on("joinRoom", (req, ack) => {
-                    if(this.isThereRoom(req.roomid)){
-                        this.rooms.get(req.roomid).Join(socket,req.username);
+                    if(req.roomid.length >= Config.maxRoomIdLength || req.username.length >= Config.maxUserNameLength){
+                        ack({roomres: -3});
+                    }
+                    else if(this.isThereRoom(req.roomid)){
+                        this.rooms.get(req.roomid).Join(socket, req.username);
                         ack({roomres: 0});
-                    }else{
+                    }
+                    else{
                         ack({roomres: -2});
                     }
                 });
