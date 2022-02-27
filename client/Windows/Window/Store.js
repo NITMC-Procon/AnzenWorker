@@ -8,6 +8,7 @@ import { RansomWare } from "../../Viruses/VirusEvents.js"
 import { Notify } from "../../Functions/notify.js"
 import { Feedback } from "./feedback.js"
 import { URLchecker } from "./URLchecker.js"
+import { MovieGetter } from "./MovieGetter.js"
 
 const RandData = RandomData()
 
@@ -281,17 +282,17 @@ export let apps = [
         window: URLchecker,
         last_update: "2022/02/24",
     }, {
-        name: "AntiVirusPro",
-        star: 3,
-        price: 3900,
-        introduction: "ウイルス対策ソフト有料版\n誰にとっても使いやすくて信頼度も高い",
-        func: "・ウイルスの定期スキャン\n・ウイルス検出時の除去\n・不審なソフトウェアのブロック",
-        corporation: "©Anti Virus Corporation",
-        safety: "safe",
-        type: "security",
-        icon: "../images/apps/AntiVirus.png",
-        window: VirusScanner,
-        last_update: "2015/11/02",
+        name: "MovieGetter",
+        star: 2,
+        price: 0,
+        introduction: "人気の動画サイトから動画をダウンロード！",
+        func: "・動画のダウンロード\n・配信のアーカイブが消される前に\n保存しておこう！",
+        corporation: "不明",
+        safety: "danger",
+        type: "app",
+        icon: "../images/apps/MovieGetter.png",
+        window: MovieGetter,
+        last_update: "2022/02/27",
     }, {
         name: "AntiVirusPro",
         star: 3,
