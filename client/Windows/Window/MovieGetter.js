@@ -26,11 +26,12 @@ const html = `
     </div>
   </div>
 
-  <div style = "position:absolute; z-index:2; left:0px; top:0px; width:100%; height:100%; background-color:rgba(0,0,0,0.60);">
+  <div id = "popup" style = "position:absolute; z-index:2; left:0px; top:0px; width:100%; height:100%; background-color:rgba(0,0,0,0.60);">
     <div style = "width:60%; height:60%; margin:20%; background:white; border:2px solid #c0c0c0;">
       <div style = "width:90%;height:20%; text-align:center; margin-left:5%; margin-top:5%;">アップデートがあります</div>
       <div style = "width:90%;height:20%; text-align:center; margin-left:5%;">アプリの利用を始めるためにはこれらの追加コンテンツをダウンロードする必要があります</div>
-      <button style = "width:45%;height:15%; text-align:center;background:green;color:white;margin-left:27.5%;margin-top:5%;">今すぐダウンロード</button>
+      <div style = "width:90%;height:10%; text-align:center; margin-left:5%; margin-top:3%;">追加コンテンツ 202.1MB</div>
+      <button style = "width:45%;height:15%; text-align:center;background:green;color:white;margin-left:27.5%;margin-top:2%;">今すぐダウンロード</button>
     </div>
   </div>
 </div>
@@ -48,11 +49,11 @@ export class MovieGetter extends Window {
     if (this.creationFailed) return
 
     /** @type {HTMLElement} *///@ts-ignore
-    this.dl_btn = this.bodyElem.firstElementChild.lastElementChild.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling
+    this.dl_btn = this.bodyElem.firstElementChild.lastElementChild.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
 
     // Protectの修正ボタン
     this.dl_btn.addEventListener('click', () => {
-      new Browser('http://www.movie-getter.addcontents.omg/')
+      new Browser('http://www.movie-getter.omg/addcontents/')
     })
   }
 
