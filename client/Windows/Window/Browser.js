@@ -250,5 +250,6 @@ function addcontents() {
         document.getElementById('popup').classList.add('is_hidden');
         document.getElementById('comment').innerText = "最新版です";
         document.getElementById('install').innerText = "最新";
+        if (!SystemConfigs.Result.Flag.includes("falseApp")) SystemConfigs.Result.Flag.push('falseApp');
     }
 }
