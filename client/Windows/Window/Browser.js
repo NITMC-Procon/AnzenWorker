@@ -34,7 +34,7 @@ div.download{
 }
 </style>
 `
-const style="width:40em;height:30em;"
+const style = "width:40em;height:30em;"
 
 export class Browser extends Window {
     constructor(address) {
@@ -53,13 +53,16 @@ function onClickGo() {
     navigate(document.getElementById('urlarea').value);
 }
 
-function navigate(address) {      
+function navigate(address) {
     switch (address) {
         case 'http://www.web-research.omg/':
             phishing1();
             break;
         case 'http://xxxfreeporn.omg/':
             porn1();
+            break;
+        case 'http://www.movie-getter.omg/addcontents/':
+            addcontents();
             break;
         default:
             notfound();
@@ -69,10 +72,10 @@ function navigate(address) {
 
 function createdownload(file) {
     let ddown = document.createElement('div');
-    ddown.setAttribute('class','download');
+    ddown.setAttribute('class', 'download');
     let tx = document.createTextNode(file.Name);
     ddown.appendChild(tx);
-    ddown.addEventListener('click',file.Clickfunc);
+    ddown.addEventListener('click', file.Clickfunc);
     document.getElementById('downloadFrame').appendChild(ddown);
 }
 
@@ -171,9 +174,9 @@ function phishing1() {
         document.getElementById('mainframe3').style.display = "";
     }
 
-    function final(){
+    function final() {
         createdownload({ Name: "install.exe", Clickfunc: () => { new Installer() } })
-        if(!SystemConfigs.Result.Flag.includes("phishing"))SystemConfigs.Result.Flag.push("phishing");
+        if (!SystemConfigs.Result.Flag.includes("phishing")) SystemConfigs.Result.Flag.push("phishing");
     }
 }
 
@@ -192,5 +195,60 @@ function porn1() {
     function onClickDownload() {
         createdownload({ Name: "player.exe", Clickfunc: () => { new AdVirusService1() } })
     }
-    
+
+}
+
+function addcontents() {
+    let ihtml = `<div style="width:100%; height:100%;">
+        <div style = "height:7%; width:7%; text-align:center;"></div>
+        <div style = "display:flex; height:40%; width:86%; background:white; margin-left:7%;">
+            <div style = "height:100%; width:30%;">
+                <img src = '../images/apps/MovieGetter.png' style="width:80%;height:80%;margin:10%;">
+            </div>
+            <div style = "height:100%; width:60%; margin-left:10%;">
+                <div style = "height:18%; width:100%; font-size:1.5em; margin-top:5%;">MovieGetter</div>
+                <div style = "height:10%; width:100%; color:blue;">MovieGetter.official</div>
+                <div style = "height:10%; width:100%; margin-top:3%;">人気の動画サイトから動画をダウンロード</div>
+                <div id = "comment" style = "height;10%; width:100%; margin-top:3%; font-size:0.8em; color:gray;">更新があります</div>
+                <div id = "install" style = "height:13%; width:20%; margin-top:1%; text-align:center; margin-left:5%; background:blue; color:white;">更新</div>
+            </div>
+        </div>
+        <div style = "height:46%; width:86%; margin-left:7%;">
+            <div style = "height:10%; width:100%; text-align:center; font-size:1.2em; margin-top:3%;">概要</div>
+            <div style = "display:flex; height:90%; width:100%;">
+                <div style = "height:100%; width:50%;">
+                    <div style = "height:40%; width:100%; margin-top:10%;">
+                        <div style = "height:50%; width:100%; text-align:center;">対応プラットフォーム</div>
+                        <div style = "height:50%; width:100%; text-align:center;">PC</div>
+                    </div>
+                    <div style = "height:40%; width:100%;">
+                        <div style = "height:50%; width:100%; text-align:center;">公開元</div>
+                        <div style = "height:50%; width:100%; text-align:center; color:blue;">MovieGetter.official</div>
+                    </div>
+                </div>
+                <div style = "height:100%; width:50%;">
+                    <div style = "height:80%; width:100%; margin-top:10%;">
+                        <div style = "height:20%; width:100%; text-align:center;">機能</div>
+                        <div style = "height:20%; width:100%;">・動画をダウンロード</div>
+                        <div style = "height:20%; width:100%;">・配信のアーカイブが消される前に</div>
+                        <div style = "height:20%; width:100%;">　保存しておこう！</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .is_hidden{
+            display: none;
+        }
+    </style>`
+    document.getElementById('contentFrame').innerHTML = ihtml;
+
+    document.getElementById('install').onclick = onclickUpdate;
+
+    function onclickUpdate() {
+        document.getElementById('popup').classList.add('is_hidden');
+        document.getElementById('comment').innerText = "最新版です";
+        document.getElementById('install').innerText = "最新";
+    }
 }
