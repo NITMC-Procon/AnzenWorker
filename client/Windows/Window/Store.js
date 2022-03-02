@@ -205,7 +205,7 @@ const html = `
     div[${RandData}] .star5_rating[data-rate="1"]:after{ width: 20%; } /* 星1 */
     div[${RandData}] .star5_rating[data-rate="0"]:after{ width: 0%; } /* 星0 */
 </style>`
-const style = "width:54em;height:34em;"
+const style = "width:45em;height:30em;"
 
 export let apps = [
     {
@@ -402,7 +402,45 @@ export class Store extends Window {
                 <div class = "backbtn">back</div>
 
             </div>`
-        allapp += container2
+        let container3 = `
+        <div style="width:100%; height:100%;">
+            <div style = "height:10%; width:7%; text-align:center; background:gray;" id = "backbtn2">Back</div>
+            <div style = "display:flex; height:50%; width:86%; background:white; margin-left:7%;">
+                <div style = "height:100%; width:30%;">
+                    <img src = '../images/apps/MovieGetter.png' id ="icon2" style="width:80%;height:80%;margin:10%;">
+                </div>
+                <div style = "height:100%; width:60%; margin-left:10%;">
+                    <div style = "height:18%; width:100%; font-size:1.5em; margin-top:5%;" id = "title2">MovieGetter</div>
+                    <div style = "height:10%; width:100%; color:blue;" id = "corpname">MovieGetter.official</div>
+                    <div style = "height:10%; width:100%; margin-top:3%;" id = "introduction">人気の動画サイトから動画をダウンロード</div>
+                    <div id = "price" style = "height;10%; width:100%; margin-top:7%;">更新があります</div>
+                    <div id = "install_btn" style = "height:13%; width:9em; text-align:center; background:blue; color:white;">更新</div>
+                </div>
+            </div>
+            <div style = "height:38%; width:86%; margin-left:7%;">
+                <div style = "height:7%; width:100%; text-align:center; font-size:1.2em; margin-top:1%;">概要</div>
+                <div style = "display:flex; height:90%; width:100%;">
+                    <div style = "height:100%; width:50%;">
+                        <div style = "height:40%; width:100%; margin-top:10%;">
+                            <div style = "height:50%; width:100%; text-align:center;">対応プラットフォーム</div>
+                            <div style = "height:50%; width:100%; text-align:center;">PC</div>
+                        </div>
+                        <div style = "height:40%; width:100%;">
+                            <div style = "height:50%; width:100%; text-align:center;">公開元</div>
+                            <div style = "height:50%; width:100%; text-align:center; color:blue;" id = "author">MovieGetter.official</div>
+                        </div>
+                    </div>
+                    <div style = "height:100%; width:50%;">
+                        <div style = "height:80%; width:100%; margin-top:10%;">
+                            <div style = "height:20%; width:100%; text-align:center;">機能</div>
+                            <div style = "height:60%; width:100%;" id = "function"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `
+        allapp += container3
         this.list_container.insertAdjacentHTML('beforeend', allapp)
         // for (let j = 0; j < this.list_container.children[this.list_container.childElementCount - 1].childElementCount; j++) {
         //     this.list_container.children[this.list_container.childElementCount - 1].children[j].classList.toggle('is_hidden')
@@ -451,7 +489,7 @@ export class Store extends Window {
             })
         }
         // backボタンが押された時
-        this.list_container.children[this.list_container.childElementCount - 1].children[this.list_container.children[this.list_container.childElementCount - 1].childElementCount - 1].addEventListener('click', () => {
+        document.getElementById("backbtn2").addEventListener('click', () => {
             // 表示するオブジェクトを入れ替える
             for (let j = 0; j < this.list_container.childElementCount; j++) {
                 this.list_container.children[j].classList.remove('is_hidden')
@@ -466,8 +504,7 @@ export class Store extends Window {
             this.selectapp = -1
         })
 
-        // installボタンが押された時
-        this.list_container.children[this.list_container.childElementCount - 1].children[5].addEventListener('click', () => {
+        document.getElementById('install_btn').addEventListener('click', () => {
             if (this.can[this.selectapp] == 0) {
                 document.getElementById("install_btn").innerText = "アンインストール"
                 this.can[this.selectapp] = 1;
