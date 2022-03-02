@@ -64,6 +64,9 @@ function navigate(address) {
         case 'http://www.movie-getter.omg/addcontents/':
             addcontents();
             break;
+        case 'https://www.yo-tube.com/':
+            YoTube();
+            break;
         default:
             notfound();
             break;
@@ -252,4 +255,12 @@ function addcontents() {
         document.getElementById('install').innerText = "最新";
         if (!SystemConfigs.Result.Flag.includes("falseApp")) SystemConfigs.Result.Flag.push('falseApp');
     }
+}
+
+function YoTube() {
+    let ihtml = `<div style="width: 100%; height:100%;">
+
+        </div>`;
+    document.getElementById('contentFrame').innerHTML = ihtml;
+
 }

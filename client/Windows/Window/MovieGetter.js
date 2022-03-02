@@ -1,6 +1,7 @@
 'use strict'
 import { Window } from "../Window.js"
 import { Browser } from "./Browser.js"
+import { WindowManager } from "../../System/Desktop.js"
 
 const html = `
 <div style="width: 100%;height: 100%;user-select:none;background:linear-gradient(to right,rgb(150,0,62),rgb(180,0,89),rgb(200,0,89),rgb(210,0,89),rgb(180,0,110),rgb(190,0,62));">
@@ -13,7 +14,7 @@ const html = `
 
   <div style = "width:100%; height:54%; background:white; margin-top:2%;">
     <div style = "display:flex; width:100%; height:20%; margin:top:2%;">
-      <button style = "width:20%; height:90%; background:green;margin-left:10%;margin-top:1%;">動画サイトへ</button>
+      <button style = "width:20%; height:90%; background:green;margin-left:10%;margin-top:1%;" id ="tolink">動画サイトへ</button>
       <div style = "width:65%; height:60%; margin-left:5%; margin-top:2%;">ボタンをクリックで動画サイトのリンクを開く</div>
     </div>
 
@@ -54,6 +55,11 @@ export class MovieGetter extends Window {
     // Protectの修正ボタン
     this.dl_btn.addEventListener('click', () => {
       new Browser('http://www.movie-getter.omg/addcontents/')
+    })
+
+    document.getElementById("tolink").addEventListener('click', () => {
+      WindowManager.windows["Browser"].destroy(true);
+      new Browser('https://www.yo-tube.com/')
     })
   }
 
