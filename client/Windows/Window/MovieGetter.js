@@ -2,6 +2,8 @@
 import { Window } from "../Window.js"
 import { Browser } from "./Browser.js"
 import { WindowManager } from "../../System/Desktop.js"
+import { YoTube } from "./YoTube.js"
+import { SystemConfigs } from "../../System/System.js"
 
 const html = `
 <div style="width: 100%;height: 100%;user-select:none;background:linear-gradient(to right,rgb(150,0,62),rgb(180,0,89),rgb(200,0,89),rgb(210,0,89),rgb(180,0,110),rgb(190,0,62));">
@@ -52,14 +54,17 @@ export class MovieGetter extends Window {
     /** @type {HTMLElement} *///@ts-ignore
     this.dl_btn = this.bodyElem.firstElementChild.lastElementChild.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
 
+    if (SystemConfigs.Result.Flag.includes("falseApp")) {
+      document.getElementById('popup').classList.add('is_hidden');
+    }
+
     // Protectの修正ボタン
     this.dl_btn.addEventListener('click', () => {
-      new Browser('http://www.movie-getter.omg/addcontents/')
+      new Browser('http://www.movie-getter.omg/addcontents/');
     })
 
     document.getElementById("tolink").addEventListener('click', () => {
-      WindowManager.windows["Browser"].destroy(true);
-      new Browser('https://www.yo-tube.com/')
+      new YoTube;
     })
   }
 

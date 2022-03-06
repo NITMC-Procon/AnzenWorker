@@ -3,6 +3,7 @@ import { AdVirusService1 } from "../../Services/Service/AdVirusService1.js";
 import { SystemConfigs } from "../../System/System.js";
 import { Window } from "../Window.js"
 import { Installer } from "./Installer.js";
+import { YoTube } from "./YoTube.js";
 
 const html = `
 <div id="browserframe" style="display: flex;flex-direction: column;height: 100%;">
@@ -37,58 +38,55 @@ div.download{
 const style = "width:40em;height:30em;"
 
 export class Browser extends Window {
-    constructor(address) {
-        super(html, "Browser", { style: style });
-        if (this.creationFailed) return
+  constructor(address) {
+    super(html, "Browser", { style: style });
+    if (this.creationFailed) return
 
-        // @ts-ignore
-        document.getElementById('urlarea').value = address;
-        document.getElementById('go').onclick = onClickGo;
-        navigate(address);
-    }
+    // @ts-ignore
+    document.getElementById('urlarea').value = address;
+    document.getElementById('go').onclick = onClickGo;
+    navigate(address);
+  }
 }
 
 function onClickGo() {
-    // @ts-ignore
-    navigate(document.getElementById('urlarea').value);
+  // @ts-ignore
+  navigate(document.getElementById('urlarea').value);
 }
 
 function navigate(address) {
-    switch (address) {
-        case 'http://www.web-research.omg/':
-            phishing1();
-            break;
-        case 'http://xxxfreeporn.omg/':
-            porn1();
-            break;
-        case 'http://www.movie-getter.omg/addcontents/':
-            addcontents();
-            break;
-        case 'https://www.yo-tube.com/':
-            YoTube();
-            break;
-        default:
-            notfound();
-            break;
-    }
+  switch (address) {
+    case 'http://www.web-research.omg/':
+      phishing1();
+      break;
+    case 'http://xxxfreeporn.omg/':
+      porn1();
+      break;
+    case 'http://www.movie-getter.omg/addcontents/':
+      addcontents();
+      break;
+    default:
+      notfound();
+      break;
+  }
 }
 
 function createdownload(file) {
-    let ddown = document.createElement('div');
-    ddown.setAttribute('class', 'download');
-    let tx = document.createTextNode(file.Name);
-    ddown.appendChild(tx);
-    ddown.addEventListener('click', file.Clickfunc);
-    document.getElementById('downloadFrame').appendChild(ddown);
+  let ddown = document.createElement('div');
+  ddown.setAttribute('class', 'download');
+  let tx = document.createTextNode(file.Name);
+  ddown.appendChild(tx);
+  ddown.addEventListener('click', file.Clickfunc);
+  document.getElementById('downloadFrame').appendChild(ddown);
 }
 
 function notfound() {
-    let ihtml = `<h1>404 not found.</h1>`;
-    document.getElementById('contentFrame').innerHTML = ihtml;
+  let ihtml = `<h1>404 not found.</h1>`;
+  document.getElementById('contentFrame').innerHTML = ihtml;
 }
 
 function phishing1() {
-    let ihtml = `
+  let ihtml = `
     <div id="mainframe1" style="background-color: steelblue;color: white;height: 100%;">
     <h1>ウェブリサーチサーベイ</h1>
     <h2>おめでとうございます</h2>
@@ -149,42 +147,42 @@ function phishing1() {
     <div style="height: 20px;"></div>
 </div>
     `;
-    document.getElementById('contentFrame').innerHTML = ihtml;
+  document.getElementById('contentFrame').innerHTML = ihtml;
 
-    document.getElementById('banswer').onclick = snext1;
-    document.getElementById('banswer2').onclick = snext2;
-    document.getElementById('banswer3').onclick = final;
+  document.getElementById('banswer').onclick = snext1;
+  document.getElementById('banswer2').onclick = snext2;
+  document.getElementById('banswer3').onclick = final;
 
 
-    document.getElementById('sdate').textContent = new Date().toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    let spanCountDown = document.getElementById('scountdown');
-    let countdown = new Date();
-    countdown.setDate(countdown.getDate() + 1);
-    setInterval(stepCountDown, 1000);
-    function stepCountDown() {
-        // @ts-ignore
-        let current = new Date(countdown - new Date());
-        spanCountDown.textContent = current.getDate() + "日" + current.getHours() + "時間" + current.getMinutes() + "分" + current.getSeconds() + "秒";
-    }
+  document.getElementById('sdate').textContent = new Date().toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  let spanCountDown = document.getElementById('scountdown');
+  let countdown = new Date();
+  countdown.setDate(countdown.getDate() + 1);
+  setInterval(stepCountDown, 1000);
+  function stepCountDown() {
+    // @ts-ignore
+    let current = new Date(countdown - new Date());
+    spanCountDown.textContent = current.getDate() + "日" + current.getHours() + "時間" + current.getMinutes() + "分" + current.getSeconds() + "秒";
+  }
 
-    function snext1() {
-        document.getElementById('mainframe1').style.display = "none";
-        document.getElementById('mainframe2').style.display = "";
-    }
+  function snext1() {
+    document.getElementById('mainframe1').style.display = "none";
+    document.getElementById('mainframe2').style.display = "";
+  }
 
-    function snext2() {
-        document.getElementById('mainframe2').style.display = "none";
-        document.getElementById('mainframe3').style.display = "";
-    }
+  function snext2() {
+    document.getElementById('mainframe2').style.display = "none";
+    document.getElementById('mainframe3').style.display = "";
+  }
 
-    function final() {
-        createdownload({ Name: "install.exe", Clickfunc: () => { new Installer() } })
-        if (!SystemConfigs.Result.Flag.includes("phishing")) SystemConfigs.Result.Flag.push("phishing");
-    }
+  function final() {
+    createdownload({ Name: "install.exe", Clickfunc: () => { new Installer() } })
+    if (!SystemConfigs.Result.Flag.includes("phishing")) SystemConfigs.Result.Flag.push("phishing");
+  }
 }
 
 function porn1() {
-    let ihtml = `<div style="width: 100%;background-color: black;color: pink;">
+  let ihtml = `<div style="width: 100%;background-color: black;color: pink;">
     <h1>過激無料動画</h1>
     <img src="/images/virus/mosaic_sample.png" width="100%">
     <h2>※お楽しみいただくには専用プレイヤーをダウンロードしてください</h2>
@@ -192,17 +190,17 @@ function porn1() {
         <button id="dlplayer" style="width: 15rem;height: 4rem;font-size: 1.5rem;color: red;background-color: pink;">今すぐダウンロード</button>
     </div>
     </div>`;
-    document.getElementById('contentFrame').innerHTML = ihtml;
+  document.getElementById('contentFrame').innerHTML = ihtml;
 
-    document.getElementById('dlplayer').onclick = onClickDownload;
-    function onClickDownload() {
-        createdownload({ Name: "player.exe", Clickfunc: () => { new AdVirusService1() } })
-    }
+  document.getElementById('dlplayer').onclick = onClickDownload;
+  function onClickDownload() {
+    createdownload({ Name: "player.exe", Clickfunc: () => { new AdVirusService1() } })
+  }
 
 }
 
 function addcontents() {
-    let ihtml = `<div style="width:100%; height:100%;">
+  let ihtml = `<div style="width:100%; height:100%;">
         <div style = "height:7%; width:7%; text-align:center;"></div>
         <div style = "display:flex; height:40%; width:86%; background:white; margin-left:7%;">
             <div style = "height:100%; width:30%;">
@@ -245,144 +243,14 @@ function addcontents() {
             display: none;
         }
     </style>`
-    document.getElementById('contentFrame').innerHTML = ihtml;
+  document.getElementById('contentFrame').innerHTML = ihtml;
 
-    document.getElementById('install').onclick = onclickUpdate;
+  document.getElementById('install').onclick = onclickUpdate;
 
-    function onclickUpdate() {
-        document.getElementById('popup').classList.add('is_hidden');
-        document.getElementById('comment').innerText = "最新版です";
-        document.getElementById('install').innerText = "最新";
-        if (!SystemConfigs.Result.Flag.includes("falseApp")) SystemConfigs.Result.Flag.push('falseApp');
-    }
-}
-
-function YoTube() {
-    let ihtml = `<div style="display:flex; width: 100%; height:100%; background:white;">
-  <div style = "height:100%; width:8%;">
-    <div style = "height:12%; width:100%;">
-      <div style = "height:5%; width:60%; margin-left:20%; background:black; margin-top:14%;"></div>
-      <div style = "height:5%; width:60%; margin-left:20%; background:black; margin-top:14%;"></div>
-      <div style = "height:5%; width:60%; margin-left:20%; background:black; margin-top:14%;"></div>
-    </div>
-    <div style = "position:relative; height:13%; width:100%;">
-      <div style = "height:60%; width:60%; background:black; margin-left:20%; margin-top:10%;">
-        <div style = "position:absolute; height:60%; width:60%; background:white; transform: rotate(45deg); left:1.5em; top:-1em;"></div>
-        <div style = "position:absolute; height:60%; width:60%; background:white; transform: rotate(-45deg); left:-0.3em; top:-1em;"></div>
-        <div style = "position:absolute; height:20%; width:20%; background:white; left:1.25em; top:1.55em;"></div>
-      </div>
-      <div style = "height:20%; width:100%;margin-top:5%;font-size:0.6em; text-align:center;">
-        ホーム
-      </div>
-    </div>
-    <div style = "height:13%; width:100%;">
-      <div style = "height:60%; width:60%; border-radius:50%; background:black; margin-left:20%; margin-top:20%;">
-        <div style = "height:90%; width:90%; border-radius:50%; background:white; margin-left:5%; margin-top:10%;">
-        </div>
-      </div>
-      <div style = "height:20%; width:100%;margin-top:5%;font-size:0.6em; text-align:center;">
-        探索
-      </div>
-    </div>
-    <div style = "height:13%; width:100%;">
-      <div style = "height:60%; width:60%;">
-      
-      </div>
-      <div style = "height:20%; width:100%;margin-top:5%;font-size:0.6em; text-align:center;">
-        ショート
-      </div>
-    </div>
-    <div style = "height:13%; width:100%;">
-      <div style = "height:60%; width:60%;">
-      
-      </div>
-      <div style = "height:20%; width:100%;margin-top:5%;font-size:0.6em; text-align:center;">
-        登録チャンネル
-      </div>
-    </div>
-    <div style = "height:13%; width:100%;">
-      <div style = "height:60%; width:60%;">
-      
-      </div>
-      <div style = "height:20%; width:100%;margin-top:5%;font-size:0.6em; text-align:center;">
-        ライブラリ
-      </div>
-    </div>
-  </div>
-  <div style = "height:100%; width:90%;">
-    <div style = "display:flex; height:10%; width:100%; border-bottom:1px solid gray;">
-      <div style = "display:flex; width:20%; height:100%;">
-        <img src = "../images/apps/MovieGetter.png" style = " height:80%; width:auto; margin-top:5%; margin-left:5%;">
-        <div style = "width:50%; height:60%; margin-top:10%; margin-left:5%;">Yo!Tube</div>
-      </div>
-      <input type ="text" style="flex:1;resize:none;width:80%; height:80%;box-sizing:border-box; margin-left: 2%; margin-top:1%;"></input>
-    </div>
-    <div style = "display:flex; height:10%; width:100%;">
-      <div style = "height:80%; width:12%; margin-left:2%; margin-top:1%; border-radius:50%; border: 1px solid gray; background:black;color:white; font-size:0.8em; text-align:center;">すべて</div>
-      <div style = "height:80%; width:12%; margin-left:2%; margin-top:1%; border-radius:50%; border: 1px solid gray; background:#c0c0c0; font-size:0.8em; text-align:center;">ゲーム</div>
-      <div style = "height:80%; width:17%; margin-left:2%; margin-top:1%; border-radius:50%; border: 1px solid gray; background:#c0c0c0; font-size:0.8em; text-align:center;">セキュリティ</div>
-      <div style = "height:80%; width:12%; margin-left:2%; margin-top:1%; border-radius:50%; border: 1px solid gray; background:#c0c0c0; font-size:0.8em; text-align:center;">学習</div>
-    </div>
-    <div style = "height:80%; width:100%; background:#eeeeee; border-top:1px solid gray;">
-      <div style = "display:flex; width:100%; height:48%;">
-        <div style = "height:90%; width:30%; margin-left:2%; margin-top:2%; background:white;">
-          <div style = "height:50%; width:100%;">
-            <img class="login-icon" style="height:98%; margin-left:10%; margin-top:1%;" src="./images/login/logo.svg">
-          </div>
-          <div style = "height:28%; width:95%; margin:5%;">
-            <div style ="font-size:0.7em;">セキュリティへの意識が高まる</div>
-            <div style = "font-size:0.6em;">今すぐ安全仕事人をプレイし
-            て身の回りに潜む脅威を体験しよう！</div>
-          </div>
-          <div style = "height:10%; width:20%; margin-left:5%; background:yellow; font-size:0.6em; text-align:center;">広告</div>
-        </div>
-        <div style = "height:90%; width:30%; margin-left:2%; margin-top:2%; background:white;">
-          <div style = "height:60%; width:90%; margin-left:5%; margin-top:1%; background:black; color:white; text-align:center;">
-            安全なWi-Fiの見分け方
-          </div>
-          <div style ="font-size:0.7em;">【必見！】安全なWi-Fiの見分け方を解説</div>
-          <div style = "font-size:0.6em;">AnzenWork.Corp</div>
-        </div>
-        <div style = "height:90%; width:30%; margin-left:2%; margin-top:2%; background:white;">
-          <div style = "height:60%; width:90%; margin-left:5%; margin-top:1%; background:black; color:white; text-align:center;">
-            「ストアのアプリ」実は....
-          </div>
-          <div style ="font-size:0.7em;">ストアのアプリなら全部安全だと思っていませんか？</div>
-          <div style = "font-size:0.6em;">AnzenWork.Corp</div>
-        </div>
-      </div>
-      <div style = "display:flex; width:100%; height:48%;">
-        <div style = "height:90%; width:30%; margin-left:2%; margin-top:2%; background:white;">
-          <div style = "height:60%; width:90%; margin-left:5%; margin-top:1%; background:black; color:white; text-align:center;">
-            【問題】どれが信頼できるメールでしょう？
-          </div>
-          <div style ="font-size:0.7em;">メールの仕分け方について解説しちゃいます！</div>
-          <div style = "font-size:0.6em;">AnzenWork.Corp</div>
-        </div>
-        <div style = "height:90%; width:30%; margin-left:2%; margin-top:2%; background:white;">
-          <div style = "height:60%; width:90%; margin-left:5%; margin-top:1%; background:black; color:white; text-align:center;">
-            SNSの落とし穴！？
-          </div>
-          <div style ="font-size:0.7em;">5%の人しか知らないSNSの落とし穴とは？</div>
-          <div style = "font-size:0.6em;">AnzenWork.Corp</div>
-        </div>
-        <div style = "height:90%; width:30%; margin-left:2%; margin-top:2%; background:white;">
-          <div style = "height:60%; width:90%; margin-left:5%; margin-top:1%; background:black; color:white; text-align:center;">
-            Excolのマクロって何？
-          </div>
-          <div style ="font-size:0.7em;">【⚠便利だけど危険？】Excolのマクロ機能</div>
-          <div style = "font-size:0.6em;">AnzenWork.Corp</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<style>
-  .is_hidden{
-    display: none;
+  function onclickUpdate() {
+    document.getElementById('popup').classList.add('is_hidden');
+    document.getElementById('comment').innerText = "最新版です";
+    document.getElementById('install').innerText = "最新";
+    if (!SystemConfigs.Result.Flag.includes("falseApp")) SystemConfigs.Result.Flag.push('falseApp');
   }
-  </style>`;
-    document.getElementById('contentFrame').innerHTML = ihtml;
-
 }
