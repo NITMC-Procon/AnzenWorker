@@ -4,6 +4,9 @@ import { Browser } from "./Browser.js"
 import { WindowManager } from "../../System/Desktop.js"
 import { YoTube } from "./YoTube.js"
 import { SystemConfigs } from "../../System/System.js"
+import { contents } from "../../Services/Service/YoTubeContents.js"
+import { SlideShow } from "./SlideShow.js"
+import { RefreshDesktop } from "../../System/Desktop.js"
 
 const html = `
 <div style="width: 100%;height: 100%;user-select:none;background:linear-gradient(to right,rgb(150,0,62),rgb(180,0,89),rgb(200,0,89),rgb(210,0,89),rgb(180,0,110),rgb(190,0,62));">
@@ -53,6 +56,11 @@ export class MovieGetter extends Window {
 
     /** @type {HTMLElement} *///@ts-ignore
     this.dl_btn = this.bodyElem.firstElementChild.lastElementChild.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
+    /** @type {HTMLElement} *///@ts-ignore
+    this.cash = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling
+    /** @type {HTMLInputElement} *///@ts-ignore
+    this.textbox = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
+    this.startbtn = this.textbox.nextElementSibling.nextElementSibling
 
     if (SystemConfigs.Result.Flag.includes("falseApp")) {
       document.getElementById('popup').classList.add('is_hidden');
@@ -63,9 +71,22 @@ export class MovieGetter extends Window {
       new Browser('http://www.movie-getter.omg/addcontents/');
     })
 
+    // 動画サイトへのボタン
     document.getElementById("tolink").addEventListener('click', () => {
       new YoTube;
     })
-  }
 
+    // 検索ボタン
+    this.startbtn.addEventListener('click', () => {
+      let url = this.textbox.value.replace(/\s+/g, "");
+      let cont_url = "https://yo-tube/view?v=";
+
+      for (let i = 0; i < contents.length; i++) {
+        if (url == cont_url + contents[i].link) {
+          new SlideShow(contents[i].pages);
+          this.cash.innerText = cont_url + contents[i].link;
+        }
+      }
+    })
+  }
 }
