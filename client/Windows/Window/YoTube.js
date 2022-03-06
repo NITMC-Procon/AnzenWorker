@@ -92,10 +92,10 @@ const html = `
             
             </div>
             <div style = "display:flex; width:100%; height:10%; background:gray;">
-              <div style = "width:10%; height:10%; color:white; margin-left:10%;">
+              <div id = "left" style = "width:10%; height:100%; color:white; margin-left:10%;">
                 <b>←</b>
               </div>
-              <div style = "width:10%; height:10%; color:white;">
+              <div id = "right" style = "width:10%; height:100%; color:white;">
                 <b>→</b>
               </div>
             </div>
@@ -180,7 +180,7 @@ export let contents = [
         ・携帯などを無線でネットワークに接続する技術のこと
       </div>
     </div>
-    <div id = "p2" style = "width:100%; height:100%;">
+    <div id = "p2" style = "width:100%; height:100%; background:white;">
       <div style = "width:95%; height:20%; margin-left:5%; font-size:1.2em;">
         安全なWi-Fiの選び方
       </div>
@@ -191,7 +191,7 @@ export let contents = [
         ・Wi-Fiの電波は誰でも盗聴できるところ
       </div>
     </div>
-    <div id = "p3" style = "width:100%; height:100%;">
+    <div id = "p3" style = "width:100%; height:100%; background:white;">
       <div style = "width:95%; height:20%; margin-left:5%; font-size:1.2em;">
         安全なWi-Fiの選び方
       </div>
@@ -208,7 +208,7 @@ export let contents = [
         ・だからフリーWi-Fiは注意が必要
       </div>
     </div>
-    <div id = "p4" style = "width:100%; height:100%;">
+    <div id = "p4" style = "width:100%; height:100%; background:white;">
       <div style = "width:95%; height:20%; margin-left:5%; font-size:1.2em;">
         安全なWi-Fiの選び方
       </div>
@@ -216,13 +216,13 @@ export let contents = [
         ・暗号化されているかってどう見分けるの？
       </div>
       <div style = "width:92%; height:20%; margin-left:8%;">
-        <img src = "../images/padlock.png" style = " height:80%; width:auto; margin-top:5%; margin-left:5%;">
+        <img src = "../images/padlock.png" style = " height:80%; width:auto;">
       </div>
       <div style = "width:92%; height:20%; margin-left:8%;">
-        ・Wi-Fiの名前の横に、上の写真のような鍵があれば「暗号化」されているサイン
+        ・Wi-Fiの名前の横に、上の画像のような鍵があれば「暗号化」されているサイン
       </div>
     </div>
-    <div id = "p5" style = "width:100%; height:100%;">
+    <div id = "p5" style = "width:100%; height:100%; background:white;">
       <div style = "width:95%; height:20%; margin-left:5%; font-size:1.2em;">
         安全なWi-Fiの選び方
       </div>
@@ -233,7 +233,7 @@ export let contents = [
         ・暗号化にも種類があり、より解読されにくい方法で暗号化されたものを選ぼう
       </div>
     </div>
-    <div id = "p6" style = "width:100%; height:100%;">
+    <div id = "p6" style = "width:100%; height:100%; background:white;">
       <div style = "width:95%; height:20%; margin-left:5%; font-size:1.2em;">
         安全なWi-Fiの選び方
       </div>
@@ -253,7 +253,7 @@ export let contents = [
         弱 TKIP < AES 強
       </div>
     </div>
-    <div id = "p7" style = "width:100%; height:100%;">
+    <div id = "p7" style = "width:100%; height:100%; background:white;">
       <div style = "width:95%; height:20%; margin-left:5%; font-size:1.2em;">
         安全なWi-Fiの選び方
       </div>
@@ -264,7 +264,7 @@ export let contents = [
         企業向けに、WPA/WPA2-Enterprise(IEEE 802.1X認証)というさらに安全なものがある
       </div>
     </div>
-    <div id = "p8" style = "width:100%; height:100%;">
+    <div id = "p8" style = "width:100%; height:100%; background:white;">
       <div style = "width:95%; height:20%; margin-left:5%; font-size:1.2em;">
         安全なWi-Fiの選び方
       </div>
@@ -279,19 +279,39 @@ export let contents = [
   }, {
     title: "ストアのアプリなら安全だと思っていませんか？",
     thumb: "「ストアのアプリ」実は....",
-    disc: "320回視聴・3か月前"
+    disc: "320回視聴・3か月前",
+    pages: `
+    <div id = "p1" style = "width:100%; height:100%; background:white;">
+
+    </div>
+    `
   }, {
     title: "メールの仕分け方について解説しちゃいます！",
     thumb: "【問題】どれが信頼できるメールでしょう？",
-    disc: "159回視聴・5か月前"
+    disc: "159回視聴・5か月前",
+    pages: `
+    <div id = "p1" style = "width:100%; height:100%; background:white;">
+
+    </div>
+    `
   }, {
     title: "5%の人しか知らないSNSの落とし穴とは？",
     thumb: "SNSの落とし穴！？",
-    disc: "187回視聴・4か月前"
+    disc: "187回視聴・4か月前",
+    pages: `
+    <div id = "p1" style = "width:100%; height:100%; background:white;">
+
+    </div>
+    `
   }, {
     title: "【⚠便利だけど危険？】Excolのマクロ機能",
     thumb: "Excolのマクロって何？",
-    disc: "1万回視聴・1か月前"
+    disc: "1万回視聴・1か月前",
+    pages: `
+    <div id = "p1" style = "width:100%; height:100%; background:white;">
+
+    </div>
+    `
   }
 ]
 export class YoTube extends Window {
@@ -306,9 +326,14 @@ export class YoTube extends Window {
     this.container = this.cont.firstElementChild
     this.page2 = this.bodyElem.firstElementChild.firstElementChild.nextElementSibling.lastElementChild
     this.container2 = this.page2.firstElementChild.firstElementChild.nextElementSibling.lastElementChild
+    this.display = this.page2.firstElementChild.firstElementChild.firstElementChild.firstElementChild
+    this.left = this.page2.firstElementChild.firstElementChild.firstElementChild.firstElementChild.nextElementSibling.firstElementChild
+    this.right = this.left.nextElementSibling
 
     let allcontents = ''
     let allrecommends = ''
+
+    var pagenum = 0;
 
     this.page2.classList.add('is_hidden')
 
@@ -348,12 +373,32 @@ export class YoTube extends Window {
 
     for (let i = 1; i < this.container.childElementCount; i++) {
       this.container.children[i].addEventListener('click', () => {
+        // ホーム画面を非表示
         this.recm.classList.toggle('is_hidden');
         this.cont.classList.toggle('is_hidden');
+        // スライドコンテンツを表示
         this.page2.classList.toggle('is_hidden');
 
+        // 前のスライドコンテンツを削除
+        let p = this.display.childElementCount;
+        for (let k = 0; k < p; k++) {
+          this.display.removeChild(this.display.firstElementChild);
+        }
+
+        // スライドコンテンツを追加
+        this.display.insertAdjacentHTML('beforeend', contents[i - 1].pages);
+
+        // ページ番号をリセット
+        pagenum = 0;
+        // 1ページ目以外を非表示
+        for (let k = 1; k < this.display.childElementCount; k++) {
+          this.display.children[k].classList.add('is_hidden');
+        }
+
+        // 動画のタイトルなどのテキストを変更
         change_text(contents[i - 1])
 
+        // おすすめのコンテンツ欄を更新
         for (let k = 0; k < this.container2.childElementCount; k++) {
           this.container2.children[k].classList.remove('is_hidden');
         }
@@ -365,6 +410,23 @@ export class YoTube extends Window {
       this.container2.children[i].addEventListener('click', () => {
         change_text(contents[i])
 
+        // 前のスライドコンテンツを削除
+        let p = this.display.childElementCount;
+        for (let k = 0; k < p; k++) {
+          this.display.removeChild(this.display.firstElementChild);
+        }
+
+        // スライドコンテンツを追加
+        this.display.insertAdjacentHTML('beforeend', contents[i].pages);
+
+        // ページ番号をリセット
+        pagenum = 0;
+        // 1ページ目以外を非表示
+        for (let k = 1; k < this.display.childElementCount; k++) {
+          this.display.children[k].classList.add('is_hidden');
+        }
+
+        // おすすめのコンテンツ欄を更新
         for (let k = 0; k < this.container2.childElementCount; k++) {
           this.container2.children[k].classList.remove('is_hidden');
         }
@@ -376,6 +438,21 @@ export class YoTube extends Window {
       this.recm.classList.remove('is_hidden');
       this.cont.classList.remove('is_hidden');
       this.page2.classList.add('is_hidden');
+    })
+
+    this.left.addEventListener('click', () => {
+      if (1 <= pagenum && pagenum <= (this.display.childElementCount)) {
+        this.display.children[pagenum].classList.add('is_hidden');
+        this.display.children[pagenum - 1].classList.remove('is_hidden');
+        pagenum--;
+      }
+    })
+    this.right.addEventListener('click', () => {
+      if (0 <= pagenum && pagenum <= (this.display.childElementCount - 2)) {
+        this.display.children[pagenum].classList.add('is_hidden');
+        this.display.children[pagenum + 1].classList.remove('is_hidden');
+        pagenum++;
+      }
     })
 
   }
