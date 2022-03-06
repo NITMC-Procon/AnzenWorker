@@ -1,9 +1,9 @@
 export let contents = [
-    {
-        title: "【必見！】安全なWi-Fiの見分け方を解説",
-        thumb: "安全なWi-Fiの見分け方",
-        disc: "678回視聴・1日前",
-        pages: `
+  {
+    title: "【必見！】安全なWi-Fiの見分け方を解説",
+    thumb: "安全なWi-Fiの見分け方",
+    disc: "678回視聴・1日前",
+    pages: `
     <div id = "p1" style = "width:100%; height:100%; background:white;">
       <div style = "width:95%; height:20%; margin-left:5%; font-size:1.2em;">
         安全なWi-Fiの選び方
@@ -110,42 +110,47 @@ export let contents = [
         難しい人は、名前だけでも覚えてより安全なWi-Fiに接続できるように頑張ろう！
       </div>
     </div>
-    `
-    }, {
-        title: "ストアのアプリなら安全だと思っていませんか？",
-        thumb: "「ストアのアプリ」実は....",
-        disc: "320回視聴・3か月前",
-        pages: `
+    `,
+    link: "Jg1SGp"
+  }, {
+    title: "ストアのアプリなら安全だと思っていませんか？",
+    thumb: "「ストアのアプリ」実は....",
+    disc: "320回視聴・3か月前",
+    pages: `
     <div id = "p1" style = "width:100%; height:100%; background:white;">
 
     </div>
-    `
-    }, {
-        title: "メールの仕分け方について解説しちゃいます！",
-        thumb: "【問題】どれが信頼できるメールでしょう？",
-        disc: "159回視聴・5か月前",
-        pages: `
+    `,
+    link: "Ang5Tw"
+  }, {
+    title: "メールの仕分け方について解説しちゃいます！",
+    thumb: "【問題】どれが信頼できるメールでしょう？",
+    disc: "159回視聴・5か月前",
+    pages: `
     <div id = "p1" style = "width:100%; height:100%; background:white;">
 
     </div>
-    `
-    }, {
-        title: "5%の人しか知らないSNSの落とし穴とは？",
-        thumb: "SNSの落とし穴！？",
-        disc: "187回視聴・4か月前",
-        pages: `
+    `,
+    link: "Yi5nPa"
+  }, {
+    title: "5%の人しか知らないSNSの落とし穴とは？",
+    thumb: "SNSの落とし穴！？",
+    disc: "187回視聴・4か月前",
+    pages: `
     <div id = "p1" style = "width:100%; height:100%; background:white;">
 
     </div>
-    `
-    }, {
-        title: "【⚠便利だけど危険？】Excolのマクロ機能",
-        thumb: "Excolのマクロって何？",
-        disc: "1万回視聴・1か月前",
-        pages: `
+    `,
+    link: "KmgNg0"
+  }, {
+    title: "【⚠便利だけど危険？】Excolのマクロ機能",
+    thumb: "Excolのマクロって何？",
+    disc: "1万回視聴・1か月前",
+    pages: `
     <div id = "p1" style = "width:100%; height:100%; background:white;">
 
     </div>
-    `
-    }
+    `,
+    link: "JaGB2w"
+  }
 ]

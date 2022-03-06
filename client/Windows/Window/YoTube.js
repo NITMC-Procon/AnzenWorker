@@ -110,10 +110,21 @@ const html = `
                 678回視聴・2021/11/14
               </div>
             </div>
-            <div style = "display:flex; width:100%; height:40%; margin-top:2%;">
+            <div style = "display:flex; width:100%; height:40%; margin-top:2%; z-index:9;">
               <img src = "../images/apps/Feedback.png" style = " height:80%; width:auto; margin-left:2%; margin-right:2%;">
-              <div style = "width:80%; height:80%; margin-top:1.5%;">
+              <div style = "width:40%; height:80%; margin-top:1.5%;">
                 Anzenwork.Corp
+              </div>
+              <div id = "share" style = "width:20%; height:80%; margin-top:1.5%; margin-left:5%;">
+                <div style = "display:flex; width:100%; height:100%;">
+                  <div style = "width:1em; height:1em; margin-top:5%; transform:rotate(-90deg);">⤵</div>
+                  <div style = "width:5em; height:1em; margin-top:1%; margin-left:6%;">share</div>
+                </div>
+              </div>
+              <div id = "slink" style = "width:10em; height:auto; border:1px solid gray; ">
+                <div id = "contents_url" style = "display:absolute; width:100%; height:100%; font-size:0.7em;">
+                  https://yo-tube/watch?v=<br>
+                </div>
               </div>
             </div>
           </div>
@@ -185,6 +196,7 @@ export class YoTube extends Window {
     var pagenum = 0;
 
     this.page2.classList.add('is_hidden')
+    document.getElementById('slink').classList.add('is_hidden');
 
     contents.forEach((cont) => {
       let container = `
@@ -237,6 +249,13 @@ export class YoTube extends Window {
         // スライドコンテンツを追加
         this.display.insertAdjacentHTML('beforeend', contents[i - 1].pages);
 
+        // シェアリンクを閉じる
+        document.getElementById('share').classList.remove('is_hidden');
+        document.getElementById('slink').classList.add('is_hidden');
+
+        // リンクを更新
+        document.getElementById('contents_url').innerHTML = "https://yo-tube/view?v=<br>" + contents[i - 1].link;
+
         // ページ番号をリセット
         pagenum = 0;
         // 1ページ目以外を非表示
@@ -268,6 +287,13 @@ export class YoTube extends Window {
         // スライドコンテンツを追加
         this.display.insertAdjacentHTML('beforeend', contents[i].pages);
 
+        // シェアリンクを閉じる
+        document.getElementById('share').classList.remove('is_hidden');
+        document.getElementById('slink').classList.add('is_hidden');
+
+        // リンクを更新
+        document.getElementById('contents_url').innerHTML = "https://yo-tube/view?v=<br>" + contents[i].link;
+
         // ページ番号をリセット
         pagenum = 0;
         // 1ページ目以外を非表示
@@ -287,6 +313,11 @@ export class YoTube extends Window {
       this.recm.classList.remove('is_hidden');
       this.cont.classList.remove('is_hidden');
       this.page2.classList.add('is_hidden');
+    })
+
+    document.getElementById('share').addEventListener('click', () => {
+      document.getElementById('share').classList.add('is_hidden');
+      document.getElementById('slink').classList.remove('is_hidden');
     })
 
     this.left.addEventListener('click', () => {
